@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import robotinterpreter.terminals.Terminals;
+
 public class Code 
 {
 	private String code = "";
