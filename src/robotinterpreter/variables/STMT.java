@@ -3,6 +3,7 @@ package robotinterpreter.variables;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.conditional.IF;
 import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.vars.ASSIGNMENT;
@@ -38,7 +39,9 @@ public class STMT extends Variable
 					if(!lastchar.equals(Terminals.SEMICOLON))
 						RobotInterpreter.halt("METHOD", lineNum, code, "Missing Semicolon");
 					stmt = new METHOD(c, c.currentLine().substring(0, c.currentLine().length() - 1));
-
+					break;
+				case "if":
+					stmt = new IF(c);
 					break;
 			}
 		}
@@ -61,6 +64,8 @@ public class STMT extends Variable
 			case "method":
 				((METHOD)stmt).print();
 				break;
+			case "if":
+				((IF)stmt).print();
 		}
 	}
 }

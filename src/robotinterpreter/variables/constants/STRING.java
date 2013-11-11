@@ -14,18 +14,11 @@ public class STRING extends Variable
 		code = s;
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(s);
-		
-		if(tokens.length > 2)
+		if(code.substring(0, 1).equals(Terminals.QUOTE) && code.substring(code.length() - 1, code.length()).equals(Terminals.QUOTE))
 		{
-			if(tokens[0] != Terminals.QUOTE || tokens[tokens.length - 1] != Terminals.QUOTE)
-			{
-				RobotInterpreter.halt("STRING", lineNum, code, "String must be wrapped in quotes");
-			}
-			
 			value = code.substring(1, code.length() - 1);
 		}
-		else RobotInterpreter.halt("STRING", lineNum, code, "Syntax error in string");
+		else RobotInterpreter.halt("STRING", lineNum, code, "String must be wrapped in quotes");
 	}
 
 	public void print() 

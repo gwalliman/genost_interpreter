@@ -114,10 +114,10 @@ public class Code
 	public static String[] tokenize(String s)
 	{
 		ArrayList<String> tokens = new ArrayList<String>();
-		String[] pass1 = s.split(" ");
-		for(String token : pass1)
+		String[] pass = s.split(" ");
+		for(int x = 0; x < pass.length; x++)
 		{
-			token = token.trim();
+			String token = pass[x].trim();
 			if(token.length() > 0)
 			{
 				if(checkAlphaNumeric(token))
@@ -126,6 +126,21 @@ public class Code
 				}
 				else
 				{
+					//If this token is the beginning of a string
+					if(token.contains(Terminals.QUOTE) && token.substring(0, 1).equals(Terminals.QUOTE))
+					{
+						String r = implode(pass, " ", x, pass.length - 1);
+						r = exciseString(r, tokens);
+						
+						String[] remainingTokens = tokenize(r);
+						for(String t : remainingTokens)
+						{
+							tokens.add(t);
+						}
+						
+						return tokens.toArray(new String[tokens.size()]);
+					}
+					
 					for(String symbol : Terminals.symbolTerminals)
 					{
 						if(token.contains(symbol))
@@ -142,6 +157,62 @@ public class Code
 		}
 		
 		return tokens.toArray(new String[tokens.size()]);
+	}
+	
+	//Find the string, add it to tokens, return the remainder
+	private static String exciseString(String s, ArrayList<String> tokens)
+	{
+		//Get rid of the first quote (guaranteed to be there)
+		s = s.substring(1, s.length());
+		
+		String[] h = s.split("\"", 2);
+		if(h.length == 1)
+		{
+			RobotInterpreter.halt("STRING", -1, s, "Unenclosed string!");
+		}
+		
+		tokens.add(Terminals.QUOTE + h[0] + Terminals.QUOTE);
+		return h[1];
+		
+		/*//We remove the quote from the beginning of the current token.
+		pass1[x] = pass1[x].substring(1, pass1[x].length());
+		
+		//We now loop through the current token, character by character, looking for the close quote.
+		for(int y = 0; y < pass1[x].length(); y++)
+		{
+			//Pull the current character.
+			String i = pass1[x].substring(y, y+1);
+			
+			//If it is a quote, it must be a close quote.
+			if(i == Terminals.QUOTE)
+			{
+				//Add the close quote to the string, add the string to the tokens array.
+				string += i;
+				tokens.add(string);
+				
+				//If that character was the last character in the string, 
+				if(y + 1 == pass1[x].length())
+				{
+					x++;
+				}
+				else
+				{
+					pass1[x] = pass1[x].substring(y + 1, pass1[x].length());
+				}
+				
+				token = pass1[x];
+				continue;
+			}
+			else
+			{
+				string += i;
+				if(y + 1 == pass1[x].length())
+				{
+					x++;
+					y = 0;
+				}
+			}
+		}*/
 	}
 	
 	public static String implode(String[] s, String sep)

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Terminals 
 {
+	//Symbols
 	public static String OPENPAREN = "(";
 	public static String CLOSEPAREN = ")";
 	public static String OPENBRACE = "{";
@@ -23,6 +24,14 @@ public class Terminals
 	public static String LTE = "<=";
 	public static String GTE = ">=";
 	
+	public static String[] comparatorArray = { EQ, NEQ, LT, GT, LTE, GTE };
+	public static ArrayList<String> comparators = new ArrayList<String>(Arrays.asList(comparatorArray));
+	
+	//Words
+	public static String AND = "and";
+	public static String OR = "or";
+	
+	//Word Arrays
 	//NOTE: Order matters in this array! We must ensure that symbols which are contained in other symbols come LAST.
 	private static String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT,};
 	public static ArrayList<String> symbolTerminals = new ArrayList<String>(Arrays.asList(symbolTerminalsArray));
@@ -30,7 +39,7 @@ public class Terminals
 	private static String[] dataTypeArray = { "int", "string", "bool"};
 	public static ArrayList<String> dataTypes = new ArrayList<String>(Arrays.asList(dataTypeArray));
 	
-	private static String[] logOpArray = {"and", "or"};
+	private static String[] logOpArray = {AND, OR};
 	public static ArrayList<String> logOps = new ArrayList<String>(Arrays.asList(logOpArray));
 	
 	private static String[] booleanValsArray = {"true", "false"};
