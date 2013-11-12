@@ -7,7 +7,6 @@ import robotinterpreter.terminals.Terminals;
 public class BODY extends Variable
 {
 	private STMTLIST stmtList;
-	private String code;
 	private int startLine;
 	private int finishLine;
 

@@ -4,10 +4,14 @@ import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.conditional.IF;
+import robotinterpreter.variables.loop.LOOPFOR;
+import robotinterpreter.variables.loop.LOOPUNTIL;
 import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.vars.ASSIGNMENT;
 import robotinterpreter.variables.vars.VARDECL;
+import robotinterpreter.variables.wait.WAITFOR;
+import robotinterpreter.variables.wait.WAITUNTIL;
 
 public class STMT extends Variable 
 {
@@ -49,6 +53,18 @@ public class STMT extends Variable
 				case "else":
 					RobotInterpreter.halt("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
 					break;
+				case "loopuntil":
+					stmt = new LOOPUNTIL(c);
+					break;
+				case "loopfor":
+					stmt = new LOOPFOR(c);
+					break;
+				case "waituntil":
+					stmt = new WAITUNTIL(c);
+					break;
+				case "waitfor":
+					stmt = new WAITFOR(c);
+					break;
 			}
 		}
 		else RobotInterpreter.halt("STMT", lineNum, code, "STMT type is not valid.");
@@ -72,6 +88,19 @@ public class STMT extends Variable
 				break;
 			case "if":
 				((IF)stmt).print();
+				break;
+			case "loopuntil":
+				((LOOPUNTIL)stmt).print();
+				break;
+			case "loopfor":
+				((LOOPFOR)stmt).print();
+				break;
+			case "waituntil":
+				((WAITUNTIL)stmt).print();
+				break;
+			case "waitfor":
+				((WAITFOR)stmt).print();
+				break;
 		}
 	}
 }
