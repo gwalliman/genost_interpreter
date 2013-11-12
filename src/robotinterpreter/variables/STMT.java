@@ -43,6 +43,12 @@ public class STMT extends Variable
 				case "if":
 					stmt = new IF(c);
 					break;
+				case "elseif":
+					RobotInterpreter.halt("STMT", lineNum, code, "ELSEIF must follow IF");
+					break;
+				case "else":
+					RobotInterpreter.halt("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
+					break;
 			}
 		}
 		else RobotInterpreter.halt("STMT", lineNum, code, "STMT type is not valid.");

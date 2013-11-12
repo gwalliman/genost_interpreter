@@ -38,6 +38,20 @@ public class IF extends Variable
 
 		c.nextLine();
 		body = new BODY(c);
+		
+		c.nextLine();
+		
+		String[] newTokens = Code.tokenize(c.currentLine());
+		if(newTokens[0].equals("elseif"))
+		{
+			elseif = new ELSEIF(c);
+		}
+		newTokens = Code.tokenize(c.currentLine());
+		if(newTokens[0].equals("else"))
+		{
+			els = new ELSE(c);
+		}
+		else c.prevLine();
 	}
 	
 	public void print() 
@@ -46,5 +60,17 @@ public class IF extends Variable
 		cl.print();
 		System.out.println(")");
 		body.print();
+		
+		if(elseif != null)
+		{
+			System.out.print(Code.newline);
+			elseif.print();
+		}
+		
+		if(els != null)
+		{
+			System.out.print(Code.newline);
+			els.print();
+		}
 	}
 }
