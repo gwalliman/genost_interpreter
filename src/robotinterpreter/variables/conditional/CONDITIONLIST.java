@@ -49,12 +49,17 @@ public class CONDITIONLIST extends Variable
 
 		}
 		
+		
 		if(tokens.length - 1 > closeBracket)
 		{
 			if(Terminals.logOps.contains(tokens[closeBracket + 1]))
 			{
 				logOp = tokens[closeBracket + 1];
-				nextCon = new CONDITIONLIST(c, Code.implode(tokens, " ", closeBracket + 2, tokens.length - 1));
+				if(tokens.length - 1 > closeBracket + 1)
+				{
+					nextCon = new CONDITIONLIST(c, Code.implode(tokens, " ", closeBracket + 2, tokens.length - 1));
+				}
+				else RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "A CONDITION or CONDITIONLIST must follow an AND or OR");
 			}
 			else RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "Only AND or OR may follow a CONDITIONLIST");
 
