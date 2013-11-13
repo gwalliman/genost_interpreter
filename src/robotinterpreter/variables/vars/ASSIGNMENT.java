@@ -44,10 +44,24 @@ public class ASSIGNMENT extends Variable
 
 	//IN THIS ORDER
 	//Validate call
+	//Ensure that lhs exists
 	//Ensure that lhs and rhs are of same type
 	public void validate() 
 	{
+		call.validate();
+		VARDECL v = RobotInterpreter.findVar(id);
+		if(v == null)
+		{
+			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "Variable " + id + " is not defined.");
+		}
 		
+		String lhsType = v.type();
+		String rhsType = call.getType();
+		
+		if(!lhsType.equals(rhsType))
+		{
+			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "LHS and RHS of an assignment must be of same type, but LHS is " + lhsType + "and RHS is " + rhsType);
+		}
 	}
 
 

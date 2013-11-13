@@ -45,12 +45,22 @@ public class CONDITION extends Variable
 	}
 
 	//lhs and rhs must be of same type
-	//lhs and rhs must both exist (if vars or methods)
-	//comparator must be valid for comparison type
+	//Comparator must be valid for comparison type
 	//Validate vars and methods
 	public void validate() 
 	{
-		
+		lhs.validate();
+		rhs.validate();
+		String lhsType = lhs.getType();
+		String rhsType = rhs.getType();
+		if(!lhsType.equals(rhsType))
+		{
+			RobotInterpreter.halt("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
+		}
+		if((lhsType.equals("string") || lhsType.equals("bool")) && (comparator != Terminals.EQ && comparator != Terminals.NEQ))
+		{
+			RobotInterpreter.halt("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
+		}
 	}
 
 	@Override

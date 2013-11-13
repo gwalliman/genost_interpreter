@@ -40,7 +40,7 @@ public class METHODDEFINE extends Variable {
 		
 		if(tokens[4] != Terminals.CLOSEPAREN)
 		{
-			params = new DEFPARAMLIST(c, Code.implode(tokens, " ", 4, tokens.length - 2));
+			params = new DEFPARAMLIST(c, Code.implode(tokens, " ", 4, tokens.length - 2), 0);
 		}
 		
 		c.nextLine();
@@ -59,6 +59,17 @@ public class METHODDEFINE extends Variable {
 		return type;
 	}
 	
+	public DEFPARAMLIST getParam(int paramNum) 
+	{
+		DEFPARAMLIST param = params;
+		while(param.getNum() != paramNum && param != null)
+		{
+			param = param.nextParam();
+		}
+		
+		return param;
+	}
+	
 	public void print() 
 	{
 		System.out.print("methoddefine " + type + " " + id + "(");
@@ -69,12 +80,16 @@ public class METHODDEFINE extends Variable {
 	}
 
 	//Ensure that method doesn't exist twice
+	//Validate body
+	//Validate params
 	public void validate() 
 	{
 		if(Collections.frequency(RobotInterpreter.methodTable, RobotInterpreter.findMethod(id)) > 1)
 		{
 			RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Method " + id + " cannot be defined more than once!");
 		}		
+		params.validate();
+		body.validate();
 	}
 
 	@Override
@@ -82,5 +97,4 @@ public class METHODDEFINE extends Variable {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

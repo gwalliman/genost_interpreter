@@ -1,6 +1,7 @@
 package robotinterpreter.variables.vars;
 
 import robotinterpreter.Code;
+import robotinterpreter.RobotInterpreter;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
@@ -34,7 +35,10 @@ public class VAR extends Variable
 	//Ensure that var exists
 	public void validate() 
 	{
-		
+		if(RobotInterpreter.findVar(id) == null)
+		{
+			RobotInterpreter.halt("VAR", lineNum, code, "Var " + id + " is not defined.");
+		}
 	}
 
 	@Override

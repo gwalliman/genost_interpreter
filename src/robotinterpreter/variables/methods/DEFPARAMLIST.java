@@ -5,15 +5,19 @@ import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
+import robotinterpreter.variables.vars.VAR;
+import robotinterpreter.variables.vars.VARDECL;
 
 public class DEFPARAMLIST extends Variable
 {
 	private String paramType;
 	private String id;
+	private int paramNum;
 	private DEFPARAMLIST nextParam;
 	
-	public DEFPARAMLIST(Code c, String s) 
+	public DEFPARAMLIST(Code c, String s, int p) 
 	{
+		paramNum = p;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
 		String tokens[] = Code.tokenize(s);
@@ -29,11 +33,26 @@ public class DEFPARAMLIST extends Variable
 			if(tokens.length > 3)
 			{
 				if(tokens[2] == Terminals.COMMA)
-					nextParam = new DEFPARAMLIST(c, Code.implode(tokens, " ", 3, tokens.length - 1));
+					nextParam = new DEFPARAMLIST(c, Code.implode(tokens, " ", 3, tokens.length - 1), p++);
 				else RobotInterpreter.halt("DEFPARAMLIST", lineNum, code, "There must be a comma between each parameter in a DEFPARAMLIST");
 			}
 		}
 		else RobotInterpreter.halt("DEFPARAMLIST", lineNum, code, "Syntax error in DEFPARAMLIST");
+	}
+	
+	public String getType()
+	{
+		return paramType;
+	}
+	
+	public int getNum() 
+	{
+		return paramNum;
+	}
+
+	public DEFPARAMLIST nextParam() 
+	{
+		return nextParam;
 	}
 	
 	public void print() 
@@ -48,10 +67,19 @@ public class DEFPARAMLIST extends Variable
 	}
 
 	//Ensure that var doesn't already exist
+	//Validate next var
 	public void validate() 
 	{
-		// TODO Auto-generated method stub
+		VARDECL v = RobotInterpreter.findVar(id);
+		if(v != null)
+		{
+			RobotInterpreter.halt("DEFPARAMLIST", lineNum, code, "Error, variable " + id + " already declared on line " + v.lineNum());
+		}
 		
+		if(nextParam != null)
+		{
+			nextParam.validate();
+		}
 	}
 
 	@Override

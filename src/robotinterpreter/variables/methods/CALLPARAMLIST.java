@@ -10,9 +10,13 @@ public class CALLPARAMLIST extends Variable
 {
 	private CALL call;
 	private CALLPARAMLIST nextParam;
+	private METHOD method;
+	private int paramNum;
 	
-	public CALLPARAMLIST(Code c, String s) 
+	public CALLPARAMLIST(Code c, String s, METHOD m, int p) 
 	{
+		method = m;
+		paramNum = p;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
 
@@ -26,7 +30,7 @@ public class CALLPARAMLIST extends Variable
 
 		if(tokens.length > 1)
 		{
-			nextParam = new CALLPARAMLIST(c, Code.implode(tokens, ",", 1, tokens.length - 1));
+			nextParam = new CALLPARAMLIST(c, Code.implode(tokens, ",", 1, tokens.length - 1), m, p++);
 		}
 	}
 	
@@ -41,12 +45,42 @@ public class CALLPARAMLIST extends Variable
 		}
 	}
 
-	//Ensure that call is of right type.
-	//Ensure that call should exist at all (what if param doesn't exist?)
-	//Validate next call
+	//1. Validate call
+	//2. Ensure that call should exist at all (what if param doesn't exist?)
+	//3. Ensure that call is of right type.
+	//4. Validate next call
 	public void validate() 
 	{
+		//1
+		call.validate();
+		METHODDEFINE methdef = RobotInterpreter.findMethod(method.id());
 		
+		//As the method should always be validated before the calllist, it should always be valid, but just in case we check.
+		if(methdef != null)
+		{	
+			//2
+			DEFPARAMLIST paramdef = methdef.getParam(paramNum);
+			if(paramdef == null)
+			{
+				RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " does not exist for method " + methdef.id());
+			}
+			else
+			{
+				//3
+				String callType = call.getType();
+				String defType = paramdef.getType();
+				if(!callType.equals(defType))
+				{
+					RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
+				}
+			}
+		}
+		
+		//4
+		if(nextParam != null)
+		{
+			nextParam.validate();
+		}
 	}
 
 	@Override

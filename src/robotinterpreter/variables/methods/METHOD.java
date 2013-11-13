@@ -38,7 +38,7 @@ public class METHOD extends Variable
 			//Split by the method open paren. Note that we limit the split to 2 because there may be more openparens in the paramlist.
 			String[] callCode = code.split("\\(", 2);
 	
-			params = new CALLPARAMLIST(c, callCode[1].substring(0, callCode[1].length() - 1));
+			params = new CALLPARAMLIST(c, callCode[1].substring(0, callCode[1].length() - 1), this, 0);
 		}
 	}
 	
@@ -59,8 +59,11 @@ public class METHOD extends Variable
 	//Validate callParamList
 	public void validate() 
 	{
-
-		
+		if(RobotInterpreter.findMethod(id) == null)
+		{
+			RobotInterpreter.halt("METHOD", lineNum, code, "Method " + id + " is not defined.");
+		}
+		params.validate();
 	}
 
 	@Override
