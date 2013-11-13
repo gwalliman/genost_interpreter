@@ -51,6 +51,8 @@ public class WAITUNTIL extends Variable
 	//Validate body
 	public void validate() 
 	{
+		System.out.println("Validating WAITUNTIL");
+
 		cl.validate();
 		body.validate();
 	}

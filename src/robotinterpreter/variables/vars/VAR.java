@@ -8,6 +8,7 @@ import robotinterpreter.variables.Variable;
 public class VAR extends Variable 
 {
 	private String id;
+	private VARDECL var;
 	
 	public VAR(Code c, String callCode)
 	{
@@ -35,7 +36,10 @@ public class VAR extends Variable
 	//Ensure that var exists
 	public void validate() 
 	{
-		if(RobotInterpreter.findVar(id) == null)
+		System.out.println("Validating VAR");
+
+		var = RobotInterpreter.findVar(id);
+		if(var == null)
 		{
 			RobotInterpreter.halt("VAR", lineNum, code, "Var " + id + " is not defined.");
 		}

@@ -71,6 +71,7 @@ public class BODY extends Variable
 	//Validate stmtlist
 	public void validate() 
 	{
+		System.out.println("Validating BODY");
 		if(stmtList != null)
 		{
 			stmtList.validate();

@@ -44,7 +44,7 @@ public class Terminals
 	private static String[] booleanValsArray = {"true", "false"};
 	public static ArrayList<String> booleanVals = new ArrayList<String>(Arrays.asList(booleanValsArray));
 		
-	private static String[] stmtTypesArray = { "assign", "vardecl", "var", "methoddefine", "method", "if", "elseif", "else", "loopuntil", "loopfor", "waituntil", "waitfor" };
+	private static String[] stmtTypesArray = { "assign", "vardecl", "methoddefine", "method", "if", "elseif", "else", "loopuntil", "loopfor", "waituntil", "waitfor" };
 	public static ArrayList<String> stmtTypes = new ArrayList<String>(Arrays.asList(stmtTypesArray));
 	
 	private static String[] callTypesArray = { "var", "method" };

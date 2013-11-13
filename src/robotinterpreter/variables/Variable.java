@@ -1,8 +1,8 @@
 package robotinterpreter.variables;
 public abstract class Variable 
 {
-	public String code;
-	public int lineNum;
+	protected String code;
+	protected int lineNum;
 	
 	public abstract void print();
 	public abstract void validate();

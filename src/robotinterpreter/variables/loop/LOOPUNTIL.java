@@ -51,6 +51,7 @@ public class LOOPUNTIL extends Variable
 	//Validate body
 	public void validate() 
 	{
+		System.out.println("Validating LOOPUNTIL");
 		cl.validate();
 		body.validate();
 	}

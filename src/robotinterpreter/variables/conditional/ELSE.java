@@ -26,6 +26,8 @@ public class ELSE extends Variable
 	//Validate the body.
 	public void validate() 
 	{
+		System.out.println("Validating ELSE");
+
 		body.validate();
 	}
 

@@ -1,5 +1,7 @@
 package robotinterpreter.variables.methods;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import robotinterpreter.Code;
@@ -8,16 +10,20 @@ import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
+import robotinterpreter.variables.methods.external.ExtMethod;
 
 public class METHODDEFINE extends Variable {
 	
 	private String type;
+	private String methodType;
 	private String id;
 	private BODY body;
 	private DEFPARAMLIST params;
 	
+	//Define INTERNAL method
 	public METHODDEFINE(Code c)
 	{
+		methodType = "internal";
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
 		
@@ -47,6 +53,27 @@ public class METHODDEFINE extends Variable {
 		body = new BODY(c);
 		
 		RobotInterpreter.methodTable.add(this);
+	}
+	
+	//Define EXTERNAL method
+	public METHODDEFINE(String s)
+	{
+		lineNum = -1;
+		code = "Externally defined";
+		methodType = "external";
+		id = s;
+		body = null;
+		
+		for(Object ext : RobotInterpreter.extMethodTable)
+		{
+			if(((ExtMethod)ext).id() == s)
+			{
+				type = ((ExtMethod)ext).type();
+				ArrayList<String> pt = new ArrayList<String>(Arrays.asList(((ExtMethod)ext).paramTypes()));
+				params = new DEFPARAMLIST(pt, 0);
+			}
+		}
+		
 	}
 	
 	public String id()
@@ -84,11 +111,16 @@ public class METHODDEFINE extends Variable {
 	//Validate params
 	public void validate() 
 	{
+		System.out.println("Validating METHODDEFINE");
+
 		if(Collections.frequency(RobotInterpreter.methodTable, RobotInterpreter.findMethod(id)) > 1)
 		{
 			RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Method " + id + " cannot be defined more than once!");
 		}		
-		params.validate();
+		if(params != null)
+		{
+			params.validate();
+		}
 		body.validate();
 	}
 

@@ -11,6 +11,7 @@ public class ASSIGNMENT extends Variable
 {
 	private String id;
 	private CALL call;
+	private VARDECL lhs;
 	
 	public ASSIGNMENT(Code c)
 	{
@@ -48,19 +49,20 @@ public class ASSIGNMENT extends Variable
 	//Ensure that lhs and rhs are of same type
 	public void validate() 
 	{
+		System.out.println("Validating ASSIGNMENT");
 		call.validate();
-		VARDECL v = RobotInterpreter.findVar(id);
-		if(v == null)
+		lhs = RobotInterpreter.findVar(id);
+		if(lhs == null)
 		{
 			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "Variable " + id + " is not defined.");
 		}
 		
-		String lhsType = v.type();
+		String lhsType = lhs.type();
 		String rhsType = call.getType();
 		
 		if(!lhsType.equals(rhsType))
 		{
-			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "LHS and RHS of an assignment must be of same type, but LHS is " + lhsType + "and RHS is " + rhsType);
+			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "LHS and RHS of an assignment must be of same type, but LHS is " + lhsType + " and RHS is " + rhsType);
 		}
 	}
 

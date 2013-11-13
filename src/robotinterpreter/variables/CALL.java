@@ -8,7 +8,6 @@ import robotinterpreter.variables.constants.INTEGER;
 import robotinterpreter.variables.constants.STRING;
 import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.vars.VAR;
-import robotinterpreter.variables.vars.VARDECL;
 
 public class CALL extends Variable 
 {
@@ -93,6 +92,7 @@ public class CALL extends Variable
 	//Validate whatever we are calling
 	public void validate() 
 	{
+		System.out.println("Validating CALL");
 		switch(callType)
 		{
 			case "var":

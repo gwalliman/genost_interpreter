@@ -55,6 +55,8 @@ public class VARDECL extends Variable {
 	//Ensure that var doesn't exist twice
 	public void validate() 
 	{
+		System.out.println("Validating VARDECL");
+
 		if(Collections.frequency(RobotInterpreter.varTable, RobotInterpreter.findVar(id)) > 1)
 		{
 			RobotInterpreter.halt("VARDECL", lineNum, code, "Var " + id + " cannot be declared more than once!");

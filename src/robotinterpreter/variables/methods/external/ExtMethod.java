@@ -1,18 +1,33 @@
 package robotinterpreter.variables.methods.external;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
-import robotinterpreter.terminals.Terminals;
-import robotinterpreter.variables.ID;
-import robotinterpreter.variables.Variable;
 
 public abstract class ExtMethod
 {
-	private String id;
-	private String type;
-	private String[] paramTypes;
+	protected String id;
+	protected String type;
+	protected String[] paramTypes;
 	
-	public abstract void execute(Object[] args);
+	private static String[] extMethodsArray = { "print", "intToString", "add", "subtract", "multiply", "divide"  };
+	
+	public static ArrayList<String> extMethods = new ArrayList<String>(Arrays.asList(extMethodsArray));
+
+	public abstract Object execute(Object[] args);
+	
+	public String id()
+	{
+		return id;
+	}
+	
+	public String type()
+	{
+		return type;
+	}
+	
+	public String[] paramTypes()
+	{
+		return paramTypes;
+	}
 }

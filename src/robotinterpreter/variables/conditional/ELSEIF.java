@@ -68,6 +68,8 @@ public class ELSEIF extends Variable
 	//Validate the next ELSEIF, if applicable
 	public void validate() 
 	{
+		System.out.println("Validating ELSEIF");
+
 		cl.validate();
 		body.validate();
 		

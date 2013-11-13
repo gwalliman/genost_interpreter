@@ -107,6 +107,7 @@ public class STMT extends Variable
 	//Validate whatever the statement is
 	public void validate() 
 	{
+		System.out.println("Validating STMT");
 		switch(stmtType)
 		{
 			case "vardecl":

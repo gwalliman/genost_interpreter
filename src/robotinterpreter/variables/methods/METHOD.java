@@ -1,7 +1,5 @@
 package robotinterpreter.variables.methods;
 
-import java.util.Collections;
-
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
@@ -12,6 +10,7 @@ public class METHOD extends Variable
 {
 	private String id;
 	private CALLPARAMLIST params;
+	private Object method;
 	
 	public METHOD(Code c, String s)
 	{
@@ -59,11 +58,15 @@ public class METHOD extends Variable
 	//Validate callParamList
 	public void validate() 
 	{
-		if(RobotInterpreter.findMethod(id) == null)
+		System.out.println("Validating METHOD");
+
+		method = RobotInterpreter.findMethod(id);
+		if(method == null)
 		{
 			RobotInterpreter.halt("METHOD", lineNum, code, "Method " + id + " is not defined.");
 		}
-		params.validate();
+		if(params != null)
+			params.validate();
 	}
 
 	@Override

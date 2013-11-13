@@ -37,6 +37,8 @@ public class WAITFOR extends Variable
 	//Validate body
 	public void validate() 
 	{
+		System.out.println("Validating WAITFOR");
+
 		if(iterations < 0)
 		{
 			RobotInterpreter.halt("LOOPFOR", lineNum, code, "LOOPFOR iterations integer cannot be negative");

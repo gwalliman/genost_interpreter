@@ -80,6 +80,8 @@ public class IF extends Variable
 	//Validate the else, if it exists.
 	public void validate() 
 	{
+		System.out.println("Validating IF");
+
 		cl.validate();
 		body.validate();
 		

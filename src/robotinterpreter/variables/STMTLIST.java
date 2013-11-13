@@ -43,6 +43,7 @@ public class STMTLIST extends Variable
 	//Validate the stmt and the next, if it exists
 	public void validate() 
 	{
+		System.out.println("Validating STMTLIST");
 		stmt.validate();
 		if(nextStmt != null)
 		{

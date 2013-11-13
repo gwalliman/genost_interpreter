@@ -49,6 +49,8 @@ public class CONDITION extends Variable
 	//Validate vars and methods
 	public void validate() 
 	{
+		System.out.println("Validating CONDITION");
+
 		lhs.validate();
 		rhs.validate();
 		String lhsType = lhs.getType();

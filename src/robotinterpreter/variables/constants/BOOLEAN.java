@@ -33,7 +33,10 @@ public class BOOLEAN extends Variable
 	}
 
 	//Nothing to validate, value was validated during parsing.
-	public void validate() { }
+	public void validate() 
+	{ 
+		System.out.println("Validating BOOLEAN");
+	}
 
 	@Override
 	public void execute() {

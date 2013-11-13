@@ -110,6 +110,8 @@ public class CONDITIONLIST extends Variable
 	//Validate the con and the nextCon, if it exists
 	public void validate() 
 	{ 
+		System.out.println("Validating CONDITIONLIST");
+
 		if(conType == "CONDITIONLIST")
 		{		
 			((CONDITIONLIST)con).validate();

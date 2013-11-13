@@ -30,12 +30,13 @@ public class CALLPARAMLIST extends Variable
 
 		if(tokens.length > 1)
 		{
-			nextParam = new CALLPARAMLIST(c, Code.implode(tokens, ",", 1, tokens.length - 1), m, p++);
+			nextParam = new CALLPARAMLIST(c, Code.implode(tokens, ",", 1, tokens.length - 1), m, ++p);
 		}
 	}
 	
 	public void print() 
 	{
+		System.out.print(paramNum + " ");
 		call.print();
 			
 		if(nextParam != null)
@@ -51,6 +52,8 @@ public class CALLPARAMLIST extends Variable
 	//4. Validate next call
 	public void validate() 
 	{
+		System.out.println("Validating CALLPARAMLIST");
+
 		//1
 		call.validate();
 		METHODDEFINE methdef = RobotInterpreter.findMethod(method.id());
@@ -71,7 +74,7 @@ public class CALLPARAMLIST extends Variable
 				String defType = paramdef.getType();
 				if(!callType.equals(defType))
 				{
-					RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
+					RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
 				}
 			}
 		}

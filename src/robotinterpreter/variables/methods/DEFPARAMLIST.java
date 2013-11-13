@@ -1,11 +1,12 @@
 package robotinterpreter.variables.methods;
 
+import java.util.ArrayList;
+
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
-import robotinterpreter.variables.vars.VAR;
 import robotinterpreter.variables.vars.VARDECL;
 
 public class DEFPARAMLIST extends Variable
@@ -14,7 +15,8 @@ public class DEFPARAMLIST extends Variable
 	private String id;
 	private int paramNum;
 	private DEFPARAMLIST nextParam;
-	
+
+	//Define params for INTERNAL method
 	public DEFPARAMLIST(Code c, String s, int p) 
 	{
 		paramNum = p;
@@ -33,11 +35,24 @@ public class DEFPARAMLIST extends Variable
 			if(tokens.length > 3)
 			{
 				if(tokens[2] == Terminals.COMMA)
-					nextParam = new DEFPARAMLIST(c, Code.implode(tokens, " ", 3, tokens.length - 1), p++);
+					nextParam = new DEFPARAMLIST(c, Code.implode(tokens, " ", 3, tokens.length - 1), ++p);
 				else RobotInterpreter.halt("DEFPARAMLIST", lineNum, code, "There must be a comma between each parameter in a DEFPARAMLIST");
 			}
 		}
 		else RobotInterpreter.halt("DEFPARAMLIST", lineNum, code, "Syntax error in DEFPARAMLIST");
+	}
+	
+	//Define params for EXTERNAL method
+	public DEFPARAMLIST(ArrayList<String> params, int p)
+	{
+		id = "param" + p;
+		paramNum = p;
+		paramType = params.remove(0);
+		
+		if(params.size() > 0)
+		{
+			nextParam = new DEFPARAMLIST(params, ++p);
+		}
 	}
 	
 	public String getType()
@@ -57,7 +72,7 @@ public class DEFPARAMLIST extends Variable
 	
 	public void print() 
 	{
-		System.out.print(paramType + " " + id);
+		System.out.print(paramNum + " " + paramType + " " + id);
 			
 		if(nextParam != null)
 		{
@@ -70,6 +85,8 @@ public class DEFPARAMLIST extends Variable
 	//Validate next var
 	public void validate() 
 	{
+		System.out.println("Validating DEFPARAMLIST");
+
 		VARDECL v = RobotInterpreter.findVar(id);
 		if(v != null)
 		{
