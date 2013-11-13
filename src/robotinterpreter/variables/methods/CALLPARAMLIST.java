@@ -3,6 +3,7 @@ package robotinterpreter.variables.methods;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.CALL;
 import robotinterpreter.variables.Variable;
 
@@ -13,8 +14,9 @@ public class CALLPARAMLIST extends Variable
 	private METHOD method;
 	private int paramNum;
 	
-	public CALLPARAMLIST(Code c, String s, METHOD m, int p) 
+	public CALLPARAMLIST(BODY b, Code c, String s, METHOD m, int p) 
 	{
+		body = b;
 		method = m;
 		paramNum = p;
 		lineNum = c.currentLineNum();
@@ -24,13 +26,13 @@ public class CALLPARAMLIST extends Variable
 		
 		if(tokens[0].trim().length() > 0)
 		{
-			call = new CALL(c, tokens[0]);
+			call = new CALL(body, c, tokens[0]);
 		}
 		else RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
 
 		if(tokens.length > 1)
 		{
-			nextParam = new CALLPARAMLIST(c, Code.implode(tokens, ",", 1, tokens.length - 1), m, ++p);
+			nextParam = new CALLPARAMLIST(body, c, Code.implode(tokens, ",", 1, tokens.length - 1), m, ++p);
 		}
 	}
 	
@@ -71,7 +73,7 @@ public class CALLPARAMLIST extends Variable
 			{
 				//3
 				String callType = call.getType();
-				String defType = paramdef.getType();
+				String defType = paramdef.type();
 				if(!callType.equals(defType))
 				{
 					RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);

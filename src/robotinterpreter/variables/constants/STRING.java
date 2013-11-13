@@ -3,14 +3,16 @@ package robotinterpreter.variables.constants;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 public class STRING extends Variable
 {
 	private String value;
 	
-	public STRING(Code c, String s)
+	public STRING(BODY b, Code c, String s)
 	{
+		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		

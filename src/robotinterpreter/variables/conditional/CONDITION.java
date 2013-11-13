@@ -3,6 +3,7 @@ package robotinterpreter.variables.conditional;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.CALL;
 import robotinterpreter.variables.Variable;
 
@@ -12,8 +13,9 @@ public class CONDITION extends Variable
 	private CALL rhs;
 	private String comparator;
 	
-	public CONDITION(Code c, String s)
+	public CONDITION(BODY b, Code c, String s)
 	{
+		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		
@@ -27,8 +29,8 @@ public class CONDITION extends Variable
 				symbolNum = x;
 				comparator = tokens[x];
 				
-				lhs = new CALL(c, Code.implode(tokens, " ", 0, symbolNum - 1));
-				rhs = new CALL(c, Code.implode(tokens, " ", symbolNum + 1, tokens.length - 1));
+				lhs = new CALL(body, c, Code.implode(tokens, " ", 0, symbolNum - 1));
+				rhs = new CALL(body, c, Code.implode(tokens, " ", symbolNum + 1, tokens.length - 1));
 			}
 		}
 		if(symbolNum == -1)

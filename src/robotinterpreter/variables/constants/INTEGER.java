@@ -2,14 +2,16 @@ package robotinterpreter.variables.constants;
 
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 public class INTEGER extends Variable
 {
 	private int value;
 	
-	public INTEGER(Code c, String s)
+	public INTEGER(BODY b, Code c, String s)
 	{
+		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		

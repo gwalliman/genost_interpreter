@@ -18,8 +18,9 @@ public class STMT extends Variable
 	private Object stmt;
 	private String stmtType;
 	
-	public STMT(Code c)
+	public STMT(BODY b, Code c)
 	{
+		body = b;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
 		
@@ -30,22 +31,22 @@ public class STMT extends Variable
 			switch(stmtType)
 			{
 				case "vardecl":
-					stmt = new VARDECL(c);
+					stmt = new VARDECL(body, c);
 					break;
 				case "assign":
-					stmt = new ASSIGNMENT(c);
+					stmt = new ASSIGNMENT(body, c);
 					break;
 				case "methoddefine":
-					stmt = new METHODDEFINE(c);
+					stmt = new METHODDEFINE(body, c);
 					break;
 				case "method":
 					String lastchar = c.currentLine().substring(c.currentLine().length() - 1);
 					if(!lastchar.equals(Terminals.SEMICOLON))
 						RobotInterpreter.halt("METHOD", lineNum, code, "Missing Semicolon");
-					stmt = new METHOD(c, c.currentLine().substring(0, c.currentLine().length() - 1));
+					stmt = new METHOD(body, c, c.currentLine().substring(0, c.currentLine().length() - 1));
 					break;
 				case "if":
-					stmt = new IF(c);
+					stmt = new IF(body, c);
 					break;
 				case "elseif":
 					RobotInterpreter.halt("STMT", lineNum, code, "ELSEIF must follow IF");
@@ -54,16 +55,16 @@ public class STMT extends Variable
 					RobotInterpreter.halt("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
 					break;
 				case "loopuntil":
-					stmt = new LOOPUNTIL(c);
+					stmt = new LOOPUNTIL(body, c);
 					break;
 				case "loopfor":
-					stmt = new LOOPFOR(c);
+					stmt = new LOOPFOR(body, c);
 					break;
 				case "waituntil":
-					stmt = new WAITUNTIL(c);
+					stmt = new WAITUNTIL(body, c);
 					break;
 				case "waitfor":
-					stmt = new WAITFOR(c);
+					stmt = new WAITFOR(body, c);
 					break;
 			}
 		}

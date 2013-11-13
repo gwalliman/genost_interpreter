@@ -3,14 +3,16 @@ package robotinterpreter.variables.constants;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 public class BOOLEAN extends Variable
 {
 	private boolean value;
 	
-	public BOOLEAN(Code c, String s)
+	public BOOLEAN(BODY b, Code c, String s)
 	{
+		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		

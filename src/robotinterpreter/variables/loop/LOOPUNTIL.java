@@ -10,10 +10,11 @@ import robotinterpreter.variables.conditional.CONDITIONLIST;
 public class LOOPUNTIL extends Variable
 {
 	private CONDITIONLIST cl;
-	private BODY body;
+	private BODY codeBody;
 	
-	public LOOPUNTIL(Code c)
+	public LOOPUNTIL(BODY b, Code c)
 	{
+		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
@@ -31,12 +32,12 @@ public class LOOPUNTIL extends Variable
 		
 		if(tokens.length > 3)
 		{
-			cl = new CONDITIONLIST(c, code.substring(11, code.length() - 1));
+			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 1));
 		}
 		else RobotInterpreter.halt("LOOPUNTIL", lineNum, code, "LOOPUNTIL must contain a condition list!");
 
 		c.nextLine();
-		body = new BODY(c);
+		codeBody = new BODY(body, c);
 	}
 	
 	public void print() 
@@ -44,7 +45,7 @@ public class LOOPUNTIL extends Variable
 		System.out.print("loopuntil (");
 		cl.print();
 		System.out.println(")");
-		body.print();
+		codeBody.print();
 	}
 
 	//Validate condition list
@@ -53,7 +54,7 @@ public class LOOPUNTIL extends Variable
 	{
 		System.out.println("Validating LOOPUNTIL");
 		cl.validate();
-		body.validate();
+		codeBody.validate();
 	}
 
 	@Override

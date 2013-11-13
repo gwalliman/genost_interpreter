@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 import robotinterpreter.variables.vars.VARDECL;
@@ -17,8 +18,9 @@ public class DEFPARAMLIST extends Variable
 	private DEFPARAMLIST nextParam;
 
 	//Define params for INTERNAL method
-	public DEFPARAMLIST(Code c, String s, int p) 
+	public DEFPARAMLIST(BODY b, Code c, String s, int p) 
 	{
+		body = b;
 		paramNum = p;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
@@ -35,7 +37,7 @@ public class DEFPARAMLIST extends Variable
 			if(tokens.length > 3)
 			{
 				if(tokens[2] == Terminals.COMMA)
-					nextParam = new DEFPARAMLIST(c, Code.implode(tokens, " ", 3, tokens.length - 1), ++p);
+					nextParam = new DEFPARAMLIST(body, c, Code.implode(tokens, " ", 3, tokens.length - 1), ++p);
 				else RobotInterpreter.halt("DEFPARAMLIST", lineNum, code, "There must be a comma between each parameter in a DEFPARAMLIST");
 			}
 		}
@@ -55,7 +57,12 @@ public class DEFPARAMLIST extends Variable
 		}
 	}
 	
-	public String getType()
+	public String id()
+	{
+		return id;
+	}
+	
+	public String type()
 	{
 		return paramType;
 	}
@@ -81,18 +88,12 @@ public class DEFPARAMLIST extends Variable
 		}
 	}
 
-	//Ensure that var doesn't already exist
+	//Nothing at this time to validate
 	//Validate next var
 	public void validate() 
 	{
 		System.out.println("Validating DEFPARAMLIST");
 
-		VARDECL v = RobotInterpreter.findVar(id);
-		if(v != null)
-		{
-			RobotInterpreter.halt("DEFPARAMLIST", lineNum, code, "Error, variable " + id + " already declared on line " + v.lineNum());
-		}
-		
 		if(nextParam != null)
 		{
 			nextParam.validate();

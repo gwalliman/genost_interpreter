@@ -14,8 +14,9 @@ public class CALL extends Variable
 	private Object call;
 	private String callType;
 	
-	public CALL(Code c, String callCode)
+	public CALL(BODY b, Code c, String callCode)
 	{
+		body = b;
 		lineNum = c.currentLineNum();
 		code = callCode;
 		
@@ -27,20 +28,20 @@ public class CALL extends Variable
 			switch(callType)
 			{
 				case "var":
-					call = new VAR(c, Code.implode(tokens, " ", 1));
+					call = new VAR(body, c, Code.implode(tokens, " ", 1));
 					break;
 				case "method":
-					call = new 	METHOD(c, Code.implode(tokens, " ", 0));
+					call = new METHOD(body, c, Code.implode(tokens, " ", 0));
 					break;
 				case "int":
-					call = new INTEGER(c, Code.implode(tokens, " ", 1));
+					call = new INTEGER(body, c, Code.implode(tokens, " ", 1));
 					break;
 				case "string":
 					code = code.trim();
-					call = new STRING(c, code.substring(6, code.length()).trim());
+					call = new STRING(body, c, code.substring(6, code.length()).trim());
 					break;
 				case "bool":
-					call = new BOOLEAN(c, Code.implode(tokens, " ", 1));
+					call = new BOOLEAN(body, c, Code.implode(tokens, " ", 1));
 					break;
 			}
 		}

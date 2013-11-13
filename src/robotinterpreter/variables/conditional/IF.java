@@ -9,12 +9,13 @@ import robotinterpreter.variables.Variable;
 public class IF extends Variable
 {
 	private CONDITIONLIST cl;
-	private BODY body;
+	private BODY codeBody;
 	private ELSEIF elseif;
 	private ELSE els;
 	
-	public IF(Code c)
+	public IF(BODY b, Code c)
 	{
+		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
@@ -32,24 +33,24 @@ public class IF extends Variable
 		
 		if(tokens.length > 3)
 		{
-			cl = new CONDITIONLIST(c, code.substring(4, code.length() - 1));
+			cl = new CONDITIONLIST(body, c, code.substring(4, code.length() - 1));
 		}
 		else RobotInterpreter.halt("IF", lineNum, code, "IF must contain a condition list!");
 
 		c.nextLine();
-		body = new BODY(c);
+		codeBody = new BODY(body, c);
 		
 		c.nextLine();
 		
 		String[] newTokens = Code.tokenize(c.currentLine());
 		if(newTokens[0].equals("elseif"))
 		{
-			elseif = new ELSEIF(c);
+			elseif = new ELSEIF(body, c);
 		}
 		newTokens = Code.tokenize(c.currentLine());
 		if(newTokens[0].equals("else"))
 		{
-			els = new ELSE(c);
+			els = new ELSE(body, c);
 		}
 		else c.prevLine();
 	}
@@ -59,7 +60,7 @@ public class IF extends Variable
 		System.out.print("if (");
 		cl.print();
 		System.out.println(")");
-		body.print();
+		codeBody.print();
 		
 		if(elseif != null)
 		{
@@ -83,7 +84,7 @@ public class IF extends Variable
 		System.out.println("Validating IF");
 
 		cl.validate();
-		body.validate();
+		codeBody.validate();
 		
 		if(elseif != null)
 		{

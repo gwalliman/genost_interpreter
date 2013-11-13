@@ -3,6 +3,7 @@ package robotinterpreter.variables.conditional;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 public class CONDITIONLIST extends Variable 
@@ -13,8 +14,9 @@ public class CONDITIONLIST extends Variable
 	private String logOp;
 	private CONDITIONLIST nextCon;
 	
-	public CONDITIONLIST(Code c, String s)
+	public CONDITIONLIST(BODY b, Code c, String s)
 	{
+		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		
@@ -40,12 +42,12 @@ public class CONDITIONLIST extends Variable
 		if(hasLogOp)
 		{
 			conType = "CONDITIONLIST";
-			con = new CONDITIONLIST(c, Code.implode(tokens, " ", 1, closeBracket - 1));
+			con = new CONDITIONLIST(body, c, Code.implode(tokens, " ", 1, closeBracket - 1));
 		}
 		else
 		{
 			conType = "CONDITION";
-			con = new CONDITION(c, Code.implode(tokens, " ", 1, closeBracket - 1));
+			con = new CONDITION(body, c, Code.implode(tokens, " ", 1, closeBracket - 1));
 
 		}
 		
@@ -57,7 +59,7 @@ public class CONDITIONLIST extends Variable
 				logOp = tokens[closeBracket + 1];
 				if(tokens.length - 1 > closeBracket + 1)
 				{
-					nextCon = new CONDITIONLIST(c, Code.implode(tokens, " ", closeBracket + 2, tokens.length - 1));
+					nextCon = new CONDITIONLIST(body, c, Code.implode(tokens, " ", closeBracket + 2, tokens.length - 1));
 				}
 				else RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "A CONDITION or CONDITIONLIST must follow an AND or OR");
 			}

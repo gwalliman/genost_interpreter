@@ -4,7 +4,6 @@ import robotinterpreter.Code;
 
 public class STMTLIST extends Variable
 {
-	private BODY body;
 	private STMT stmt;
 	private STMTLIST nextStmt;
 	
@@ -17,7 +16,7 @@ public class STMTLIST extends Variable
 		}
 		
 		if(c.currentLineNum() != body.getFinishLine())
-			stmt = new STMT(c);
+			stmt = new STMT(body, c);
 		
 		c.nextLine();
 		if(c.currentLine() != null && c.currentLineNum() != body.getFinishLine())

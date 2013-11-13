@@ -1,6 +1,7 @@
 package robotinterpreter.variables;
 public abstract class Variable 
 {
+	protected BODY body;
 	protected String code;
 	protected int lineNum;
 	

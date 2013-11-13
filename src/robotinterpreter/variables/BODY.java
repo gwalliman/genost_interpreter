@@ -1,17 +1,27 @@
 package robotinterpreter.variables;
 
+import java.util.ArrayList;
+
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.vars.VARDECL;
 
 public class BODY extends Variable
 {
 	private STMTLIST stmtList;
 	private int startLine;
 	private int finishLine;
+	private ArrayList<VARDECL> paramVarTable;
 
-	public BODY(Code c)
+	public BODY(BODY b, Code c)
 	{
+		if(b == null)
+		{
+			b = this;
+		}
+		body = b;
+		
 		if(c.currentLine().equals(Terminals.OPENBRACE))
 		{
 			lineNum = startLine = c.currentLineNum();
@@ -20,7 +30,7 @@ public class BODY extends Variable
 			//Move to first statement.
 			c.nextLine();
 			if(c.currentLineNum() != finishLine)
-				stmtList = new STMTLIST(this, c);
+				stmtList = new STMTLIST(body, c);
 
 		}
 		else RobotInterpreter.halt("BODY", c.currentLineNum(), c.currentLine(), "Body must begin with {");

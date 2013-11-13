@@ -72,7 +72,7 @@ public class RobotInterpreter
 		Code c = new Code(codeFile);
 		//Step 1: Parse.
 		//Go over each line of code and populate with information immediately available
-		BODY b = new BODY(c);
+		BODY b = new BODY(null, c);
 		b.print();
 		System.out.println(Code.newline + "=================");
 		System.out.println("Code fully parsed!" + Code.newline + "=================");

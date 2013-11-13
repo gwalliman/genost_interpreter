@@ -11,22 +11,26 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 import robotinterpreter.variables.methods.external.ExtMethod;
+import robotinterpreter.variables.vars.VARDECL;
 
 public class METHODDEFINE extends Variable {
 	
 	private String type;
 	private String methodType;
 	private String id;
-	private BODY body;
+	private BODY codeBody;
 	private DEFPARAMLIST params;
+
 	
 	//Define INTERNAL method
-	public METHODDEFINE(Code c)
+	public METHODDEFINE(BODY b, Code c)
 	{
-		methodType = "internal";
+		body = b;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
 		
+		methodType = "internal";
+			
 		String[] tokens = Code.tokenize(c.currentLine());
 		
 		type = tokens[1];
@@ -46,11 +50,11 @@ public class METHODDEFINE extends Variable {
 		
 		if(tokens[4] != Terminals.CLOSEPAREN)
 		{
-			params = new DEFPARAMLIST(c, Code.implode(tokens, " ", 4, tokens.length - 2), 0);
+			params = new DEFPARAMLIST(body, c, Code.implode(tokens, " ", 4, tokens.length - 2), 0);
 		}
 		
 		c.nextLine();
-		body = new BODY(c);
+		codeBody = new BODY(null, c);
 		
 		RobotInterpreter.methodTable.add(this);
 	}
@@ -62,7 +66,7 @@ public class METHODDEFINE extends Variable {
 		code = "Externally defined";
 		methodType = "external";
 		id = s;
-		body = null;
+		codeBody = null;
 		
 		for(Object ext : RobotInterpreter.extMethodTable)
 		{
@@ -103,7 +107,7 @@ public class METHODDEFINE extends Variable {
 		if(params != null)
 			params.print();
 		System.out.println(")");
-		body.print();
+		codeBody.print();
 	}
 
 	//Ensure that method doesn't exist twice
@@ -121,7 +125,7 @@ public class METHODDEFINE extends Variable {
 		{
 			params.validate();
 		}
-		body.validate();
+		codeBody.validate();
 	}
 
 	@Override

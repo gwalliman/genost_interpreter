@@ -3,6 +3,7 @@ package robotinterpreter.variables.vars;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.CALL;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
@@ -13,8 +14,9 @@ public class ASSIGNMENT extends Variable
 	private CALL call;
 	private VARDECL lhs;
 	
-	public ASSIGNMENT(Code c)
+	public ASSIGNMENT(BODY b, Code c)
 	{
+		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
@@ -33,7 +35,7 @@ public class ASSIGNMENT extends Variable
 		}
 		
 		String rhs = code.split(Terminals.EQUALS)[1];
-		call = new CALL(c, rhs.substring(0, rhs.length() - 1));
+		call = new CALL(body, c, rhs.substring(0, rhs.length() - 1));
 	}
 
 	

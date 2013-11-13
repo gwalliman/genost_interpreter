@@ -6,21 +6,22 @@ import robotinterpreter.variables.Variable;
 
 public class ELSE extends Variable
 {
-	private BODY body;
+	private BODY codeBody;
 	
-	public ELSE(Code c)
+	public ELSE(BODY b, Code c)
 	{
+		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 
 		c.nextLine();
-		body = new BODY(c);
+		codeBody = new BODY(body, c);
 	}
 	
 	public void print() 
 	{
 		System.out.println("else");
-		body.print();
+		codeBody.print();
 	}
 
 	//Validate the body.
@@ -28,7 +29,7 @@ public class ELSE extends Variable
 	{
 		System.out.println("Validating ELSE");
 
-		body.validate();
+		codeBody.validate();
 	}
 
 	@Override

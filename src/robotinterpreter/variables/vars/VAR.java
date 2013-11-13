@@ -2,6 +2,7 @@ package robotinterpreter.variables.vars;
 
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
@@ -10,8 +11,9 @@ public class VAR extends Variable
 	private String id;
 	private VARDECL var;
 	
-	public VAR(Code c, String callCode)
+	public VAR(BODY b, Code c, String callCode)
 	{
+		body = b;
 		code = callCode;
 		lineNum = c.currentLineNum();
 		

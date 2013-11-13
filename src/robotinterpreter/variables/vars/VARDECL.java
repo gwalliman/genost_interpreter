@@ -5,16 +5,19 @@ import java.util.Collections;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
+import robotinterpreter.variables.methods.DEFPARAMLIST;
 
 public class VARDECL extends Variable {
 	
 	private String id;
 	private String type;
 	
-	public VARDECL(Code c)
+	public VARDECL(BODY b, Code c)
 	{
+		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		

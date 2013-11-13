@@ -1,19 +1,25 @@
 package robotinterpreter.variables.methods;
 
+import java.util.ArrayList;
+
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
+import robotinterpreter.variables.vars.VARDECL;
 
 public class METHOD extends Variable 
 {
 	private String id;
 	private CALLPARAMLIST params;
-	private Object method;
+	private METHODDEFINE method;
 	
-	public METHOD(Code c, String s)
+	public METHOD(BODY b, Code c, String s)
 	{
+		body = b;
+		
 		//Expects method ID OPENPAREN CALLPARAMLLIST CLOSEPAREN
 		code = s;
 		lineNum = c.currentLineNum();
@@ -37,7 +43,7 @@ public class METHOD extends Variable
 			//Split by the method open paren. Note that we limit the split to 2 because there may be more openparens in the paramlist.
 			String[] callCode = code.split("\\(", 2);
 	
-			params = new CALLPARAMLIST(c, callCode[1].substring(0, callCode[1].length() - 1), this, 0);
+			params = new CALLPARAMLIST(body, c, callCode[1].substring(0, callCode[1].length() - 1), this, 0);
 		}
 	}
 	
@@ -66,7 +72,9 @@ public class METHOD extends Variable
 			RobotInterpreter.halt("METHOD", lineNum, code, "Method " + id + " is not defined.");
 		}
 		if(params != null)
+		{
 			params.validate();
+		}
 	}
 
 	@Override
