@@ -73,4 +73,30 @@ public class IF extends Variable
 			els.print();
 		}
 	}
+
+	//Validiate the condition list
+	//Validate the body
+	//Validate the elseif, if it exists
+	//Validate the else, if it exists.
+	public void validate() 
+	{
+		cl.validate();
+		body.validate();
+		
+		if(elseif != null)
+		{
+			elseif.validate();
+		}
+		
+		if(els != null)
+		{
+			els.validate();
+		}
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

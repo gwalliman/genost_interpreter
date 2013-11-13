@@ -16,6 +16,11 @@ public class VAR extends Variable
 		String[] tokens = Code.tokenize(code);
 		id = ID.validate(tokens[0], c);
 	}
+	
+	public String id()
+	{
+		return id;
+	}
 
 	public void print() 
 	{
@@ -24,5 +29,17 @@ public class VAR extends Variable
 			System.out.print("var " + id);
 		}
 		else System.out.print("Empty VARCALL");
+	}
+
+	//Ensure that var exists
+	public void validate() 
+	{
+		
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 }

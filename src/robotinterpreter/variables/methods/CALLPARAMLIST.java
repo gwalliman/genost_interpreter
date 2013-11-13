@@ -40,4 +40,18 @@ public class CALLPARAMLIST extends Variable
 			nextParam.print();
 		}
 	}
+
+	//Ensure that call is of right type.
+	//Ensure that call should exist at all (what if param doesn't exist?)
+	//Validate next call
+	public void validate() 
+	{
+		
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

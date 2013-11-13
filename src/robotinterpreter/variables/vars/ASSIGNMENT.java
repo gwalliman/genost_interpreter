@@ -41,4 +41,19 @@ public class ASSIGNMENT extends Variable
 		System.out.print("assign " + id + " = ");
 		call.print();
 	}
+
+	//IN THIS ORDER
+	//Validate call
+	//Ensure that lhs and rhs are of same type
+	public void validate() 
+	{
+		
+	}
+
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -62,4 +62,24 @@ public class ELSEIF extends Variable
 			elseif.print();
 		}
 	}
+
+	//Validate the condition list
+	//Validate the body
+	//Validate the next ELSEIF, if applicable
+	public void validate() 
+	{
+		cl.validate();
+		body.validate();
+		
+		if(elseif != null)
+		{
+			elseif.validate();
+		}
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

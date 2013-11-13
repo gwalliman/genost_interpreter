@@ -18,7 +18,7 @@ public class INTEGER extends Variable
 		if(tokens.length == 1)
 		{
 
-			if(tokens[0].matches("[0-9]+"))
+			if(tokens[0].matches("-?[0-9]+"))
 			{
 				value = Integer.parseInt(tokens[0]);
 			}
@@ -30,5 +30,14 @@ public class INTEGER extends Variable
 	public void print() 
 	{
 		System.out.print("int " + value);
+	}
+
+	//Nothing to validate, value was validated during parsing.
+	public void validate() 	{ }
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 }

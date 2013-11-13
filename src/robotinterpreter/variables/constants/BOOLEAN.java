@@ -31,4 +31,13 @@ public class BOOLEAN extends Variable
 	{
 		System.out.print("bool " + value);
 	}
+
+	//Nothing to validate, value was validated during parsing.
+	public void validate() { }
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

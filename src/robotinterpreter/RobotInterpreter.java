@@ -6,13 +6,19 @@ import java.io.File;
 
 
 
+import java.util.ArrayList;
+
 import javax.swing.UIManager;
 
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
+import robotinterpreter.variables.methods.METHODDEFINE;
+import robotinterpreter.variables.vars.VARDECL;
 
 public class RobotInterpreter 
 {
+	public static ArrayList<VARDECL> varTable;
+	public static ArrayList<METHODDEFINE> methodTable;
 	public static void interpret(File codeFile)
 	{
 		Code c = new Code(codeFile);
@@ -30,6 +36,26 @@ public class RobotInterpreter
 		//Step 4: Execute
 		
 		System.exit(0);
+	}
+	
+	public static VARDECL findVar(String id)
+	{
+		for(VARDECL var : varTable)
+		{
+			if(var.id().equals(id))
+				return var;
+		}
+		return null;
+	}
+	
+	public static METHODDEFINE findMethod(String id)
+	{
+		for(METHODDEFINE method : methodTable)
+		{
+			if(method.id().equals(id))
+				return method;
+		}
+		return null;
 	}
 	
 	public static void halt(String var, int lineNum, String c, String error)

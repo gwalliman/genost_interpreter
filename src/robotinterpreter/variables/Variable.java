@@ -5,6 +5,8 @@ public abstract class Variable
 	public int lineNum;
 	
 	public abstract void print();
+	public abstract void validate();
+	public abstract void execute();
 	
 	public String code()
 	{

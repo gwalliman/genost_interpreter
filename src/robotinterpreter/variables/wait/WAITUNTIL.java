@@ -46,4 +46,18 @@ public class WAITUNTIL extends Variable
 		System.out.println(")");
 		body.print();
 	}
+
+	//Validate condition list
+	//Validate body
+	public void validate() 
+	{
+		cl.validate();
+		body.validate();
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

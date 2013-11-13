@@ -1,5 +1,7 @@
 package robotinterpreter.variables.methods;
 
+import java.util.Collections;
+
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
@@ -43,6 +45,18 @@ public class METHODDEFINE extends Variable {
 		
 		c.nextLine();
 		body = new BODY(c);
+		
+		RobotInterpreter.methodTable.add(this);
+	}
+	
+	public String id()
+	{
+		return id;
+	}
+	
+	public String type()
+	{
+		return type;
 	}
 	
 	public void print() 
@@ -52,6 +66,21 @@ public class METHODDEFINE extends Variable {
 			params.print();
 		System.out.println(")");
 		body.print();
+	}
+
+	//Ensure that method doesn't exist twice
+	public void validate() 
+	{
+		if(Collections.frequency(RobotInterpreter.methodTable, RobotInterpreter.findMethod(id)) > 1)
+		{
+			RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Method " + id + " cannot be defined more than once!");
+		}		
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

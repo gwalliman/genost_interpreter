@@ -43,4 +43,19 @@ public class CONDITION extends Variable
 		rhs.print();
 		System.out.print("]");
 	}
+
+	//lhs and rhs must be of same type
+	//lhs and rhs must both exist (if vars or methods)
+	//comparator must be valid for comparison type
+	//Validate vars and methods
+	public void validate() 
+	{
+		
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

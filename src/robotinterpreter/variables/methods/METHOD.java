@@ -1,5 +1,7 @@
 package robotinterpreter.variables.methods;
 
+import java.util.Collections;
+
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
@@ -39,7 +41,11 @@ public class METHOD extends Variable
 			params = new CALLPARAMLIST(c, callCode[1].substring(0, callCode[1].length() - 1));
 		}
 	}
-
+	
+	public String id()
+	{
+		return id;
+	}
 	
 	public void print() 
 	{
@@ -47,5 +53,19 @@ public class METHOD extends Variable
 		if(params != null)
 			params.print();
 		System.out.print(")");
+	}
+
+	//Ensure that method exists
+	//Validate callParamList
+	public void validate() 
+	{
+
+		
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 }

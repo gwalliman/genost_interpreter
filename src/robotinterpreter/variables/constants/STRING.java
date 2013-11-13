@@ -25,4 +25,13 @@ public class STRING extends Variable
 	{
 		System.out.print("string \"" + value + "\"");
 	}
+
+	//Nothing to validate, value was validated during parsing.
+	public void validate() { }
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

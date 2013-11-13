@@ -103,4 +103,45 @@ public class STMT extends Variable
 				break;
 		}
 	}
+
+	//Validate whatever the statement is
+	public void validate() 
+	{
+		switch(stmtType)
+		{
+			case "vardecl":
+				((VARDECL)stmt).validate();
+				break;
+			case "assign":
+				((ASSIGNMENT)stmt).validate();
+				break;
+			case "methoddefine":
+				((METHODDEFINE)stmt).validate();
+				break;
+			case "method":
+				((METHOD)stmt).validate();
+				break;
+			case "if":
+				((IF)stmt).validate();
+				break;
+			case "loopuntil":
+				((LOOPUNTIL)stmt).validate();
+				break;
+			case "loopfor":
+				((LOOPFOR)stmt).validate();
+				break;
+			case "waituntil":
+				((WAITUNTIL)stmt).validate();
+				break;
+			case "waitfor":
+				((WAITFOR)stmt).validate();
+				break;
+		}	
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

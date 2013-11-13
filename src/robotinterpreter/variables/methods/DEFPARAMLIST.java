@@ -46,4 +46,17 @@ public class DEFPARAMLIST extends Variable
 			nextParam.print();
 		}
 	}
+
+	//Ensure that var doesn't already exist
+	public void validate() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

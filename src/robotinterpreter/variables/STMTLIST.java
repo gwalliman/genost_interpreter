@@ -39,4 +39,20 @@ public class STMTLIST extends Variable
 		}
 		else System.out.println("EMPTY STMTLIST");
 	}
+
+	//Validate the stmt and the next, if it exists
+	public void validate() 
+	{
+		stmt.validate();
+		if(nextStmt != null)
+		{
+			nextStmt.validate();
+		}
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

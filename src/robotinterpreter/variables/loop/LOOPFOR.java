@@ -32,4 +32,21 @@ public class LOOPFOR extends Variable
 		System.out.println("loopfor " + iterations + " times");
 		body.print();
 	}
+
+	//Ensure iterations is not negative (this may be taken care of via parsing)
+	//Validate body
+	public void validate() 
+	{
+		if(iterations < 0)
+		{
+			RobotInterpreter.halt("LOOPFOR", lineNum, code, "LOOPFOR iterations integer cannot be negative");
+		}
+		body.validate();
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

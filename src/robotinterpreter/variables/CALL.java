@@ -8,6 +8,7 @@ import robotinterpreter.variables.constants.INTEGER;
 import robotinterpreter.variables.constants.STRING;
 import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.vars.VAR;
+import robotinterpreter.variables.vars.VARDECL;
 
 public class CALL extends Variable 
 {
@@ -46,6 +47,25 @@ public class CALL extends Variable
 		}
 		else RobotInterpreter.halt("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
 	}
+	
+	public String getType()
+	{
+		switch(callType)
+		{
+			case "var":
+				return RobotInterpreter.findVar(((VAR)call).id()).type();
+			case "method":
+				return RobotInterpreter.findMethod(((METHOD)call).id()).type();
+			case "int":
+				return "int";
+			case "string":
+				return "string";
+			case "bool":
+				return "bool";
+		}
+		RobotInterpreter.halt("CALL", lineNum, code, "Invalid call type");
+		return null;
+	}
 
 	
 	public void print() 
@@ -68,6 +88,36 @@ public class CALL extends Variable
 				((BOOLEAN)call).print();
 				break;
 		}
+	}
+
+	//Validate whatever we are calling
+	public void validate() 
+	{
+		switch(callType)
+		{
+			case "var":
+				((VAR)call).validate();
+				break;
+			case "method":
+				((METHOD)call).validate();
+				break;
+			case "int":
+				((INTEGER)call).validate();
+				break;
+			case "string":
+				((STRING)call).validate();
+				break;
+			case "bool":
+				((BOOLEAN)call).validate();
+				break;
+		}
+	}
+
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

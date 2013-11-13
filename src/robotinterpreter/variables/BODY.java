@@ -67,4 +67,19 @@ public class BODY extends Variable
 		}
 		else System.out.print("EMPTY BODY");
 	}
+
+	//Validate stmtlist
+	public void validate() 
+	{
+		if(stmtList != null)
+		{
+			stmtList.validate();
+		}
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

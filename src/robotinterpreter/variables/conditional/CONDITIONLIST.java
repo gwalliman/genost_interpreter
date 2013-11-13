@@ -64,8 +64,26 @@ public class CONDITIONLIST extends Variable
 			else RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "Only AND or OR may follow a CONDITIONLIST");
 
 		}
-		
-		
+	}
+	
+	private int findCloseBracket(String[] tokens)
+	{
+		int openBrackets = 0;
+		int tokenNum = 0;
+		for(String token : tokens)
+		{
+			if(token == Terminals.OPENBRACKET)
+				openBrackets++;
+			else if(token == Terminals.CLOSEBRACKET)
+				openBrackets--;
+			
+			if(openBrackets == 0)
+			{
+				return tokenNum;
+			}
+			else tokenNum++;
+		}
+		return -1;
 	}
 	
 	public void print() 
@@ -88,24 +106,28 @@ public class CONDITIONLIST extends Variable
 			nextCon.print();
 		}
 	}
-	
-	private int findCloseBracket(String[] tokens)
-	{
-		int openBrackets = 0;
-		int tokenNum = 0;
-		for(String token : tokens)
-		{
-			if(token == Terminals.OPENBRACKET)
-				openBrackets++;
-			else if(token == Terminals.CLOSEBRACKET)
-				openBrackets--;
-			
-			if(openBrackets == 0)
-			{
-				return tokenNum;
-			}
-			else tokenNum++;
+
+	//Validate the con and the nextCon, if it exists
+	public void validate() 
+	{ 
+		if(conType == "CONDITIONLIST")
+		{		
+			((CONDITIONLIST)con).validate();
 		}
-		return -1;
+		else if(conType == "CONDITION")
+		{
+			((CONDITION)con).validate();
+		}
+		
+		if(nextCon != null)
+		{
+			nextCon.validate();
+		}
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -22,4 +22,16 @@ public class ELSE extends Variable
 		System.out.println("else");
 		body.print();
 	}
+
+	//Validate the body.
+	public void validate() 
+	{
+		body.validate();
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }
