@@ -34,9 +34,8 @@ public class STRING extends Variable
 		RobotInterpreter.writeln("validate", "Validating STRING");
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object args[]) 
+	{
+		return value;
 	}
 }

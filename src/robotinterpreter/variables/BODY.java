@@ -1,6 +1,8 @@
 package robotinterpreter.variables;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
@@ -85,9 +87,24 @@ public class BODY extends Variable
 		}
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		//Create map for holding variables
+		Map<String, Object> varMap = new HashMap<String, Object>();
+		for(VARDECL v : varTable)
+		{
+			varMap.put(v.id(), "");
+		}
+		RobotInterpreter.varStack.add(varMap);
 		
+		if(stmtList != null)
+		{
+			stmtList.execute(null);
+		}
+		
+		//Remove this map from the top of the stack
+		RobotInterpreter.varStack.remove(RobotInterpreter.varStack.size() - 1);
+		
+		return null;
 	}
 }

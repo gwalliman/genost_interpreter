@@ -48,8 +48,8 @@ public class VAR extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object args[]) 
+	{
+		return RobotInterpreter.getVar(id);
 	}
 }

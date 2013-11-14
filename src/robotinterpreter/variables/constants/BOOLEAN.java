@@ -40,9 +40,8 @@ public class BOOLEAN extends Variable
 		RobotInterpreter.writeln("validate", "Validating BOOLEAN");
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object args[]) 
+	{
+		return value;
 	}
 }

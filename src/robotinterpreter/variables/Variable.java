@@ -7,7 +7,7 @@ public abstract class Variable
 	
 	public abstract void print();
 	public abstract void validate();
-	public abstract void execute();
+	public abstract Object execute(Object[] args);
 	
 	public BODY body()
 	{

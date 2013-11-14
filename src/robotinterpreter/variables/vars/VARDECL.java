@@ -71,10 +71,9 @@ public class VARDECL extends Variable {
 		}			
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object args[]) 
+	{
+		return null;
 	}
 
 }

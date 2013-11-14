@@ -2,6 +2,8 @@ package robotinterpreter;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -15,7 +17,7 @@ import robotinterpreter.variables.vars.VARDECL;
 
 public class RobotInterpreter 
 {
-	//public static ArrayList<VARDECL> varTable;
+	public static ArrayList<Map<String, Object>> varStack;
 	public static ArrayList<METHODDEFINE> methodTable;
 	public static ArrayList<Object> extMethodTable;
 	public static BODY b;
@@ -59,6 +61,33 @@ public class RobotInterpreter
 		RobotInterpreter.writeln("message", "Code fully validated!" + Code.newline + "=================");
 
 		//Step 3: Execute
+		//b.execute(null);
+	}
+	
+	public static Object getVar(String id)
+	{
+		for(int x = varStack.size() - 1; x <= 0; x--)
+		{
+			Map<String, Object> m = varStack.get(x);
+			if(m.get(id) != null)
+				return m.get(id);
+		}
+		
+		//As all variables are confirmed to exist in Validation, we should never be here.
+		return null;
+	}
+	
+	public static void setVar(String id, Object val)
+	{
+		for(int x = varStack.size() - 1; x <= 0; x--)
+		{
+			Map<String, Object> m = varStack.get(x);
+			if(m.get(id) != null)
+			{
+				m.put(id, val);
+				continue;
+			}
+		}
 	}
 	
 	public static VARDECL findVar(BODY b, String id)

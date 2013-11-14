@@ -41,8 +41,8 @@ public class INTEGER extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object args[]) 
+	{
+		return value;
 	}
 }

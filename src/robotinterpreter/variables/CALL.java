@@ -116,9 +116,23 @@ public class CALL extends Variable
 
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object args[]) 
+	{
+		switch(callType)
+		{
+			case "var":
+				return ((VAR)call).execute(null);
+			case "method":
+				return ((METHOD)call).execute(null);
+			case "int":
+				return ((INTEGER)call).execute(null);
+			case "string":
+				return ((STRING)call).execute(null);
+			case "bool":
+				return ((BOOLEAN)call).execute(null);
+			default:
+				return null;
+		}		
 	}
 	
 }

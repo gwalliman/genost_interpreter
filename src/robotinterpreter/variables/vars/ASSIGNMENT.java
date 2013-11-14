@@ -70,8 +70,14 @@ public class ASSIGNMENT extends Variable
 
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object args[]) 
+	{
+		Object val = call.execute(null);
 		
+		//Note that we don't have to worry about types,
+		//This was taken care of in Validation
+		RobotInterpreter.setVar(lhs.id(), val);
+		
+		return null;
 	}
 }

@@ -142,8 +142,39 @@ public class STMT extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object args[]) 
+	{
+		switch(stmtType)
+		{
+			case "vardecl":
+				((VARDECL)stmt).execute(null);
+				break;
+			case "assign":
+				((ASSIGNMENT)stmt).execute(null);
+				break;
+			case "methoddefine":
+				((METHODDEFINE)stmt).execute();
+				break;
+			case "method":
+				((METHOD)stmt).execute();
+				break;
+			case "if":
+				((IF)stmt).execute();
+				break;
+			case "loopuntil":
+				((LOOPUNTIL)stmt).execute();
+				break;
+			case "loopfor":
+				((LOOPFOR)stmt).execute();
+				break;
+			case "waituntil":
+				((WAITUNTIL)stmt).execute();
+				break;
+			case "waitfor":
+				((WAITFOR)stmt).execute();
+				break;
+		}
 		
+		return null;
 	}
 }
