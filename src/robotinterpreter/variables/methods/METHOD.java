@@ -1,14 +1,11 @@
 package robotinterpreter.variables.methods;
 
-import java.util.ArrayList;
-
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
-import robotinterpreter.variables.vars.VARDECL;
 
 public class METHOD extends Variable 
 {

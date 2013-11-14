@@ -8,7 +8,6 @@ import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
-import robotinterpreter.variables.vars.VARDECL;
 
 public class DEFPARAMLIST extends Variable
 {
