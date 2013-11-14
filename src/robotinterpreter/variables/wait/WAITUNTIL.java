@@ -10,7 +10,6 @@ import robotinterpreter.variables.conditional.CONDITIONLIST;
 public class WAITUNTIL extends Variable
 {
 	private CONDITIONLIST cl;
-	private BODY codeBody;
 	
 	public WAITUNTIL(BODY b, Code c)
 	{
@@ -25,19 +24,21 @@ public class WAITUNTIL extends Variable
 			RobotInterpreter.halt("WAITUNTIL", lineNum, code, "WAITUNTIL must open with (");
 		}
 		
-		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
+		if(tokens[tokens.length - 2] != Terminals.CLOSEPAREN)
 		{
 			RobotInterpreter.halt("WAITUNTIL", lineNum, code, "WAITUNTIL must close with )");
 		}
 		
 		if(tokens.length > 3)
 		{
-			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 1));
+			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 2));
 		}
 		else RobotInterpreter.halt("WAITUNTIL", lineNum, code, "WAITUNTIL must contain a condition list!");
 
-		c.nextLine();
-		codeBody = new BODY(body, c);
+		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
+		{
+			RobotInterpreter.halt("WAITUNTIL", lineNum, code, "Missing semicolon");
+		}		
 	}
 	
 	public void print() 
@@ -45,7 +46,6 @@ public class WAITUNTIL extends Variable
 		RobotInterpreter.write("parse", "waituntil (");
 		cl.print();
 		RobotInterpreter.writeln("parse", ")");
-		codeBody.print();
 	}
 
 	//Validate condition list
@@ -55,7 +55,6 @@ public class WAITUNTIL extends Variable
 		RobotInterpreter.writeln("validate", "Validating WAITUNTIL");
 
 		cl.validate();
-		codeBody.validate();
 	}
 
 	@Override

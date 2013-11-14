@@ -2,13 +2,13 @@ package robotinterpreter.variables.wait;
 
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
+import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 public class WAITFOR extends Variable
 {
 	private int iterations;
-	private BODY codeBody;
 	
 	public WAITFOR(BODY b, Code c)
 	{
@@ -24,14 +24,15 @@ public class WAITFOR extends Variable
 		}
 		else RobotInterpreter.halt("WAITFOR", lineNum, code, "WAITFOR integer is missing or of invalid format.");
 		
-		c.nextLine();
-		codeBody = new BODY(body, c);
+		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
+		{
+			RobotInterpreter.halt("WAITFOR", lineNum, code, "Missing semicolon");
+		}		
 	}
 	
 	public void print() 
 	{
 		RobotInterpreter.writeln("parse", "waitfor " + iterations + " seconds");
-		codeBody.print();
 	}
 
 	//Ensure iterations is not negative (this may be taken care of via parsing)
@@ -44,7 +45,6 @@ public class WAITFOR extends Variable
 		{
 			RobotInterpreter.halt("LOOPFOR", lineNum, code, "LOOPFOR iterations integer cannot be less than -1");
 		}
-		codeBody.validate();		
 	}
 
 	@Override
