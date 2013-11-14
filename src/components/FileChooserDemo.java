@@ -46,8 +46,8 @@ import javax.swing.filechooser.*;
 public class FileChooserDemo extends JPanel
                              implements ActionListener {
     static public final String newline = "\n";
-    JButton openButton, saveButton;
-    JTextArea log;
+    JButton openButton, saveButton, clearButton;
+    public static JTextArea log;
     JFileChooser fc;
 
     public FileChooserDemo() {
@@ -55,7 +55,7 @@ public class FileChooserDemo extends JPanel
 
         //Create the log first, because the action listeners
         //need to refer to it.
-        log = new JTextArea(5,20);
+        log = new JTextArea(50,150);
         log.setMargin(new Insets(5,5,5,5));
         log.setEditable(false);
         JScrollPane logScrollPane = new JScrollPane(log);
@@ -84,15 +84,24 @@ public class FileChooserDemo extends JPanel
         saveButton = new JButton("Save a File...",
                                  createImageIcon("images/Save16.gif"));
         saveButton.addActionListener(this);
+        
+        clearButton = new JButton("Clear Log");
+        clearButton.addActionListener(this);
 
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
         buttonPanel.add(openButton);
         buttonPanel.add(saveButton);
+        buttonPanel.add(clearButton);
 
         //Add the buttons and the log to this panel.
         add(buttonPanel, BorderLayout.PAGE_START);
         add(logScrollPane, BorderLayout.CENTER);
+    }
+    
+    public static void writeLog(String s)
+    {
+    	log.append(s);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -124,6 +133,10 @@ public class FileChooserDemo extends JPanel
                 log.append("Save command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
+        }
+        else if (e.getSource() == clearButton) 
+        {
+                log.setText(null);
         }
     }
 

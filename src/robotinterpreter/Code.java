@@ -254,7 +254,7 @@ public class Code
 	public static void printTokens(String[] tokens)
 	{
 		for(int x = 0; x < tokens.length; x++)
-			System.out.println(tokens[x]);
-		System.out.println("===");
+			RobotInterpreter.writeln(tokens[x]);
+		RobotInterpreter.writeln("===");
 	}
 }

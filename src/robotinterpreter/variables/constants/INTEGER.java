@@ -31,13 +31,13 @@ public class INTEGER extends Variable
 
 	public void print() 
 	{
-		System.out.print("int " + value);
+		RobotInterpreter.write("int " + value);
 	}
 
 	//Nothing to validate, value was validated during parsing.
 	public void validate() 	
 	{ 
-		System.out.println("Validating INTEGER");
+		RobotInterpreter.writeln("Validating INTEGER");
 	}
 
 	@Override

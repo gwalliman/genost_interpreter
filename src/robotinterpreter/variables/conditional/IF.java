@@ -57,20 +57,20 @@ public class IF extends Variable
 	
 	public void print() 
 	{
-		System.out.print("if (");
+		RobotInterpreter.write("if (");
 		cl.print();
-		System.out.println(")");
+		RobotInterpreter.writeln(")");
 		codeBody.print();
 		
 		if(elseif != null)
 		{
-			System.out.print(Code.newline);
+			RobotInterpreter.write(Code.newline);
 			elseif.print();
 		}
 		
 		if(els != null)
 		{
-			System.out.print(Code.newline);
+			RobotInterpreter.write(Code.newline);
 			els.print();
 		}
 	}
@@ -81,7 +81,7 @@ public class IF extends Variable
 	//Validate the else, if it exists.
 	public void validate() 
 	{
-		System.out.println("Validating IF");
+		RobotInterpreter.writeln("Validating IF");
 
 		cl.validate();
 		codeBody.validate();

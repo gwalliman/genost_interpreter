@@ -31,13 +31,13 @@ public class BOOLEAN extends Variable
 
 	public void print() 
 	{
-		System.out.print("bool " + value);
+		RobotInterpreter.write("bool " + value);
 	}
 
 	//Nothing to validate, value was validated during parsing.
 	public void validate() 
 	{ 
-		System.out.println("Validating BOOLEAN");
+		RobotInterpreter.writeln("Validating BOOLEAN");
 	}
 
 	@Override

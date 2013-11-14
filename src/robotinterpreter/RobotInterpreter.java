@@ -10,8 +10,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import components.FileChooserDemo;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.methods.METHODDEFINE;
@@ -20,12 +22,14 @@ import robotinterpreter.variables.vars.VARDECL;
 
 public class RobotInterpreter 
 {
-	public static ArrayList<VARDECL> varTable;
+	//public static ArrayList<VARDECL> varTable;
 	public static ArrayList<METHODDEFINE> methodTable;
 	public static ArrayList<Object> extMethodTable;
+	public static BODY b;
+	
 	public static void interpret(File codeFile)
 	{
-		varTable = new ArrayList<VARDECL>();
+		//varTable = new ArrayList<VARDECL>();
 		methodTable = new ArrayList<METHODDEFINE>();
 		extMethodTable = new ArrayList<Object>();
 		
@@ -40,63 +44,43 @@ public class RobotInterpreter
 				extMethodTable.add(extInst);
 				methodTable.add(new METHODDEFINE(id));
 			} 
-			catch (ClassNotFoundException e) 
+			catch (Exception e) 
 			{
 				e.printStackTrace();
 			} 
-			catch (NoSuchMethodException e) 
-			{
-				e.printStackTrace();
-			} catch (SecurityException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (InstantiationException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (IllegalAccessException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (IllegalArgumentException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (InvocationTargetException e) 
-			{
-				e.printStackTrace();
-			}
 		}
 		
 		Code c = new Code(codeFile);
 		//Step 1: Parse.
 		//Go over each line of code and populate with information immediately available
-		BODY b = new BODY(null, c);
+		b = new BODY(null, c);
 		b.print();
-		System.out.println(Code.newline + "=================");
-		System.out.println("Code fully parsed!" + Code.newline + "=================");
+		printAllVars();
+		RobotInterpreter.writeln(Code.newline + "=================");
+		RobotInterpreter.writeln("Code fully parsed!" + Code.newline + "=================");
 		
 		//Step 2: Link and Validate
 		//Link up certain items: varcalls to variable array, method calls to actual method code, if/loop eventualities, etc.
 		//Check type matching, etc.
 		b.validate();
-		System.out.println("=================");
-		System.out.println("Code fully validated!" + Code.newline + "=================");
+		RobotInterpreter.writeln("=================");
+		RobotInterpreter.writeln("Code fully validated!" + Code.newline + "=================");
 
 		//Step 3: Execute
-		
-		System.exit(0);
 	}
 	
-	public static VARDECL findVar(String id)
+	public static VARDECL findVar(BODY b, String id)
 	{
-		for(VARDECL var : varTable)
+		for(VARDECL var : b.varTable)
 		{
 			if(var.id().equals(id))
 				return var;
 		}
-		return null;
+		if(b.body() != null)
+		{
+			return findVar(b.body(), id);
+		}
+		else return null;
 	}
 	
 	public static METHODDEFINE findMethod(String id)
@@ -109,38 +93,62 @@ public class RobotInterpreter
 		return null;
 	}
 	
-	public static void printVars()
+	public static void printAllVars()
 	{
-		System.out.println("===================");
-		System.out.println("Printing Variable Table");
-		System.out.println("===================");
+		printVars(b, "Global");
+		for(METHODDEFINE m : methodTable)
+		{
+			if(m.methodType() != "external")
+			{
+				printVars(m.codeBody(), m.id());
+			}
+		}
+	}
+	
+	public static void printVars(BODY b, String s)
+	{
+		RobotInterpreter.writeln("===================");
+		RobotInterpreter.writeln("Printing Variable Table for " + s);
+		RobotInterpreter.writeln("===================");
 
-		for(VARDECL var : varTable)
+		for(VARDECL var : b.varTable)
 		{
 			var.print();
-			System.out.print(Code.newline);
+			RobotInterpreter.write(Code.newline);
 		}
-		System.out.println("===================");
+		RobotInterpreter.writeln("===================");
 	}
 	
 	public static void printMethods()
 	{
-		System.out.println("===================");
-		System.out.println("Printing Method Table");
-		System.out.println("===================");
+		RobotInterpreter.writeln("===================");
+		RobotInterpreter.writeln("Printing Method Table");
+		RobotInterpreter.writeln("===================");
 		
 		for(METHODDEFINE method : methodTable)
 		{
 			method.print();
-			System.out.print(Code.newline);
+			RobotInterpreter.write(Code.newline);
 		}
-		System.out.println("===================");
+		RobotInterpreter.writeln("===================");
+	}
+	
+	public static void write(String s)
+	{
+		FileChooserDemo.writeLog(s);
+		System.out.print(s);
+	}
+	
+	public static void writeln(String s)
+	{
+		FileChooserDemo.writeLog(s + Code.newline);
+		System.out.println(s);
 	}
 	
 	public static void halt(String var, int lineNum, String c, String error)
 	{
-		System.out.println(var.toUpperCase() + " ERROR Near Line " + lineNum + ": " + c);
-		System.out.println(error);
+		String fu = var.toUpperCase() + " ERROR Near Line " + lineNum + ": " + c + Code.newline + error;
+		JOptionPane.showMessageDialog(null, fu, var + " ERROR", JOptionPane.ERROR_MESSAGE);
 		System.exit(1);
 	}
 	

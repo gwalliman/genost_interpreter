@@ -1,6 +1,7 @@
 package robotinterpreter.variables;
 
 import robotinterpreter.Code;
+import robotinterpreter.RobotInterpreter;
 
 public class STMTLIST extends Variable
 {
@@ -31,18 +32,18 @@ public class STMTLIST extends Variable
 		if(stmt != null)
 		{
 			stmt.print();
-			System.out.print(Code.newline);
+			RobotInterpreter.write(Code.newline);
 			
 			if(nextStmt != null)
 				nextStmt.print();
 		}
-		else System.out.println("EMPTY STMTLIST");
+		else RobotInterpreter.writeln("EMPTY STMTLIST");
 	}
 
 	//Validate the stmt and the next, if it exists
 	public void validate() 
 	{
-		System.out.println("Validating STMTLIST");
+		RobotInterpreter.writeln("Validating STMTLIST");
 		stmt.validate();
 		if(nextStmt != null)
 		{

@@ -1,5 +1,7 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.RobotInterpreter;
+
 public class print extends ExtMethod 
 {
 	public print()
@@ -12,7 +14,7 @@ public class print extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		System.out.println((String)args[0]);
+		RobotInterpreter.writeln((String)args[0]);
 		return null;
 	}
 }

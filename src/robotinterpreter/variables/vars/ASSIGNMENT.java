@@ -41,7 +41,7 @@ public class ASSIGNMENT extends Variable
 	
 	public void print() 
 	{
-		System.out.print("assign " + id + " = ");
+		RobotInterpreter.write("assign " + id + " = ");
 		call.print();
 	}
 
@@ -51,9 +51,9 @@ public class ASSIGNMENT extends Variable
 	//Ensure that lhs and rhs are of same type
 	public void validate() 
 	{
-		System.out.println("Validating ASSIGNMENT");
+		RobotInterpreter.writeln("Validating ASSIGNMENT");
 		call.validate();
-		lhs = RobotInterpreter.findVar(id);
+		lhs = RobotInterpreter.findVar(body, id);
 		if(lhs == null)
 		{
 			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "Variable " + id + " is not defined.");

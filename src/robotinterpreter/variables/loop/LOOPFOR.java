@@ -30,7 +30,7 @@ public class LOOPFOR extends Variable
 	
 	public void print() 
 	{
-		System.out.println("loopfor " + iterations + " times");
+		RobotInterpreter.writeln("loopfor " + iterations + " times");
 		codeBody.print();
 	}
 
@@ -38,7 +38,7 @@ public class LOOPFOR extends Variable
 	//Validate body
 	public void validate() 
 	{
-		System.out.println("Validating LOOPFOR");
+		RobotInterpreter.writeln("Validating LOOPFOR");
 
 		if(iterations < -1)
 		{

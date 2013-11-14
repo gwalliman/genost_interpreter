@@ -30,17 +30,17 @@ public class VAR extends Variable
 	{
 		if(id != null)
 		{
-			System.out.print("var " + id);
+			RobotInterpreter.write("var " + id);
 		}
-		else System.out.print("Empty VARCALL");
+		else RobotInterpreter.write("Empty VARCALL");
 	}
 
 	//Ensure that var exists
 	public void validate() 
 	{
-		System.out.println("Validating VAR");
+		RobotInterpreter.writeln("Validating VAR");
 
-		var = RobotInterpreter.findVar(id);
+		var = RobotInterpreter.findVar(body, id);
 		if(var == null)
 		{
 			RobotInterpreter.halt("VAR", lineNum, code, "Var " + id + " is not defined.");

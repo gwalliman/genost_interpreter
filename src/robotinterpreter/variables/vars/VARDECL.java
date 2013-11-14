@@ -33,9 +33,15 @@ public class VARDECL extends Variable {
 			RobotInterpreter.halt("VARDECL", lineNum, code, "Missing semicolon");
 		}
 		
-		RobotInterpreter.varTable.add(this);
+		body.varTable.add(this);
 	}
 	
+	public VARDECL(String i, String t) 
+	{
+		id = i;
+		type = t;
+	}
+
 	public String id()
 	{
 		return id;
@@ -50,17 +56,17 @@ public class VARDECL extends Variable {
 	{
 		if(id != null && type != null)
 		{
-			System.out.print("vardecl " + type + " " + id);
+			RobotInterpreter.write("vardecl " + type + " " + id);
 		}
-		else System.out.print("Empty VARDECL");
+		else RobotInterpreter.write("Empty VARDECL");
 	}
 	
 	//Ensure that var doesn't exist twice
 	public void validate() 
 	{
-		System.out.println("Validating VARDECL");
+		RobotInterpreter.writeln("Validating VARDECL");
 
-		if(Collections.frequency(RobotInterpreter.varTable, RobotInterpreter.findVar(id)) > 1)
+		if(Collections.frequency(body.varTable, RobotInterpreter.findVar(body, id)) > 1)
 		{
 			RobotInterpreter.halt("VARDECL", lineNum, code, "Var " + id + " cannot be declared more than once!");
 		}			

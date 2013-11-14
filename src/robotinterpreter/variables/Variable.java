@@ -9,6 +9,11 @@ public abstract class Variable
 	public abstract void validate();
 	public abstract void execute();
 	
+	public BODY body()
+	{
+		return body;
+	}
+	
 	public String code()
 	{
 		return code;

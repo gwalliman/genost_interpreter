@@ -53,7 +53,7 @@ public class CALL extends Variable
 		switch(callType)
 		{
 			case "var":
-				return RobotInterpreter.findVar(((VAR)call).id()).type();
+				return RobotInterpreter.findVar(body, ((VAR)call).id()).type();
 			case "method":
 				return RobotInterpreter.findMethod(((METHOD)call).id()).type();
 			case "int":
@@ -93,7 +93,7 @@ public class CALL extends Variable
 	//Validate whatever we are calling
 	public void validate() 
 	{
-		System.out.println("Validating CALL");
+		RobotInterpreter.writeln("Validating CALL");
 		switch(callType)
 		{
 			case "var":

@@ -12,15 +12,12 @@ public class BODY extends Variable
 	private STMTLIST stmtList;
 	private int startLine;
 	private int finishLine;
-	private ArrayList<VARDECL> paramVarTable;
+	public ArrayList<VARDECL> varTable;
 
 	public BODY(BODY b, Code c)
 	{
-		if(b == null)
-		{
-			b = this;
-		}
 		body = b;
+		varTable = new ArrayList<VARDECL>();
 		
 		if(c.currentLine().equals(Terminals.OPENBRACE))
 		{
@@ -30,7 +27,7 @@ public class BODY extends Variable
 			//Move to first statement.
 			c.nextLine();
 			if(c.currentLineNum() != finishLine)
-				stmtList = new STMTLIST(body, c);
+				stmtList = new STMTLIST(this, c);
 
 		}
 		else RobotInterpreter.halt("BODY", c.currentLineNum(), c.currentLine(), "Body must begin with {");
@@ -67,21 +64,21 @@ public class BODY extends Variable
 	{
 		if(stmtList != null)
 		{
-			System.out.println("BODY: Start Line " + startLine + ", Finish Line " + finishLine);
-			System.out.println("{");
+			RobotInterpreter.writeln("BODY: Start Line " + startLine + ", Finish Line " + finishLine);
+			RobotInterpreter.writeln("{");
 			if(stmtList != null)
 				stmtList.print();
 			else
-				System.out.print("EMPTY BODY");
-			System.out.print("}");
+				RobotInterpreter.write("EMPTY BODY");
+			RobotInterpreter.write("}");
 		}
-		else System.out.print("EMPTY BODY");
+		else RobotInterpreter.write("EMPTY BODY");
 	}
 
 	//Validate stmtlist
 	public void validate() 
 	{
-		System.out.println("Validating BODY");
+		RobotInterpreter.writeln("Validating BODY");
 		if(stmtList != null)
 		{
 			stmtList.validate();

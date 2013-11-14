@@ -54,7 +54,17 @@ public class METHODDEFINE extends Variable {
 		}
 		
 		c.nextLine();
-		codeBody = new BODY(null, c);
+		codeBody = new BODY(body, c);
+		
+		if(params != null)
+		{
+			DEFPARAMLIST p;
+			for(int x = 0; (p = getParam(x)) != null; x++)
+			{
+				VARDECL v = new VARDECL(p.id(), p.type());
+				codeBody.varTable.add(v);
+			}
+		}
 		
 		RobotInterpreter.methodTable.add(this);
 	}
@@ -90,10 +100,20 @@ public class METHODDEFINE extends Variable {
 		return type;
 	}
 	
+	public String methodType()
+	{
+		return methodType;
+	}
+	
+	public BODY codeBody() 
+	{
+		return codeBody;
+	}
+	
 	public DEFPARAMLIST getParam(int paramNum) 
 	{
 		DEFPARAMLIST param = params;
-		while(param.getNum() != paramNum && param != null)
+		while(param != null && param.getNum() != paramNum)
 		{
 			param = param.nextParam();
 		}
@@ -103,10 +123,10 @@ public class METHODDEFINE extends Variable {
 	
 	public void print() 
 	{
-		System.out.print("methoddefine " + type + " " + id + "(");
+		RobotInterpreter.write("methoddefine " + type + " " + id + "(");
 		if(params != null)
 			params.print();
-		System.out.println(")");
+		RobotInterpreter.writeln(")");
 		codeBody.print();
 	}
 
@@ -115,7 +135,7 @@ public class METHODDEFINE extends Variable {
 	//Validate params
 	public void validate() 
 	{
-		System.out.println("Validating METHODDEFINE");
+		RobotInterpreter.writeln("Validating METHODDEFINE");
 
 		if(Collections.frequency(RobotInterpreter.methodTable, RobotInterpreter.findMethod(id)) > 1)
 		{
