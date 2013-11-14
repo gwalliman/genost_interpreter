@@ -32,18 +32,18 @@ public class STMTLIST extends Variable
 		if(stmt != null)
 		{
 			stmt.print();
-			RobotInterpreter.write(Code.newline);
+			RobotInterpreter.write("parse", Code.newline);
 			
 			if(nextStmt != null)
 				nextStmt.print();
 		}
-		else RobotInterpreter.writeln("EMPTY STMTLIST");
+		else RobotInterpreter.writeln("parse", "EMPTY STMTLIST");
 	}
 
 	//Validate the stmt and the next, if it exists
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating STMTLIST");
+		RobotInterpreter.writeln("validate", "Validating STMTLIST");
 		stmt.validate();
 		if(nextStmt != null)
 		{

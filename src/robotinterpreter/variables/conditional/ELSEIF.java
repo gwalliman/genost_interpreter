@@ -52,14 +52,14 @@ public class ELSEIF extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.write("elseif (");
+		RobotInterpreter.write("parse", "elseif (");
 		cl.print();
-		RobotInterpreter.writeln(")");
+		RobotInterpreter.writeln("parse", ")");
 		codeBody.print();
 		
 		if(elseif != null)
 		{
-			RobotInterpreter.write(Code.newline);
+			RobotInterpreter.write("parse", Code.newline);
 			elseif.print();
 		}
 	}
@@ -69,7 +69,7 @@ public class ELSEIF extends Variable
 	//Validate the next ELSEIF, if applicable
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating ELSEIF");
+		RobotInterpreter.writeln("validate", "Validating ELSEIF");
 
 		cl.validate();
 		codeBody.validate();

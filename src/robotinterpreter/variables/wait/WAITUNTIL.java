@@ -42,9 +42,9 @@ public class WAITUNTIL extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.write("waituntil (");
+		RobotInterpreter.write("parse", "waituntil (");
 		cl.print();
-		RobotInterpreter.writeln(")");
+		RobotInterpreter.writeln("parse", ")");
 		codeBody.print();
 	}
 
@@ -52,7 +52,7 @@ public class WAITUNTIL extends Variable
 	//Validate body
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating WAITUNTIL");
+		RobotInterpreter.writeln("validate", "Validating WAITUNTIL");
 
 		cl.validate();
 		codeBody.validate();

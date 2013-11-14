@@ -64,21 +64,21 @@ public class BODY extends Variable
 	{
 		if(stmtList != null)
 		{
-			RobotInterpreter.writeln("BODY: Start Line " + startLine + ", Finish Line " + finishLine);
-			RobotInterpreter.writeln("{");
+			RobotInterpreter.writeln("parse", "BODY: Start Line " + startLine + ", Finish Line " + finishLine);
+			RobotInterpreter.writeln("parse", "{");
 			if(stmtList != null)
 				stmtList.print();
 			else
-				RobotInterpreter.write("EMPTY BODY");
-			RobotInterpreter.write("}");
+				RobotInterpreter.write("parse", "EMPTY BODY");
+			RobotInterpreter.write("parse", "}");
 		}
-		else RobotInterpreter.write("EMPTY BODY");
+		else RobotInterpreter.write("parse", "EMPTY BODY");
 	}
 
 	//Validate stmtlist
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating BODY");
+		RobotInterpreter.writeln("validate", "Validating BODY");
 		if(stmtList != null)
 		{
 			stmtList.validate();

@@ -108,7 +108,7 @@ public class STMT extends Variable
 	//Validate whatever the statement is
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating STMT");
+		RobotInterpreter.writeln("validate", "Validating STMT");
 		switch(stmtType)
 		{
 			case "vardecl":

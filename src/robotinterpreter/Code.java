@@ -254,7 +254,7 @@ public class Code
 	public static void printTokens(String[] tokens)
 	{
 		for(int x = 0; x < tokens.length; x++)
-			RobotInterpreter.writeln(tokens[x]);
-		RobotInterpreter.writeln("===");
+			RobotInterpreter.writeln("debug", tokens[x]);
+		RobotInterpreter.writeln("debug", "===");
 	}
 }

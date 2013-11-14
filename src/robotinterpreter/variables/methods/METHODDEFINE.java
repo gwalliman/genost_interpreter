@@ -123,10 +123,10 @@ public class METHODDEFINE extends Variable {
 	
 	public void print() 
 	{
-		RobotInterpreter.write("methoddefine " + type + " " + id + "(");
+		RobotInterpreter.write("parse", "methoddefine " + type + " " + id + "(");
 		if(params != null)
 			params.print();
-		RobotInterpreter.writeln(")");
+		RobotInterpreter.writeln("parse", ")");
 		codeBody.print();
 	}
 
@@ -135,7 +135,7 @@ public class METHODDEFINE extends Variable {
 	//Validate params
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating METHODDEFINE");
+		RobotInterpreter.writeln("validate", "Validating METHODDEFINE");
 
 		if(Collections.frequency(RobotInterpreter.methodTable, RobotInterpreter.findMethod(id)) > 1)
 		{

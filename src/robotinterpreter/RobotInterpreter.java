@@ -48,16 +48,15 @@ public class RobotInterpreter
 		//Go over each line of code and populate with information immediately available
 		b = new BODY(null, c);
 		b.print();
-		printAllVars();
-		RobotInterpreter.writeln(Code.newline + "=================");
-		RobotInterpreter.writeln("Code fully parsed!" + Code.newline + "=================");
+		RobotInterpreter.writeln("message", Code.newline + "=================");
+		RobotInterpreter.writeln("message", "Code fully parsed!" + Code.newline + "=================");
 		
 		//Step 2: Link and Validate
 		//Link up certain items: varcalls to variable array, method calls to actual method code, if/loop eventualities, etc.
 		//Check type matching, etc.
 		b.validate();
-		RobotInterpreter.writeln("=================");
-		RobotInterpreter.writeln("Code fully validated!" + Code.newline + "=================");
+		RobotInterpreter.writeln("message", "=================");
+		RobotInterpreter.writeln("message", "Code fully validated!" + Code.newline + "=================");
 
 		//Step 3: Execute
 	}
@@ -100,42 +99,67 @@ public class RobotInterpreter
 	
 	public static void printVars(BODY b, String s)
 	{
-		RobotInterpreter.writeln("===================");
-		RobotInterpreter.writeln("Printing Variable Table for " + s);
-		RobotInterpreter.writeln("===================");
+		RobotInterpreter.writeln("debug", "===================");
+		RobotInterpreter.writeln("debug", "Printing Variable Table for " + s);
+		RobotInterpreter.writeln("debug", "===================");
 
 		for(VARDECL var : b.varTable)
 		{
 			var.print();
-			RobotInterpreter.write(Code.newline);
+			RobotInterpreter.write("debug", Code.newline);
 		}
-		RobotInterpreter.writeln("===================");
+		RobotInterpreter.writeln("debug", "===================");
 	}
 	
 	public static void printMethods()
 	{
-		RobotInterpreter.writeln("===================");
-		RobotInterpreter.writeln("Printing Method Table");
-		RobotInterpreter.writeln("===================");
+		RobotInterpreter.writeln("debug", "===================");
+		RobotInterpreter.writeln("debug", "Printing Method Table");
+		RobotInterpreter.writeln("debug", "===================");
 		
 		for(METHODDEFINE method : methodTable)
 		{
 			method.print();
-			RobotInterpreter.write(Code.newline);
+			RobotInterpreter.write("debug", Code.newline);
 		}
-		RobotInterpreter.writeln("===================");
+		RobotInterpreter.writeln("debug", "===================");
 	}
 	
-	public static void write(String s)
+	private static boolean showMessage(String t)
 	{
-		FileChooserDemo.writeLog(s);
-		System.out.print(s);
+		switch(t)
+		{
+			//Display Parser messages
+			case "parse":
+				return true;
+			//Display Validate messages
+			case "validate":
+				return false;
+			//Display Debugging messages
+			case "debug":
+				return true;
+			//Display all other messages
+			default:
+				return true;
+		}
 	}
 	
-	public static void writeln(String s)
+	public static void write(String type, String s)
 	{
-		FileChooserDemo.writeLog(s + Code.newline);
-		System.out.println(s);
+		if(showMessage(type))
+		{
+			FileChooserDemo.writeLog(s);
+			System.out.print(s);
+		}
+	}
+	
+	public static void writeln(String type, String s)
+	{
+		if(showMessage(type))
+		{
+			FileChooserDemo.writeLog(s + Code.newline);
+			System.out.println(s);
+		}
 	}
 	
 	public static void halt(String var, int lineNum, String c, String error)

@@ -30,15 +30,15 @@ public class VAR extends Variable
 	{
 		if(id != null)
 		{
-			RobotInterpreter.write("var " + id);
+			RobotInterpreter.write("parse", "var " + id);
 		}
-		else RobotInterpreter.write("Empty VARCALL");
+		else RobotInterpreter.write("parse", "Empty VARCALL");
 	}
 
 	//Ensure that var exists
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating VAR");
+		RobotInterpreter.writeln("validate", "Validating VAR");
 
 		var = RobotInterpreter.findVar(body, id);
 		if(var == null)

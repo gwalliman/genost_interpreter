@@ -25,13 +25,13 @@ public class STRING extends Variable
 
 	public void print() 
 	{
-		RobotInterpreter.write("string \"" + value + "\"");
+		RobotInterpreter.write("parse", "string \"" + value + "\"");
 	}
 
 	//Nothing to validate, value was validated during parsing.
 	public void validate() 
 	{ 
-		RobotInterpreter.writeln("Validating STRING");
+		RobotInterpreter.writeln("validate", "Validating STRING");
 	}
 
 	@Override

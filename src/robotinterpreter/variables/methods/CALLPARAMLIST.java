@@ -38,12 +38,12 @@ public class CALLPARAMLIST extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.write(paramNum + " ");
+		RobotInterpreter.write("parse", paramNum + " ");
 		call.print();
 			
 		if(nextParam != null)
 		{
-			RobotInterpreter.write(", ");
+			RobotInterpreter.write("parse", ", ");
 			nextParam.print();
 		}
 	}
@@ -54,7 +54,7 @@ public class CALLPARAMLIST extends Variable
 	//4. Validate next call
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating CALLPARAMLIST");
+		RobotInterpreter.writeln("validate", "Validating CALLPARAMLIST");
 
 		//1
 		call.validate();

@@ -93,7 +93,7 @@ public class CALL extends Variable
 	//Validate whatever we are calling
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating CALL");
+		RobotInterpreter.writeln("validate",  "Validating CALL");
 		switch(callType)
 		{
 			case "var":

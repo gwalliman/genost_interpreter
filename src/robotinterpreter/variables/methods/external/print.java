@@ -14,7 +14,7 @@ public class print extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		RobotInterpreter.writeln((String)args[0]);
+		RobotInterpreter.writeln("message", (String)args[0]);
 		return null;
 	}
 }

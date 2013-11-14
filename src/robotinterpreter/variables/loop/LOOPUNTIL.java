@@ -42,9 +42,9 @@ public class LOOPUNTIL extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.write("loopuntil (");
+		RobotInterpreter.write("parse", "loopuntil (");
 		cl.print();
-		RobotInterpreter.writeln(")");
+		RobotInterpreter.writeln("parse", ")");
 		codeBody.print();
 	}
 
@@ -52,7 +52,7 @@ public class LOOPUNTIL extends Variable
 	//Validate body
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating LOOPUNTIL");
+		RobotInterpreter.writeln("validate", "Validating LOOPUNTIL");
 		cl.validate();
 		codeBody.validate();
 	}

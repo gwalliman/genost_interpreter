@@ -92,9 +92,9 @@ public class CONDITIONLIST extends Variable
 	{
 		if(conType == "CONDITIONLIST")
 		{		
-			RobotInterpreter.write("[");
+			RobotInterpreter.write("parse", "[");
 			((CONDITIONLIST)con).print();
-			RobotInterpreter.write("]");
+			RobotInterpreter.write("parse", "]");
 		}
 		else if(conType == "CONDITION")
 		{
@@ -104,7 +104,7 @@ public class CONDITIONLIST extends Variable
 		
 		if(logOp != null)
 		{
-			RobotInterpreter.write(" " + logOp + " ");
+			RobotInterpreter.write("parse", " " + logOp + " ");
 			nextCon.print();
 		}
 	}
@@ -112,7 +112,7 @@ public class CONDITIONLIST extends Variable
 	//Validate the con and the nextCon, if it exists
 	public void validate() 
 	{ 
-		RobotInterpreter.writeln("Validating CONDITIONLIST");
+		RobotInterpreter.writeln("validate", "Validating CONDITIONLIST");
 
 		if(conType == "CONDITIONLIST")
 		{		

@@ -51,17 +51,17 @@ public class METHOD extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.write("method " + id + "(");
+		RobotInterpreter.write("parse", "method " + id + "(");
 		if(params != null)
 			params.print();
-		RobotInterpreter.write(")");
+		RobotInterpreter.write("parse", ")");
 	}
 
 	//Ensure that method exists
 	//Validate callParamList
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating METHOD");
+		RobotInterpreter.writeln("validate", "Validating METHOD");
 
 		method = RobotInterpreter.findMethod(id);
 		if(method == null)

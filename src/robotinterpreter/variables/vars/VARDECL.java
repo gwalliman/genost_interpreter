@@ -55,15 +55,15 @@ public class VARDECL extends Variable {
 	{
 		if(id != null && type != null)
 		{
-			RobotInterpreter.write("vardecl " + type + " " + id);
+			RobotInterpreter.write("parse", "vardecl " + type + " " + id);
 		}
-		else RobotInterpreter.write("Empty VARDECL");
+		else RobotInterpreter.write("parse", "Empty VARDECL");
 	}
 	
 	//Ensure that var doesn't exist twice
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating VARDECL");
+		RobotInterpreter.writeln("validate", "Validating VARDECL");
 
 		if(Collections.frequency(body.varTable, RobotInterpreter.findVar(body, id)) > 1)
 		{

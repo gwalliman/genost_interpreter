@@ -30,7 +30,7 @@ public class WAITFOR extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.writeln("waitfor " + iterations + " seconds");
+		RobotInterpreter.writeln("parse", "waitfor " + iterations + " seconds");
 		codeBody.print();
 	}
 
@@ -38,7 +38,7 @@ public class WAITFOR extends Variable
 	//Validate body
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating WAITFOR");
+		RobotInterpreter.writeln("validate", "Validating WAITFOR");
 
 		if(iterations < -1)
 		{

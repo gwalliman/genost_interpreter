@@ -21,14 +21,14 @@ public class ELSE extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.writeln("else");
+		RobotInterpreter.writeln("parse", "else");
 		codeBody.print();
 	}
 
 	//Validate the body.
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating ELSE");
+		RobotInterpreter.writeln("validate", "Validating ELSE");
 
 		codeBody.validate();
 	}

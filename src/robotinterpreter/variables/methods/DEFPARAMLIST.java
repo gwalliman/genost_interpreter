@@ -78,11 +78,11 @@ public class DEFPARAMLIST extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.write(paramNum + " " + paramType + " " + id);
+		RobotInterpreter.write("parse", paramNum + " " + paramType + " " + id);
 			
 		if(nextParam != null)
 		{
-			RobotInterpreter.write(", ");
+			RobotInterpreter.write("parse", ", ");
 			nextParam.print();
 		}
 	}
@@ -91,7 +91,7 @@ public class DEFPARAMLIST extends Variable
 	//Validate next var
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating DEFPARAMLIST");
+		RobotInterpreter.writeln("validate", "Validating DEFPARAMLIST");
 
 		if(nextParam != null)
 		{

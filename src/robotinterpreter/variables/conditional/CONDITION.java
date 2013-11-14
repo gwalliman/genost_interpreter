@@ -39,11 +39,11 @@ public class CONDITION extends Variable
 	
 	public void print() 
 	{
-		RobotInterpreter.write("[");
+		RobotInterpreter.write("parse", "[");
 		lhs.print();
-		RobotInterpreter.write(" " + comparator + " ");
+		RobotInterpreter.write("parse", " " + comparator + " ");
 		rhs.print();
-		RobotInterpreter.write("]");
+		RobotInterpreter.write("parse", "]");
 	}
 
 	//lhs and rhs must be of same type
@@ -51,7 +51,7 @@ public class CONDITION extends Variable
 	//Validate vars and methods
 	public void validate() 
 	{
-		RobotInterpreter.writeln("Validating CONDITION");
+		RobotInterpreter.writeln("validate", "Validating CONDITION");
 
 		lhs.validate();
 		rhs.validate();
