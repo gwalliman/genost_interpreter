@@ -98,8 +98,27 @@ public class IF extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		boolean go = (boolean) cl.execute(null); 
+		if(go)
+		{
+			codeBody.execute(null);
+		}
+		else
+		{
+			boolean elsEx = false;
+			if(elseif != null)
+			{
+				elsEx = (boolean) elseif.execute(null);
+			}
 		
+			if(!elsEx && els != null)
+			{
+				els.execute(null);
+			}
+		}
+		
+		return null;
 	}
 }

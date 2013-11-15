@@ -34,8 +34,9 @@ public class ELSE extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object[] args) 
+	{
+		codeBody.execute(null);
+		return null;
 	}
 }

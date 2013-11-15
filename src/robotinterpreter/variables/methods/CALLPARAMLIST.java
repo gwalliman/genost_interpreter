@@ -89,8 +89,18 @@ public class CALLPARAMLIST extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		if(args == null)
+		{
+			args = new Object[method.methDef().numParams()];
+		}
+		args[paramNum] = call.execute(null);
 		
+		if(nextParam != null)
+		{
+			return nextParam.execute(args);
+		}
+		else return args;
 	}
 }

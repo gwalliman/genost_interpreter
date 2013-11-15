@@ -48,8 +48,20 @@ public class WAITFOR extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		for(int x = 0; x < iterations; x++)
+		{
+			try 
+			{
+				Thread.sleep(1000);
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 		
+		return null;
 	}
 }

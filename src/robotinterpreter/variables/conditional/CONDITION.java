@@ -68,8 +68,58 @@ public class CONDITION extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		Object l = lhs.execute(null);
+		Object r = rhs.execute(null);
 		
+		boolean go = false;
+		
+		switch(comparator)
+		{
+			case Terminals.EQ:
+				if(lhs.type() == "string")
+				{
+					go = ((String)l).equals((String)r);
+				}
+				else if(lhs.type() == "bool")
+				{
+					go = ((boolean)l) == ((boolean)r);
+				}
+				else if(lhs.type() == "int")
+				{
+					go = ((int)l) == ((int)r);
+				}
+				break;
+			case Terminals.NEQ:
+				if(lhs.type() == "string")
+				{
+					go = !((String)l).equals((String)r);
+				}
+				else if(lhs.type() == "bool")
+				{
+					go = ((boolean)l) != ((boolean)r);
+				}
+				else if(lhs.type() == "int")
+				{
+					go = ((int)l) != ((int)r);
+				}
+				break;
+			//After this point, we can only have ints
+			case Terminals.LT:
+				go = ((int)l) < ((int)r);
+				break;
+			case Terminals.GT:
+				go = ((int)l) > ((int)r);
+				break;
+			case Terminals.LTE:
+				go = ((int)l) <= ((int)r);
+				break;
+			case Terminals.GTE:
+				go = ((int)l) >= ((int)r);
+				break;
+		}
+		
+		return go;
 	}
 }

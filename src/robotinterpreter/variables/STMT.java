@@ -162,37 +162,28 @@ public class STMT extends Variable
 		switch(stmtType)
 		{
 			case "vardecl":
-				((VARDECL)stmt).execute(null);
-				break;
+				return ((VARDECL)stmt).execute(null);
 			case "assign":
-				((ASSIGNMENT)stmt).execute(null);
-				break;
+				return ((ASSIGNMENT)stmt).execute(null);
 			case "methoddefine":
-				((METHODDEFINE)stmt).execute();
-				break;
+				//We don't execute the METHODDEFINE, as this will execute the actual method!
+				return null;
 			case "method":
-				((METHOD)stmt).execute();
-				break;
+				return ((METHOD)stmt).execute(null);
 			case "return":
-				((RETURN)stmt).execute(null);
-				break;
+				return ((RETURN)stmt).execute(null);
 			case "if":
-				((IF)stmt).execute();
-				break;
+				return ((IF)stmt).execute(null);
 			case "loopuntil":
-				((LOOPUNTIL)stmt).execute();
-				break;
+				return ((LOOPUNTIL)stmt).execute(null);
 			case "loopfor":
-				((LOOPFOR)stmt).execute();
-				break;
+				return ((LOOPFOR)stmt).execute(null);
 			case "waituntil":
-				((WAITUNTIL)stmt).execute();
-				break;
+				return ((WAITUNTIL)stmt).execute(null);
 			case "waitfor":
-				((WAITFOR)stmt).execute();
-				break;
+				return ((WAITFOR)stmt).execute(null);
+			default:
+				return null;
 		}
-		
-		return null;
 	}
 }

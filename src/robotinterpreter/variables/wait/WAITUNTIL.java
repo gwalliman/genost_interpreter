@@ -57,9 +57,32 @@ public class WAITUNTIL extends Variable
 		cl.validate();
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		boolean go = false;
 		
+		while(!go)
+		{
+			go = (boolean) cl.execute(null);
+			if(go)
+			{
+				return null;
+			}
+			else
+			{
+				try 
+				{
+					//We currently set polling interval to 1/4 of a second
+					Thread.sleep(250);
+				} 
+				catch (InterruptedException e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		//We will never reach here, but Eclipse is making me add this.
+		return null;
 	}
 }

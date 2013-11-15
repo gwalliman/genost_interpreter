@@ -81,8 +81,22 @@ public class ELSEIF extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		boolean go = (boolean) cl.execute(null); 
 		
+		if(go)
+		{
+			codeBody.execute(null);
+			return go;
+		}
+		else if(elseif != null)
+		{
+			return elseif.execute(null);
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

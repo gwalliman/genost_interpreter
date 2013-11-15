@@ -57,9 +57,24 @@ public class LOOPUNTIL extends Variable
 		codeBody.validate();
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object[] args) 
+	{
+		boolean go = false;
 		
+		while(!go)
+		{
+			go = (boolean) cl.execute(null);
+			if(go)
+			{
+				return null;
+			}
+			else
+			{
+				codeBody.execute(null);
+			}
+		}
+		
+		//We will never reach here, but Eclipse is making me add this.
+		return null;
 	}
 }

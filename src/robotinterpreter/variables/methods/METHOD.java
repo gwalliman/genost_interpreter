@@ -56,6 +56,11 @@ public class METHOD extends Variable
 			params.print();
 		RobotInterpreter.write("parse", ")");
 	}
+	
+	public METHODDEFINE methDef()
+	{
+		return method;
+	}
 
 	//Ensure that method exists
 	//Validate callParamList
@@ -75,9 +80,15 @@ public class METHOD extends Variable
 	}
 
 	@Override
-	public void execute() 
+	public Object execute(Object[] args) 
 	{
-		// TODO Auto-generated method stub
-		
+		if(params != null)
+		{
+			return method.execute((Object[]) params.execute(null));
+		}
+		else 
+		{
+			return method.execute(null);
+		}
 	}
 }

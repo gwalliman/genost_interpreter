@@ -48,8 +48,12 @@ public class LOOPFOR extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public Object execute(Object[] args) 
+	{
+		for(int x = 0; x < iterations; x++)
+		{
+			codeBody.execute(null);
+		}
+		return null;
 	}
 }

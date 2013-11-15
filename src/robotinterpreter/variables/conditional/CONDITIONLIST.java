@@ -130,8 +130,29 @@ public class CONDITIONLIST extends Variable
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object args[]) 
+	{
+		boolean go = false;
+		if(conType == "CONDITIONLIST")
+		{		
+			go = (boolean) ((CONDITIONLIST)con).execute(null);
+		}
+		else if(conType == "CONDITION")
+		{
+			go = (boolean) ((CONDITION)con).execute(null);
+		}
 		
+		if(nextCon != null)
+		{
+			//Not sure about this variable name, it may be harmful.
+			boolean go2 = false;
+			go2 = (boolean) ((CONDITIONLIST)nextCon).execute(null);
+			
+			if(logOp.equals(Terminals.AND))
+				return go && go2;
+			else if(logOp.equals(Terminals.OR))
+				return go || go2;
+		}
+		return go;
 	}
 }

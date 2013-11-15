@@ -21,8 +21,8 @@ public class METHODDEFINE extends Variable {
 	private String id;
 	private BODY codeBody;
 	private DEFPARAMLIST params;
+	private int numParams = 0;
 
-	
 	//Define INTERNAL method
 	public METHODDEFINE(BODY b, Code c)
 	{
@@ -112,6 +112,11 @@ public class METHODDEFINE extends Variable {
 		return codeBody;
 	}
 	
+	public int numParams()
+	{
+		return numParams;
+	}
+	
 	public DEFPARAMLIST getParam(int paramNum) 
 	{
 		DEFPARAMLIST param = params;
@@ -146,6 +151,12 @@ public class METHODDEFINE extends Variable {
 		if(params != null)
 		{
 			params.validate();
+			DEFPARAMLIST p = params;
+			while(p != null)
+			{
+				numParams++;
+				p = p.nextParam();
+			}
 		}
 		codeBody.validate();
 		
@@ -169,8 +180,23 @@ public class METHODDEFINE extends Variable {
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public Object execute(Object args[]) 
+	{
+		if(methodType.equals("internal"))
+		{
+			for(int x = 0; x < args.length; x++)
+			{
+				String id = getParam(x).id();
+				RobotInterpreter.setVar(id, args[x]);
+			}
+			return codeBody.execute(null);
+		}
+		else if(methodType.equals("external"))
+		{
+			return RobotInterpreter.findMethod(id).execute(args);
+		}
 		
+		//We should never get here
+		return null;
 	}
 }

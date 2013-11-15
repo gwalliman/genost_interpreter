@@ -6,49 +6,49 @@ import java.util.Arrays;
 public class Terminals 
 {
 	//Symbols
-	public static String OPENPAREN = "(";
-	public static String CLOSEPAREN = ")";
-	public static String OPENBRACE = "{";
-	public static String CLOSEBRACE = "}";
-	public static String OPENBRACKET = "[";
-	public static String CLOSEBRACKET = "]";
-	public static String QUOTE = "\"";
-	public static String SEMICOLON = ";";
-	public static String EQUALS = "=";
-	public static String COMMA = ",";
-	public static String EQ = "==";
-	public static String NEQ = "!=";
-	public static String LT = "<";
-	public static String GT = ">";
-	public static String LTE = "<=";
-	public static String GTE = ">=";
+	public static final String OPENPAREN = "(";
+	public static final String CLOSEPAREN = ")";
+	public static final String OPENBRACE = "{";
+	public static final String CLOSEBRACE = "}";
+	public static final String OPENBRACKET = "[";
+	public static final String CLOSEBRACKET = "]";
+	public static final String QUOTE = "\"";
+	public static final String SEMICOLON = ";";
+	public static final String EQUALS = "=";
+	public static final String COMMA = ",";
+	public static final String EQ = "==";
+	public static final String NEQ = "!=";
+	public static final String LT = "<";
+	public static final String GT = ">";
+	public static final String LTE = "<=";
+	public static final String GTE = ">=";
 	
-	public static String[] comparatorArray = { EQ, NEQ, LT, GT, LTE, GTE };
-	public static ArrayList<String> comparators = new ArrayList<String>(Arrays.asList(comparatorArray));
+	public static final String[] comparatorArray = { EQ, NEQ, LT, GT, LTE, GTE };
+	public static final ArrayList<String> comparators = new ArrayList<String>(Arrays.asList(comparatorArray));
 	
 	//Words
-	public static String AND = "and";
-	public static String OR = "or";
+	public static final String AND = "and";
+	public static final String OR = "or";
 	
 	//Word Arrays
 	//NOTE: Order matters in this array! We must ensure that symbols which are contained in other symbols come LAST.
-	private static String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT,};
-	public static ArrayList<String> symbolTerminals = new ArrayList<String>(Arrays.asList(symbolTerminalsArray));
+	private static final String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT,};
+	public static final ArrayList<String> symbolTerminals = new ArrayList<String>(Arrays.asList(symbolTerminalsArray));
 	
-	private static String[] dataTypeArray = { "void", "int", "string", "bool"};
-	public static ArrayList<String> dataTypes = new ArrayList<String>(Arrays.asList(dataTypeArray));
+	private static final String[] dataTypeArray = { "void", "int", "string", "bool"};
+	public static final ArrayList<String> dataTypes = new ArrayList<String>(Arrays.asList(dataTypeArray));
 	
-	private static String[] logOpArray = {AND, OR};
-	public static ArrayList<String> logOps = new ArrayList<String>(Arrays.asList(logOpArray));
+	private static final String[] logOpArray = {AND, OR};
+	public static final ArrayList<String> logOps = new ArrayList<String>(Arrays.asList(logOpArray));
 	
-	private static String[] booleanValsArray = {"true", "false"};
-	public static ArrayList<String> booleanVals = new ArrayList<String>(Arrays.asList(booleanValsArray));
+	private static final String[] booleanValsArray = {"true", "false"};
+	public static final ArrayList<String> booleanVals = new ArrayList<String>(Arrays.asList(booleanValsArray));
 		
-	private static String[] stmtTypesArray = { "assign", "vardecl", "methoddefine", "method", "return", "if", "elseif", "else", "loopuntil", "loopfor", "waituntil", "waitfor" };
-	public static ArrayList<String> stmtTypes = new ArrayList<String>(Arrays.asList(stmtTypesArray));
+	private static final String[] stmtTypesArray = { "assign", "vardecl", "methoddefine", "method", "return", "if", "elseif", "else", "loopuntil", "loopfor", "waituntil", "waitfor" };
+	public static final ArrayList<String> stmtTypes = new ArrayList<String>(Arrays.asList(stmtTypesArray));
 	
-	private static String[] callTypesArray = { "var", "method" };
-	public static ArrayList<String> callTypes = new ArrayList<String>(Arrays.asList(callTypesArray));
+	private static final String[] callTypesArray = { "var", "method" };
+	public static final ArrayList<String> callTypes = new ArrayList<String>(Arrays.asList(callTypesArray));
 	
 	public static ArrayList<String> reservedWords = new ArrayList<String>();
 	

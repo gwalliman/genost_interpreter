@@ -47,5 +47,6 @@ public class RETURN extends Variable
 
 	public Object execute(Object[] args) 
 	{
+		return call.execute(null);
 	}
 }

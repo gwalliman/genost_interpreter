@@ -2,7 +2,6 @@ package robotinterpreter.variables;
 
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
-import robotinterpreter.variables.methods.external.ExtMethod;
 
 public class STMTLIST extends Variable
 {
@@ -65,11 +64,13 @@ public class STMTLIST extends Variable
 	@Override
 	public Object execute(Object args[]) 
 	{
-		stmt.execute(null);
-		if(nextStmt != null)
+		Object retVal = null;
+		retVal = stmt.execute(null);
+		
+		if(retVal == null && nextStmt != null)
 		{
-			nextStmt.execute(null);
+			return nextStmt.execute(null);
 		}
-		return null;
+		else return null;
 	}
 }
