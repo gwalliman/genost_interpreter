@@ -9,6 +9,7 @@ import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
+import robotinterpreter.variables.STMTLIST;
 import robotinterpreter.variables.Variable;
 import robotinterpreter.variables.methods.external.ExtMethod;
 import robotinterpreter.variables.vars.VARDECL;
@@ -55,6 +56,7 @@ public class METHODDEFINE extends Variable {
 		
 		c.nextLine();
 		codeBody = new BODY(body, c);
+		codeBody.method = this;
 		
 		if(params != null)
 		{
@@ -146,6 +148,24 @@ public class METHODDEFINE extends Variable {
 			params.validate();
 		}
 		codeBody.validate();
+		
+		if(!type.equals("void") && !hasReturn())
+		{
+			RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
+		}
+	}
+
+	private boolean hasReturn() 
+	{
+		STMTLIST s = codeBody.getStmtList();
+		while(s != null)
+		{
+			if(s.getStmt().type().equals("return"))
+				return true;
+			else s = s.getNextStmt();
+		}
+		return false;
+		
 	}
 
 	@Override

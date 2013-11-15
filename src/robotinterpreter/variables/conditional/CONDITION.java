@@ -55,8 +55,8 @@ public class CONDITION extends Variable
 
 		lhs.validate();
 		rhs.validate();
-		String lhsType = lhs.getType();
-		String rhsType = rhs.getType();
+		String lhsType = lhs.type();
+		String rhsType = rhs.type();
 		if(!lhsType.equals(rhsType))
 		{
 			RobotInterpreter.halt("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");

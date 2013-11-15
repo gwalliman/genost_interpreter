@@ -8,6 +8,7 @@ import robotinterpreter.variables.loop.LOOPFOR;
 import robotinterpreter.variables.loop.LOOPUNTIL;
 import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.methods.METHODDEFINE;
+import robotinterpreter.variables.methods.RETURN;
 import robotinterpreter.variables.vars.ASSIGNMENT;
 import robotinterpreter.variables.vars.VARDECL;
 import robotinterpreter.variables.wait.WAITFOR;
@@ -45,6 +46,9 @@ public class STMT extends Variable
 						RobotInterpreter.halt("METHOD", lineNum, code, "Missing Semicolon");
 					stmt = new METHOD(body, c, c.currentLine().substring(0, c.currentLine().length() - 1));
 					break;
+				case "return":
+					stmt = new RETURN(body, c);
+					break;
 				case "if":
 					stmt = new IF(body, c);
 					break;
@@ -71,6 +75,11 @@ public class STMT extends Variable
 		else RobotInterpreter.halt("STMT", lineNum, code, "STMT type is not valid.");
 	}
 	
+	public String type()
+	{
+		return stmtType;
+	}
+	
 	public void print() 
 	{
 		switch(stmtType)
@@ -86,6 +95,9 @@ public class STMT extends Variable
 				break;
 			case "method":
 				((METHOD)stmt).print();
+				break;
+			case "return":
+				((RETURN)stmt).print();
 				break;
 			case "if":
 				((IF)stmt).print();
@@ -123,6 +135,9 @@ public class STMT extends Variable
 			case "method":
 				((METHOD)stmt).validate();
 				break;
+			case "return":
+				((RETURN)stmt).validate();
+				break;
 			case "if":
 				((IF)stmt).validate();
 				break;
@@ -157,6 +172,9 @@ public class STMT extends Variable
 				break;
 			case "method":
 				((METHOD)stmt).execute();
+				break;
+			case "return":
+				((RETURN)stmt).execute(null);
 				break;
 			case "if":
 				((IF)stmt).execute();

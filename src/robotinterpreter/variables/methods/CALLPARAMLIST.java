@@ -72,7 +72,7 @@ public class CALLPARAMLIST extends Variable
 			else
 			{
 				//3
-				String callType = call.getType();
+				String callType = call.type();
 				String defType = paramdef.type();
 				if(!callType.equals(defType))
 				{

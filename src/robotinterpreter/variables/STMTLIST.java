@@ -2,6 +2,7 @@ package robotinterpreter.variables;
 
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
+import robotinterpreter.variables.methods.external.ExtMethod;
 
 public class STMTLIST extends Variable
 {
@@ -25,6 +26,16 @@ public class STMTLIST extends Variable
 			nextStmt = new STMTLIST(body, c);
 		}
 		else nextStmt = null;
+	}
+	
+	public STMT getStmt() 
+	{
+		return stmt;
+	}
+	
+	public STMTLIST getNextStmt()
+	{
+		return nextStmt;
 	}
 	
 	public void print() 

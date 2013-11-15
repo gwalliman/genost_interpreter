@@ -60,7 +60,7 @@ public class ASSIGNMENT extends Variable
 		}
 		
 		String lhsType = lhs.type();
-		String rhsType = call.getType();
+		String rhsType = call.type();
 		
 		if(!lhsType.equals(rhsType))
 		{

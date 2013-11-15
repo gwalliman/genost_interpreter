@@ -48,7 +48,7 @@ public class CALL extends Variable
 		else RobotInterpreter.halt("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
 	}
 	
-	public String getType()
+	public String type()
 	{
 		switch(callType)
 		{

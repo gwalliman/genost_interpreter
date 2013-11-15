@@ -7,6 +7,7 @@ import java.util.Map;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
+import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.vars.VARDECL;
 
 public class BODY extends Variable
@@ -14,6 +15,8 @@ public class BODY extends Variable
 	private STMTLIST stmtList;
 	private int startLine;
 	private int finishLine;
+	
+	public METHODDEFINE method;
 	public ArrayList<VARDECL> varTable;
 
 	public BODY(BODY b, Code c)
@@ -50,6 +53,11 @@ public class BODY extends Variable
 		}
 		else RobotInterpreter.halt("BODY", c.currentLineNum(), c.currentLine(), "Body must end with }");
 
+	}
+	
+	public STMTLIST getStmtList()
+	{
+		return stmtList;
 	}
 	
 	public int getStartLine()

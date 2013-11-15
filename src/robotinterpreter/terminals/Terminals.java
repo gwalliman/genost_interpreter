@@ -35,7 +35,7 @@ public class Terminals
 	private static String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT,};
 	public static ArrayList<String> symbolTerminals = new ArrayList<String>(Arrays.asList(symbolTerminalsArray));
 	
-	private static String[] dataTypeArray = { "int", "string", "bool"};
+	private static String[] dataTypeArray = { "void", "int", "string", "bool"};
 	public static ArrayList<String> dataTypes = new ArrayList<String>(Arrays.asList(dataTypeArray));
 	
 	private static String[] logOpArray = {AND, OR};
@@ -44,7 +44,7 @@ public class Terminals
 	private static String[] booleanValsArray = {"true", "false"};
 	public static ArrayList<String> booleanVals = new ArrayList<String>(Arrays.asList(booleanValsArray));
 		
-	private static String[] stmtTypesArray = { "assign", "vardecl", "methoddefine", "method", "if", "elseif", "else", "loopuntil", "loopfor", "waituntil", "waitfor" };
+	private static String[] stmtTypesArray = { "assign", "vardecl", "methoddefine", "method", "return", "if", "elseif", "else", "loopuntil", "loopfor", "waituntil", "waitfor" };
 	public static ArrayList<String> stmtTypes = new ArrayList<String>(Arrays.asList(stmtTypesArray));
 	
 	private static String[] callTypesArray = { "var", "method" };
