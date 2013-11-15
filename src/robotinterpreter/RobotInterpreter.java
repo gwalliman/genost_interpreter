@@ -2,7 +2,6 @@ package robotinterpreter;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
@@ -25,6 +24,7 @@ public class RobotInterpreter
 	public static void interpret(File codeFile)
 	{
 		//varTable = new ArrayList<VARDECL>();
+		varStack = new ArrayList<Map<String, Object>>();
 		methodTable = new ArrayList<METHODDEFINE>();
 		extMethodTable = new ArrayList<Object>();
 		
@@ -57,11 +57,22 @@ public class RobotInterpreter
 		//Link up certain items: varcalls to variable array, method calls to actual method code, if/loop eventualities, etc.
 		//Check type matching, etc.
 		b.validate();
+		
+		//Validate external methods
+		for(String id : ExtMethod.extMethods)
+		{
+			findMethod(id).validate();
+		}
+		
 		RobotInterpreter.writeln("message", "=================");
 		RobotInterpreter.writeln("message", "Code fully validated!" + Code.newline + "=================");
 
 		//Step 3: Execute
-		//b.execute(null);
+		RobotInterpreter.writeln("message", "=================");
+		RobotInterpreter.writeln("message", "Execution output follows:" + Code.newline + "=================" + Code.newline);
+		b.execute(null);
+		RobotInterpreter.writeln("message", Code.newline + "=================");
+		RobotInterpreter.writeln("message", "End of execution" + Code.newline + "=================");
 	}
 	
 	public static Object getVar(String id)

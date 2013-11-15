@@ -82,7 +82,7 @@ public class METHODDEFINE extends Variable {
 		
 		for(Object ext : RobotInterpreter.extMethodTable)
 		{
-			if(((ExtMethod)ext).id() == s)
+			if(((ExtMethod)ext).id().equals(s))
 			{
 				type = ((ExtMethod)ext).type();
 				ArrayList<String> pt = new ArrayList<String>(Arrays.asList(((ExtMethod)ext).paramTypes()));
@@ -158,11 +158,15 @@ public class METHODDEFINE extends Variable {
 				p = p.nextParam();
 			}
 		}
-		codeBody.validate();
 		
-		if(!type.equals("void") && !hasReturn())
+		if(methodType.equals("internal"))
 		{
-			RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
+			codeBody.validate();
+			
+			if(!type.equals("void") && !hasReturn())
+			{
+				RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
+			}
 		}
 	}
 
@@ -193,7 +197,13 @@ public class METHODDEFINE extends Variable {
 		}
 		else if(methodType.equals("external"))
 		{
-			return RobotInterpreter.findMethod(id).execute(args);
+			for(Object ext : RobotInterpreter.extMethodTable)
+			{
+				if(((ExtMethod)ext).id().equals(id))
+				{
+					return ((ExtMethod)ext).execute(args);
+				}
+			}
 		}
 		
 		//We should never get here
