@@ -90,13 +90,13 @@ public class CONDITIONLIST extends Variable
 	
 	public void print() 
 	{
-		if(conType == "CONDITIONLIST")
+		if(conType.equals("CONDITIONLIST"))
 		{		
 			RobotInterpreter.write("parse", "[");
 			((CONDITIONLIST)con).print();
 			RobotInterpreter.write("parse", "]");
 		}
-		else if(conType == "CONDITION")
+		else if(conType.equals("CONDITION"))
 		{
 			((CONDITION)con).print();
 
@@ -114,11 +114,11 @@ public class CONDITIONLIST extends Variable
 	{ 
 		RobotInterpreter.writeln("validate", "Validating CONDITIONLIST");
 
-		if(conType == "CONDITIONLIST")
+		if(conType.equals("CONDITIONLIST"))
 		{		
 			((CONDITIONLIST)con).validate();
 		}
-		else if(conType == "CONDITION")
+		else if(conType.equals("CONDITION"))
 		{
 			((CONDITION)con).validate();
 		}
@@ -133,11 +133,11 @@ public class CONDITIONLIST extends Variable
 	public Object execute(Object args[]) 
 	{
 		boolean go = false;
-		if(conType == "CONDITIONLIST")
+		if(conType.equals("CONDITIONLIST"))
 		{		
 			go = (boolean) ((CONDITIONLIST)con).execute(null);
 		}
-		else if(conType == "CONDITION")
+		else if(conType.equals("CONDITION"))
 		{
 			go = (boolean) ((CONDITION)con).execute(null);
 		}

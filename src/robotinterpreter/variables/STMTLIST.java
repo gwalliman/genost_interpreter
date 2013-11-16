@@ -65,11 +65,15 @@ public class STMTLIST extends Variable
 	public Object execute(Object args[]) 
 	{
 		Object retVal = null;
-		retVal = stmt.execute(null);
+		retVal = stmt.execute(args);
 		
-		if(retVal == null && nextStmt != null)
+		if(retVal != null)
 		{
-			return nextStmt.execute(null);
+			return retVal;
+		}
+		else if(nextStmt != null)
+		{
+			return nextStmt.execute(args);
 		}
 		else return null;
 	}

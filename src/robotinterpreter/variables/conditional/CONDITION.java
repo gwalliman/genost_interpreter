@@ -78,29 +78,29 @@ public class CONDITION extends Variable
 		switch(comparator)
 		{
 			case Terminals.EQ:
-				if(lhs.type() == "string")
+				if(lhs.type().equals("string"))
 				{
 					go = ((String)l).equals((String)r);
 				}
-				else if(lhs.type() == "bool")
+				else if(lhs.type().equals("bool"))
 				{
 					go = ((boolean)l) == ((boolean)r);
 				}
-				else if(lhs.type() == "int")
+				else if(lhs.type().equals("int"))
 				{
 					go = ((int)l) == ((int)r);
 				}
 				break;
 			case Terminals.NEQ:
-				if(lhs.type() == "string")
+				if(lhs.type().equals("string"))
 				{
 					go = !((String)l).equals((String)r);
 				}
-				else if(lhs.type() == "bool")
+				else if(lhs.type().equals("bool"))
 				{
 					go = ((boolean)l) != ((boolean)r);
 				}
-				else if(lhs.type() == "int")
+				else if(lhs.type().equals("int"))
 				{
 					go = ((int)l) != ((int)r);
 				}

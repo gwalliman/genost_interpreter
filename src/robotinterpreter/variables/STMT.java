@@ -169,7 +169,7 @@ public class STMT extends Variable
 				//We don't execute the METHODDEFINE, as this will execute the actual method!
 				return null;
 			case "method":
-				return ((METHOD)stmt).execute(null);
+				return ((METHOD)stmt).execute(args);
 			case "return":
 				return ((RETURN)stmt).execute(null);
 			case "if":

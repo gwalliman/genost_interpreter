@@ -188,12 +188,7 @@ public class METHODDEFINE extends Variable {
 	{
 		if(methodType.equals("internal"))
 		{
-			for(int x = 0; x < args.length; x++)
-			{
-				String id = getParam(x).id();
-				RobotInterpreter.setVar(id, args[x]);
-			}
-			return codeBody.execute(null);
+			return codeBody.execute(args);
 		}
 		else if(methodType.equals("external"))
 		{

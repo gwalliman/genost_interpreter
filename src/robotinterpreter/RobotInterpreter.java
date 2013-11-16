@@ -77,7 +77,7 @@ public class RobotInterpreter
 	
 	public static Object getVar(String id)
 	{
-		for(int x = varStack.size() - 1; x <= 0; x--)
+		for(int x = varStack.size() - 1; x >= 0; x--)
 		{
 			Map<String, Object> m = varStack.get(x);
 			if(m.get(id) != null)
@@ -90,13 +90,13 @@ public class RobotInterpreter
 	
 	public static void setVar(String id, Object val)
 	{
-		for(int x = varStack.size() - 1; x <= 0; x--)
+		for(int x = varStack.size() - 1; x >= 0; x--)
 		{
 			Map<String, Object> m = varStack.get(x);
 			if(m.get(id) != null)
 			{
 				m.put(id, val);
-				continue;
+				break;
 			}
 		}
 	}

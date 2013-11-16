@@ -1,5 +1,7 @@
 package robotinterpreter.variables.methods;
 
+import java.util.ArrayList;
+
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
@@ -21,18 +23,54 @@ public class CALLPARAMLIST extends Variable
 		paramNum = p;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
-
-		String tokens[] = s.split(Terminals.COMMA);
 		
-		if(tokens[0].trim().length() > 0)
+		String tokens[] = Code.tokenize(s);
+		String argument = "";
+		String remainder = "";
+		
+		if(tokens[0].equals("method"))
 		{
-			call = new CALL(body, c, tokens[0]);
+			if(tokens[2] != Terminals.OPENPAREN)
+			{
+				RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "METHOD argument must have open paren following ID!");
+			}
+			
+			int closeParen = 2;
+			int counter = 1;
+			
+			while(counter != 0 && closeParen != tokens.length - 1)
+			{
+				closeParen++;
+				if(tokens[closeParen] == Terminals.OPENPAREN) counter++;
+				else if(tokens[closeParen] == Terminals.CLOSEPAREN) counter--;
+			}
+			
+			argument = Code.implode(tokens, " ", 0, closeParen);
+			if(tokens.length > closeParen)
+			{
+				//We do codeParen + 2 to skip over the comma
+				remainder = Code.implode(tokens, " ", closeParen + 2, tokens.length - 1);
+			}
+		}
+		else
+		{
+			String[] t = s.split(Terminals.COMMA, 2);
+			argument = t[0];
+			if(t.length > 1)
+			{
+				remainder = t[1];
+			}
+		}
+		
+		if(argument.trim().length() > 0)
+		{
+			call = new CALL(body, c, argument);
 		}
 		else RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
 
-		if(tokens.length > 1)
+		if(!remainder.isEmpty())
 		{
-			nextParam = new CALLPARAMLIST(body, c, Code.implode(tokens, ",", 1, tokens.length - 1), m, ++p);
+			nextParam = new CALLPARAMLIST(body, c, remainder, m, ++p);
 		}
 	}
 	

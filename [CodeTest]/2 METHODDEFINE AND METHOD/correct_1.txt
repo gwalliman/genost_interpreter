@@ -3,6 +3,7 @@
 	{
 		assign ASDF = int 20;
 		assign garret1 = bool false;
+		return int 0;
 	}
 	
 	vardecl int ASDF;

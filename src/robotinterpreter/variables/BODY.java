@@ -105,10 +105,19 @@ public class BODY extends Variable
 		}
 		RobotInterpreter.varStack.add(varMap);
 		
+		if(method != null && args != null)
+		{
+			for(int x = 0; x < args.length; x++)
+			{
+				String id = method.getParam(x).id();
+				RobotInterpreter.setVar(id, args[x]);
+			}
+		}
+		
 		Object retVal = null;
 		if(stmtList != null)
 		{
-			retVal = stmtList.execute(null);
+			retVal = stmtList.execute(args);
 		}
 		
 		//Remove this map from the top of the stack
