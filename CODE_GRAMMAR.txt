@@ -1,0 +1,129 @@
+//Robot Language Grammar v1.0
+//Author: Garret Walliman, 
+//This is a loose grammar. Basic syntax is described; however, advanced behavior is not defined.
+//Examples of this advanced behavior include (though are not necessarily limited to:)
+//	- Variable scoping not defined or enforced
+//	- No set description of where methods / variables may be defined, whether they must be defined before they are called, etc.
+//	- No enforcement of type consistency whatsoever (logical comparison, assignment, parameter passing, etc.)
+//These items will be dealt with as development continues. This includes finding new items.
+//Certain items may not present as much a problem as others, since this language is intended to always be procedurally generated.
+//Note that this language was designed to be easy to write a compiler for, not necessarily to write code with.
+//
+//Words in ALLCAPS are variables
+//Symbols or words in lowercase are terminals, unless part of a regex/set definition
+
+//Symbol Terminators -------------------------------------------------
+OPENPAREN:		(
+CLOSEPAREN:		)
+OPENBRACE:		{
+CLOSEBRACE:		}
+OPENBRACKET:		[
+CLOSEBRACKET:		]
+QUOTE:			"
+SEMICOLON:		;
+EQUALS:			=
+COMMA:			,
+LOGEQUAL:		==
+NOTEQUAL:		!=
+LESS:			<
+GREATER:		>
+LESSEQUAL:		<=
+GREATERQUAL:		>=
+NEWLINE:		\n
+			\n NEWLINE
+SPACE:			_ (this represents a single space)
+
+
+//Word Terminators -------------------------------------------------
+ID:			(alpha)(alpha + num)*
+
+INTEGER:		{ -n, -n-1, ... -1, 0, 1, ... n-1, n } where n is infinity
+STRING:			QUOTE (alpha + num)* QUOTE
+BOOLEAN:		{ false, true }
+
+TYPE:			{ int, string, bool }
+COMPARATOR:		{ LOGEQUAL, NOTEQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL }
+LOGOPERATOR:		{ and, or }
+
+//Variables -------------------------------------------------
+VARDECL:		vardeclare _ TYPE _ ID 
+
+VARCALL:		var _ ID
+
+//Methods -------------------------------------------------
+DEFPARAMLIST:		TYPE _ ID 
+		 	TYPE _ ID COMMA _ DEFPARAMLIST
+
+METHODDECL: 		methoddefine _ TYPE _ ID _ OPENPAREN DEFPARAMLIST CLOSEPAREN NEWLINE BODY
+			methoddefine _ TYPE _ ID _ OPENPAREN CLOSEPAREN NEWLINE BODY
+			
+METHODCALL:		method _ ID _ OPENPAREN CALLPARAMLIST CLOSEPAREN
+			method _ ID _ OPENPAREN CLOSEPAREN
+			
+RETURN:			return CALL SEMICOLON
+			
+			
+CALL:			VARCALL
+			METHODCALL
+			EXTMETHODCALL
+			int _ INTEGER
+			string _ STRING
+			bool _ BOOLEAN
+			
+CALLPARAMLIST:		CALL
+			CALL COMMA _ CALLPARAMLIST
+
+//Assignment -------------------------------------------------
+ASSIGNMENT: 		assign _ ID _ EQUALS _ CALL
+
+			
+//Conditions -------------------------------------------------		
+CONDITION:		OPENBRACKET CALL _ COMPARATOR _ CALL CLOSEBRACKET
+			OPENBRACKET CONDITIONLIST CLOSEBRACKET
+
+CONDITIONLIST:		CONDITION
+			CONDITION _ LOGOPERATOR _ CONDITIONLIST
+
+//If -------------------------------------------------
+IF:			if _ OPENPAREN CONDITIONLIST CLOSEPAREN NEWLINE BODY
+
+ELSEIF:			elseif _ OPENPAREN CONDITIONLIST CLOSEPAREN NEWINE BODY
+			elseif _ OPENPAREN CONDITIONLIST CLOSEPAREN NEWLINE BODY ELSEIF
+
+ELSE:			else _ BODY
+
+IFSTMT:			IF
+			IF ELSEIF
+			IF ELSEIF NEWLINE ELSE
+			IF ELSE
+
+//Loop -------------------------------------------------
+LOOPUNTIL:		loopuntil _ OPENPAREN CONDITIONLIST CLOSEPAREN NEWLINE BODY
+
+LOOPFOR:		loopfor _ INTEGER NEWLINE BODY
+
+LOOPSTMT:		LOOPUNTIL
+			LOOPFOR
+
+//Wait -------------------------------------------------
+WAITUNTIL:		waituntil _ OPENPAREN CONDITIONLIST CLOSEPAREN SEMICOLON
+
+WAITFOR:		waitfor _ INTEGER SEMICOLON
+
+WAITSTMT:		WAITUNTIL
+			WAITFOR
+
+//General -------------------------------------------------			
+STMT:		METHODDECL
+			METHODCALL SEMICOLON 
+			EXTMETHODCALL SEMICOLON
+			VARDECL SEMICOLON 
+			ASSIGNMENT SEMICOLON 
+			IFSTMT
+			LOOPSTMT
+			WAITSTMT
+
+STMTLIST:		STMT NEWLINE
+			STMT NEWLINE STMTLIST
+			
+BODY:			OPENBRACE NEWLINE STMTLIST CLOSEBRACE NEWLINE
