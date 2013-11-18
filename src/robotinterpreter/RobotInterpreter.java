@@ -14,16 +14,60 @@ import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.methods.external.ExtMethod;
 import robotinterpreter.variables.vars.VARDECL;
 
+/**
+ * class RobotInterpreter
+ * 
+ * This class is the "main" class for the Robot Interpreter program.
+ * It contains functions for managing master tables of defined methods and the values of variables in execution.
+ * It also contains functions pertaining to data being output to a log.
+ * Finally, it contains the main method which executes each stage of interpretation
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
 public class RobotInterpreter 
 {
+	/*
+	 * The varStack is a stack containing lists of active variables.
+	 * Whenever we enter a body (either the main program body or a method body) a new layer is added to the stack
+	 * containing entries for each variable defined in that body. This stack layer is then removed after exiting the body.
+	 */
 	public static ArrayList<Map<String, Object>> varStack;
+	
+	/*
+	 * The methodTable contains an entry for each method defined in the program.
+	 * It has entries for both methods defined within the code, as well as for a set of external methods, which are read in at program start.
+	 */
 	public static ArrayList<METHODDEFINE> methodTable;
+	
+	/*
+	 * The extMethodTable is used to hold all external methods, which are read in at program start.
+	 */
 	public static ArrayList<Object> extMethodTable;
+	
+	//BODY b is the "head" data structure for the program tree. It is the main program body which contains everything else.
 	public static BODY b;
 	
+	/**
+	 * public static void interpret(File codeFile)
+	 * 
+	 * This function is the "master" function, orchestrating virtually all interpretation functionality.
+	 * 
+	 * The function first reads in all externally defined methods.
+	 * 
+	 * It then receives the file containing the program code and goes through three steps:
+	 * 1. Parsing: the program is parsed lexically and translated into various linked data structures.
+	 * 		During lexical parsing, basic syntax error checking is performed.
+	 * 2. Validation and Linking: the program is scanned for advanced syntax errors (i.e. type mismatch).
+	 * 		Certain links are made within the program (e.g. a variable call is linked to the declaration of said variable, giving the call access to the variable's type)
+	 * 3. Execution: the program is run. Steps 1 and 2 should take care of virtually all errors, so upon reaching execution, the program should run without errors.
+	 * 		Exceptions may occur in certain rare cases (for example, divide by zero errors, which must be handled at the execution stage)
+	 * 
+	 * @param codeFile the file which contains the program code
+	 */
 	public static void interpret(File codeFile)
 	{
-		//varTable = new ArrayList<VARDECL>();
+		//Initialize the stacks / tables
 		varStack = new ArrayList<Map<String, Object>>();
 		methodTable = new ArrayList<METHODDEFINE>();
 		extMethodTable = new ArrayList<Object>();
@@ -31,10 +75,13 @@ public class RobotInterpreter
 		//Step 0: Load in external methods.
 		for(String id : ExtMethod.extMethods)
 		{
+			//Every external method is stored in its own separate class in the robotinterpreter.variables.methods.external package.
+			//The names of these methods (which is the same as the class they are defined in) are stored in an array in the ExtMethod class.
+			//We go through this array to find each external method class, create a new instance of it, and add it to the two method tables
 			try 
 			{
-				Class extC = Class.forName("robotinterpreter.variables.methods.external." + id);
-				Constructor extCtor = extC.getConstructor();
+				Class<?> extC = Class.forName("robotinterpreter.variables.methods.external." + id);
+				Constructor<?> extCtor = extC.getConstructor();
 				Object extInst = extCtor.newInstance();
 				extMethodTable.add(extInst);
 				methodTable.add(new METHODDEFINE(id));
@@ -45,7 +92,9 @@ public class RobotInterpreter
 			} 
 		}
 		
+		//Take the code file and get it ready for parsing.
 		Code c = new Code(codeFile);
+		
 		//Step 1: Parse.
 		//Go over each line of code and populate with information immediately available
 		b = new BODY(null, c);
@@ -67,7 +116,7 @@ public class RobotInterpreter
 		RobotInterpreter.writeln("message", "=================");
 		RobotInterpreter.writeln("message", "Code fully validated!" + Code.newline + "=================");
 
-		//Step 3: Execute
+		//Step 3: Execute program
 		RobotInterpreter.writeln("message", "=================");
 		RobotInterpreter.writeln("message", "Execution output follows:" + Code.newline + "=================" + Code.newline);
 		b.execute(null);
@@ -75,6 +124,18 @@ public class RobotInterpreter
 		RobotInterpreter.writeln("message", "End of execution" + Code.newline + "=================");
 	}
 	
+	/**
+	 * public static Object getVar(String id)
+	 * 
+	 * Used to get the value of a variable stored in the variable stack.
+	 * We start at the top of the stack and try to find a variable matching the provided id.
+	 * If none is found, then the variable must be defined at a lower level, so we move down one level and try again.
+	 * 
+	 * This function should only ever be called during execution, so any variable that we search for should be defined (invalid varcalls are taken care of in validation)
+	 * 
+	 * @param id the name of the variable we are trying to get.
+	 * @return the value of the variable as an Object.
+	 */
 	public static Object getVar(String id)
 	{
 		for(int x = varStack.size() - 1; x >= 0; x--)
@@ -88,6 +149,18 @@ public class RobotInterpreter
 		return null;
 	}
 	
+	/**
+	 * public static Object setVar(String id, Object val)
+	 * 
+	 * Used to set the value of a variable stored in the variable stack.
+	 * We start at the top of the stack and try to find a variable matching the provided id.
+	 * If none is found, then the variable must be defined at a lower level, so we move down one level and try again.
+	 * 
+	 * This function should only ever be called during execution, so any variable that we search for should be defined (invalid varcalls are taken care of in validation)
+	 * 
+	 * @param id the name of the variable we are trying to set.
+	 * @param val the value which we will set
+	 */
 	public static void setVar(String id, Object val)
 	{
 		for(int x = varStack.size() - 1; x >= 0; x--)
@@ -101,6 +174,26 @@ public class RobotInterpreter
 		}
 	}
 	
+	/**
+	 * public static VARDECL findVar(BODY b, String id)
+	 * 
+	 * This function is used to find the declaration of a variable.
+	 * These VARDECLs are stored in tables located within code bodies. The main code body will contain all variables defined within its scope,
+	 * and method bodies will contain all parameters and any other variables defined in its scope.
+	 * Every body also contains a link to its parent body.
+	 * 
+	 * In this function we search the varTable of the provided body for a VARDECL matching the provided id.
+	 * If one is not found, we move up to the parent body and try again. This continues until the variable is found.
+	 * 
+	 * This function should only be called using ids retrieved from code statements. These ids should always be valid; invalid variable names should be detected during validation.
+	 * 
+	 * Note that if / loop bodies do not have valid varTables, but no statement within these bodies is linked to the if / loop body, but instead whatever parent body has a valid vartable, so
+	 * this method should never be called with an if / loop codebody.
+	 * 
+	 * @param b	the "lowest" codebody where we will begin our search
+	 * @param id	the id of the VARDECL we are looking for
+	 * @return	the found VARDECL
+	 */
 	public static VARDECL findVar(BODY b, String id)
 	{
 		for(VARDECL var : b.varTable)
@@ -115,6 +208,17 @@ public class RobotInterpreter
 		else return null;
 	}
 	
+	/**
+	 * public static METHODDEFINE findMethod(String id)
+	 * 
+	 * This method is used to find the method declaration structure in the methodTable.
+	 * The methodTable is universal and unscoped (unlike variables) so we simply search the table to find the correct method.
+	 * 
+	 * This should never be called with an invalid method id; invalid method calls should be detected during validation.
+	 * 
+	 * @param id	the method id
+	 * @return	the corresponding METHODDEFINE
+	 */
 	public static METHODDEFINE findMethod(String id)
 	{
 		for(METHODDEFINE method : methodTable)
