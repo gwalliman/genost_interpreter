@@ -23,18 +23,19 @@ public class Terminals
 	public static final String LTE = "<=";
 	public static final String GTE = ">=";
 	
+	//Symbol Arrays
+	private static final String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT,};
+	public static final ArrayList<String> symbolTerminals = new ArrayList<String>(Arrays.asList(symbolTerminalsArray));
+
+	//NOTE: Order matters in this array! We must ensure that symbols which are contained in other symbols come LAST.
 	public static final String[] comparatorArray = { EQ, NEQ, LT, GT, LTE, GTE };
 	public static final ArrayList<String> comparators = new ArrayList<String>(Arrays.asList(comparatorArray));
-	
+		
 	//Words
 	public static final String AND = "and";
 	public static final String OR = "or";
 	
 	//Word Arrays
-	//NOTE: Order matters in this array! We must ensure that symbols which are contained in other symbols come LAST.
-	private static final String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT,};
-	public static final ArrayList<String> symbolTerminals = new ArrayList<String>(Arrays.asList(symbolTerminalsArray));
-	
 	private static final String[] dataTypeArray = { "void", "int", "string", "bool"};
 	public static final ArrayList<String> dataTypes = new ArrayList<String>(Arrays.asList(dataTypeArray));
 	

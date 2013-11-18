@@ -229,6 +229,14 @@ public class RobotInterpreter
 		return null;
 	}
 	
+	/**
+	 * public static void printAllVars()
+	 * 
+	 * Printer function that prints the defined variables.
+	 * First prints the vars defined in the main codebody,
+	 * and then prints the vars defined in each individual method's codebody.
+	 * 
+	 */
 	public static void printAllVars()
 	{
 		printVars(b, "Global");
@@ -241,6 +249,14 @@ public class RobotInterpreter
 		}
 	}
 	
+	/**
+	 * public static void printVars(BODY b, String s)
+	 * 
+	 * Prints the defined variables for a single codebody.;
+	 * 
+	 * @param b	the body which we are printing variables for
+	 * @param s	the name of the scope in which we are printing. Is only printed in a debug statement, so can be whatever you want.
+	 */
 	public static void printVars(BODY b, String s)
 	{
 		RobotInterpreter.writeln("debug", "===================");
@@ -255,6 +271,12 @@ public class RobotInterpreter
 		RobotInterpreter.writeln("debug", "===================");
 	}
 	
+	/**
+	 * public static void printMethods()
+	 * 
+	 * Prints all defined methods using the methods' print function.
+	 * 
+	 */
 	public static void printMethods()
 	{
 		RobotInterpreter.writeln("debug", "===================");
@@ -269,6 +291,17 @@ public class RobotInterpreter
 		RobotInterpreter.writeln("debug", "===================");
 	}
 	
+	/**
+	 * private static boolean showMessage(String t)
+	 * 
+	 * This function is used to control which printed messages should be printed to the screen.
+	 * Modify the values in here to turn on or off different message printings.
+	 * 
+	 * TODO: hook this method into the UI so these can be turned on / off dynamically.
+	 * 
+	 * @param t	the type of message we are querying about
+	 * @return	true if we can print this type of message, false otherwise
+	 */
 	private static boolean showMessage(String t)
 	{
 		switch(t)
@@ -288,6 +321,16 @@ public class RobotInterpreter
 		}
 	}
 	
+	/**
+	 * public static void write(String type, String s)
+	 * 
+	 * This function should be used within the program to write a message to the screen WITHOUT a linebreak.
+	 * We wrap standard print calls in our own message to both control whether messages are printed or not,
+	 * as well as to make it easy to control where those messages are printed to (i.e. Java console log vs. a JTextField)
+	 * 
+	 * @param type	the type of message we are printing
+	 * @param s	the message itself
+	 */
 	public static void write(String type, String s)
 	{
 		if(showMessage(type))
@@ -297,6 +340,16 @@ public class RobotInterpreter
 		}
 	}
 	
+	/**
+	 * public static void writeln(String type, String s)
+	 * 
+	 * This function should be used within the program to write a message to the screen WITH a linebreak.
+	 * We wrap standard print calls in our own message to both control whether messages are printed or not,
+	 * as well as to make it easy to control where those messages are printed to (i.e. Java console log vs. a JTextField)
+	 * 
+	 * @param type	the type of message we are printing
+	 * @param s	the message itself
+	 */
 	public static void writeln(String type, String s)
 	{
 		if(showMessage(type))
@@ -306,6 +359,20 @@ public class RobotInterpreter
 		}
 	}
 	
+	/**
+	 * public static void halt(String var, int lineNum, String c, String error)
+	 * 
+	 * This method should be called anytime the parser / validator / execution encounters an error in the code.
+	 * The method will print an error message to the screen and stop the program.
+	 * 
+	 * TODO: Make this stop the code interpretation but not the Robot Interpreter program itself.
+	 * TODO: Allow us to scan for multiple errors instead of halting at the very first error.
+	 * 
+	 * @param var	the Variable structure (i.e. BODY, IF, ASSIGN) where the error occurred
+	 * @param lineNum	the line number where the error occurred
+	 * @param c	the code fragment which contains the error
+	 * @param error	a String describing the error
+	 */
 	public static void halt(String var, int lineNum, String c, String error)
 	{
 		String fu = var.toUpperCase() + " ERROR Near Line " + lineNum + ": " + c + Code.newline + error;
@@ -313,6 +380,14 @@ public class RobotInterpreter
 		System.exit(1);
 	}
 	
+	/**
+	 * public static void main(String args[])
+	 * 
+	 * Main function.
+	 * Initializes the terminals, sets up the GUI.
+	 * 
+	 * @param args
+	 */
 	public static void main(String args[])
 	{
 		Terminals.init();
