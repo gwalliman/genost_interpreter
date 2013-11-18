@@ -22,6 +22,9 @@ public class METHODDEFINE extends Variable {
 	private BODY codeBody;
 	private DEFPARAMLIST params;
 	private int numParams = 0;
+	
+	private static final String INTERNAL = "internal";
+	private static final String EXTERNAL = "external";
 
 	//Define INTERNAL method
 	public METHODDEFINE(BODY b, Code c)
@@ -30,7 +33,7 @@ public class METHODDEFINE extends Variable {
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
 		
-		methodType = "internal";
+		methodType = INTERNAL;
 			
 		String[] tokens = Code.tokenize(c.currentLine());
 		
@@ -76,7 +79,7 @@ public class METHODDEFINE extends Variable {
 	{
 		lineNum = -1;
 		code = "Externally defined";
-		methodType = "external";
+		methodType = EXTERNAL;
 		id = s;
 		codeBody = null;
 		
@@ -159,11 +162,11 @@ public class METHODDEFINE extends Variable {
 			}
 		}
 		
-		if(methodType.equals("internal"))
+		if(methodType.equals(INTERNAL))
 		{
 			codeBody.validate();
 			
-			if(!type.equals("void") && !hasReturn())
+			if(!type.equals(Terminals.VOID) && !hasReturn())
 			{
 				RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
 			}
@@ -175,7 +178,7 @@ public class METHODDEFINE extends Variable {
 		STMTLIST s = codeBody.getStmtList();
 		while(s != null)
 		{
-			if(s.getStmt().type().equals("return"))
+			if(s.getStmt().type().equals(Terminals.RETURN))
 				return true;
 			else s = s.getNextStmt();
 		}
@@ -186,11 +189,11 @@ public class METHODDEFINE extends Variable {
 	@Override
 	public Object execute(Object args[]) 
 	{
-		if(methodType.equals("internal"))
+		if(methodType.equals(INTERNAL))
 		{
 			return codeBody.execute(args);
 		}
-		else if(methodType.equals("external"))
+		else if(methodType.equals(EXTERNAL))
 		{
 			for(Object ext : RobotInterpreter.extMethodTable)
 			{

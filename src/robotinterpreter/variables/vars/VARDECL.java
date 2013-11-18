@@ -24,7 +24,7 @@ public class VARDECL extends Variable {
 
 		type = tokens[1];
 		if(!Terminals.dataTypes.contains(type)) RobotInterpreter.halt("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");
-		if(type.equals("void")) RobotInterpreter.halt("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");	
+		if(type.equals(Terminals.VOID)) RobotInterpreter.halt("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");	
 		
 		id = ID.validate(tokens[2], c);
 		

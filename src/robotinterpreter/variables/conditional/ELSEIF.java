@@ -43,7 +43,7 @@ public class ELSEIF extends Variable
 		
 		String[] newTokens = Code.tokenize(c.currentLine());
 		Code.printTokens(newTokens);
-		if(newTokens[0].equals("elseif"))
+		if(newTokens[0].equals(Terminals.ELSEIF))
 		{
 			elseif = new ELSEIF(body, c);
 		}

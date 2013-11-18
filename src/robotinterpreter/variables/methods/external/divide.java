@@ -1,16 +1,17 @@
 package robotinterpreter.variables.methods.external;
 
 import robotinterpreter.RobotInterpreter;
+import robotinterpreter.terminals.Terminals;
 
 public class divide extends ExtMethod 
 {
 	public divide()
 	{
 		id = "add";
-		type = "int";
+		type = Terminals.INT;
 		paramTypes = new String[2];
-		paramTypes[0] = "int";
-		paramTypes[1] = "int";
+		paramTypes[0] = Terminals.INT;
+		paramTypes[1] = Terminals.INT;
 	}
 	
 	public Object execute(Object[] args) 

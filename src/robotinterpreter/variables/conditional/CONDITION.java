@@ -61,7 +61,7 @@ public class CONDITION extends Variable
 		{
 			RobotInterpreter.halt("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
 		}
-		if((lhsType.equals("string") || lhsType.equals("bool")) && (comparator != Terminals.EQ && comparator != Terminals.NEQ))
+		if((lhsType.equals(Terminals.STRING) || lhsType.equals(Terminals.BOOL)) && (comparator != Terminals.EQ && comparator != Terminals.NEQ))
 		{
 			RobotInterpreter.halt("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
 		}
@@ -78,29 +78,29 @@ public class CONDITION extends Variable
 		switch(comparator)
 		{
 			case Terminals.EQ:
-				if(lhs.type().equals("string"))
+				if(lhs.type().equals(Terminals.STRING))
 				{
 					go = ((String)l).equals((String)r);
 				}
-				else if(lhs.type().equals("bool"))
+				else if(lhs.type().equals(Terminals.BOOL))
 				{
 					go = ((boolean)l) == ((boolean)r);
 				}
-				else if(lhs.type().equals("int"))
+				else if(lhs.type().equals(Terminals.INT))
 				{
 					go = ((int)l) == ((int)r);
 				}
 				break;
 			case Terminals.NEQ:
-				if(lhs.type().equals("string"))
+				if(lhs.type().equals(Terminals.STRING))
 				{
 					go = !((String)l).equals((String)r);
 				}
-				else if(lhs.type().equals("bool"))
+				else if(lhs.type().equals(Terminals.BOOL))
 				{
 					go = ((boolean)l) != ((boolean)r);
 				}
-				else if(lhs.type().equals("int"))
+				else if(lhs.type().equals(Terminals.INT))
 				{
 					go = ((int)l) != ((int)r);
 				}

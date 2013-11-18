@@ -31,43 +31,43 @@ public class STMT extends Variable
 			stmtType = type[0];
 			switch(stmtType)
 			{
-				case "vardecl":
+				case Terminals.VARDECL:
 					stmt = new VARDECL(body, c);
 					break;
-				case "assign":
+				case Terminals.ASSIGN:
 					stmt = new ASSIGNMENT(body, c);
 					break;
-				case "methoddefine":
+				case Terminals.METHODDEFINE:
 					stmt = new METHODDEFINE(body, c);
 					break;
-				case "method":
+				case Terminals.METHOD:
 					String lastchar = c.currentLine().substring(c.currentLine().length() - 1);
 					if(!lastchar.equals(Terminals.SEMICOLON))
 						RobotInterpreter.halt("METHOD", lineNum, code, "Missing Semicolon");
 					stmt = new METHOD(body, c, c.currentLine().substring(0, c.currentLine().length() - 1));
 					break;
-				case "return":
+				case Terminals.RETURN:
 					stmt = new RETURN(body, c);
 					break;
-				case "if":
+				case Terminals.IF:
 					stmt = new IF(body, c);
 					break;
-				case "elseif":
+				case Terminals.ELSEIF:
 					RobotInterpreter.halt("STMT", lineNum, code, "ELSEIF must follow IF");
 					break;
-				case "else":
+				case Terminals.ELSE:
 					RobotInterpreter.halt("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
 					break;
-				case "loopuntil":
+				case Terminals.LOOPUNTIL:
 					stmt = new LOOPUNTIL(body, c);
 					break;
-				case "loopfor":
+				case Terminals.LOOPFOR:
 					stmt = new LOOPFOR(body, c);
 					break;
-				case "waituntil":
+				case Terminals.WAITUNTIL:
 					stmt = new WAITUNTIL(body, c);
 					break;
-				case "waitfor":
+				case Terminals.WAITFOR:
 					stmt = new WAITFOR(body, c);
 					break;
 			}
@@ -84,34 +84,34 @@ public class STMT extends Variable
 	{
 		switch(stmtType)
 		{
-			case "vardecl":
+			case Terminals.VARDECL:
 				((VARDECL)stmt).print();
 				break;
-			case "assign":
+			case Terminals.ASSIGN:
 				((ASSIGNMENT)stmt).print();
 				break;
-			case "methoddefine":
+			case Terminals.METHODDEFINE:
 				((METHODDEFINE)stmt).print();
 				break;
-			case "method":
+			case Terminals.METHOD:
 				((METHOD)stmt).print();
 				break;
-			case "return":
+			case Terminals.RETURN:
 				((RETURN)stmt).print();
 				break;
-			case "if":
+			case Terminals.IF:
 				((IF)stmt).print();
 				break;
-			case "loopuntil":
+			case Terminals.LOOPUNTIL:
 				((LOOPUNTIL)stmt).print();
 				break;
-			case "loopfor":
+			case Terminals.LOOPFOR:
 				((LOOPFOR)stmt).print();
 				break;
-			case "waituntil":
+			case Terminals.WAITUNTIL:
 				((WAITUNTIL)stmt).print();
 				break;
-			case "waitfor":
+			case Terminals.WAITFOR:
 				((WAITFOR)stmt).print();
 				break;
 		}
@@ -123,34 +123,34 @@ public class STMT extends Variable
 		RobotInterpreter.writeln("validate", "Validating STMT");
 		switch(stmtType)
 		{
-			case "vardecl":
+			case Terminals.VARDECL:
 				((VARDECL)stmt).validate();
 				break;
-			case "assign":
+			case Terminals.ASSIGN:
 				((ASSIGNMENT)stmt).validate();
 				break;
-			case "methoddefine":
+			case Terminals.METHODDEFINE:
 				((METHODDEFINE)stmt).validate();
 				break;
-			case "method":
+			case Terminals.METHOD:
 				((METHOD)stmt).validate();
 				break;
-			case "return":
+			case Terminals.RETURN:
 				((RETURN)stmt).validate();
 				break;
-			case "if":
+			case Terminals.IF:
 				((IF)stmt).validate();
 				break;
-			case "loopuntil":
+			case Terminals.LOOPUNTIL:
 				((LOOPUNTIL)stmt).validate();
 				break;
-			case "loopfor":
+			case Terminals.LOOPFOR:
 				((LOOPFOR)stmt).validate();
 				break;
-			case "waituntil":
+			case Terminals.WAITUNTIL:
 				((WAITUNTIL)stmt).validate();
 				break;
-			case "waitfor":
+			case Terminals.WAITFOR:
 				((WAITFOR)stmt).validate();
 				break;
 		}	
@@ -161,26 +161,26 @@ public class STMT extends Variable
 	{
 		switch(stmtType)
 		{
-			case "vardecl":
+			case Terminals.VARDECL:
 				return ((VARDECL)stmt).execute(null);
-			case "assign":
+			case Terminals.ASSIGN:
 				return ((ASSIGNMENT)stmt).execute(null);
-			case "methoddefine":
+			case Terminals.METHODDEFINE:
 				//We don't execute the METHODDEFINE, as this will execute the actual method!
 				return null;
-			case "method":
+			case Terminals.METHOD:
 				return ((METHOD)stmt).execute(args);
-			case "return":
+			case Terminals.RETURN:
 				return ((RETURN)stmt).execute(null);
-			case "if":
+			case Terminals.IF:
 				return ((IF)stmt).execute(null);
-			case "loopuntil":
+			case Terminals.LOOPUNTIL:
 				return ((LOOPUNTIL)stmt).execute(null);
-			case "loopfor":
+			case Terminals.LOOPFOR:
 				return ((LOOPFOR)stmt).execute(null);
-			case "waituntil":
+			case Terminals.WAITUNTIL:
 				return ((WAITUNTIL)stmt).execute(null);
-			case "waitfor":
+			case Terminals.WAITFOR:
 				return ((WAITFOR)stmt).execute(null);
 			default:
 				return null;

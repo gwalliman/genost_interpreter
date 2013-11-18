@@ -43,12 +43,12 @@ public class IF extends Variable
 		c.nextLine();
 		
 		String[] newTokens = Code.tokenize(c.currentLine());
-		if(newTokens[0].equals("elseif"))
+		if(newTokens[0].equals(Terminals.ELSEIF))
 		{
 			elseif = new ELSEIF(body, c);
 		}
 		newTokens = Code.tokenize(c.currentLine());
-		if(newTokens[0].equals("else"))
+		if(newTokens[0].equals(Terminals.ELSE))
 		{
 			els = new ELSE(body, c);
 		}

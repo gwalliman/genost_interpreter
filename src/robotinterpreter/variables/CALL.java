@@ -27,20 +27,20 @@ public class CALL extends Variable
 		{
 			switch(callType)
 			{
-				case "var":
+				case Terminals.VAR:
 					call = new VAR(body, c, Code.implode(tokens, " ", 1));
 					break;
-				case "method":
+				case Terminals.METHOD:
 					call = new METHOD(body, c, Code.implode(tokens, " ", 0));
 					break;
-				case "int":
+				case Terminals.INT:
 					call = new INTEGER(body, c, Code.implode(tokens, " ", 1));
 					break;
-				case "string":
+				case Terminals.STRING:
 					code = code.trim();
 					call = new STRING(body, c, code.substring(6, code.length()).trim());
 					break;
-				case "bool":
+				case Terminals.BOOL:
 					call = new BOOLEAN(body, c, Code.implode(tokens, " ", 1));
 					break;
 			}
@@ -52,15 +52,15 @@ public class CALL extends Variable
 	{
 		switch(callType)
 		{
-			case "var":
+			case Terminals.VAR:
 				return RobotInterpreter.findVar(body, ((VAR)call).id()).type();
-			case "method":
+			case Terminals.METHOD:
 				return RobotInterpreter.findMethod(((METHOD)call).id()).type();
-			case "int":
+			case Terminals.INT:
 				return "int";
-			case "string":
+			case Terminals.STRING:
 				return "string";
-			case "bool":
+			case Terminals.BOOL:
 				return "bool";
 		}
 		RobotInterpreter.halt("CALL", lineNum, code, "Invalid call type");
@@ -72,19 +72,19 @@ public class CALL extends Variable
 	{
 		switch(callType)
 		{
-			case "var":
+			case Terminals.VAR:
 				((VAR)call).print();
 				break;
-			case "method":
+			case Terminals.METHOD:
 				((METHOD)call).print();
 				break;
-			case "int":
+			case Terminals.INT:
 				((INTEGER)call).print();
 				break;
-			case "string":
+			case Terminals.STRING:
 				((STRING)call).print();
 				break;
-			case "bool":
+			case Terminals.BOOL:
 				((BOOLEAN)call).print();
 				break;
 		}
@@ -96,19 +96,19 @@ public class CALL extends Variable
 		RobotInterpreter.writeln("validate",  "Validating CALL");
 		switch(callType)
 		{
-			case "var":
+			case Terminals.VAR:
 				((VAR)call).validate();
 				break;
-			case "method":
+			case Terminals.METHOD:
 				((METHOD)call).validate();
 				break;
-			case "int":
+			case Terminals.INT:
 				((INTEGER)call).validate();
 				break;
-			case "string":
+			case Terminals.STRING:
 				((STRING)call).validate();
 				break;
-			case "bool":
+			case Terminals.BOOL:
 				((BOOLEAN)call).validate();
 				break;
 		}
@@ -120,15 +120,15 @@ public class CALL extends Variable
 	{
 		switch(callType)
 		{
-			case "var":
+			case Terminals.VAR:
 				return ((VAR)call).execute(null);
-			case "method":
+			case Terminals.METHOD:
 				return ((METHOD)call).execute(null);
-			case "int":
+			case Terminals.INT:
 				return ((INTEGER)call).execute(null);
-			case "string":
+			case Terminals.STRING:
 				return ((STRING)call).execute(null);
-			case "bool":
+			case Terminals.BOOL:
 				return ((BOOLEAN)call).execute(null);
 			default:
 				return null;

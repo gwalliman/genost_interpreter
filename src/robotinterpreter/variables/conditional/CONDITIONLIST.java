@@ -14,6 +14,9 @@ public class CONDITIONLIST extends Variable
 	private String logOp;
 	private CONDITIONLIST nextCon;
 	
+	private final String CONDITIONLIST = "CONDITIONLIST";
+	private final String CONDITION = "CONDITION";
+	
 	public CONDITIONLIST(BODY b, Code c, String s)
 	{
 		body = b;
@@ -41,12 +44,12 @@ public class CONDITIONLIST extends Variable
 		//If there is a token following tokens[closeBracket], it must be a logop, and there is a sequential CONDITIONLIST
 		if(hasLogOp)
 		{
-			conType = "CONDITIONLIST";
+			conType = CONDITIONLIST;
 			con = new CONDITIONLIST(body, c, Code.implode(tokens, " ", 1, closeBracket - 1));
 		}
 		else
 		{
-			conType = "CONDITION";
+			conType = CONDITION;
 			con = new CONDITION(body, c, Code.implode(tokens, " ", 1, closeBracket - 1));
 
 		}
@@ -90,13 +93,13 @@ public class CONDITIONLIST extends Variable
 	
 	public void print() 
 	{
-		if(conType.equals("CONDITIONLIST"))
+		if(conType.equals(CONDITIONLIST))
 		{		
 			RobotInterpreter.write("parse", "[");
 			((CONDITIONLIST)con).print();
 			RobotInterpreter.write("parse", "]");
 		}
-		else if(conType.equals("CONDITION"))
+		else if(conType.equals(CONDITION))
 		{
 			((CONDITION)con).print();
 
@@ -114,11 +117,11 @@ public class CONDITIONLIST extends Variable
 	{ 
 		RobotInterpreter.writeln("validate", "Validating CONDITIONLIST");
 
-		if(conType.equals("CONDITIONLIST"))
+		if(conType.equals(CONDITIONLIST))
 		{		
 			((CONDITIONLIST)con).validate();
 		}
-		else if(conType.equals("CONDITION"))
+		else if(conType.equals(CONDITION))
 		{
 			((CONDITION)con).validate();
 		}
@@ -133,11 +136,11 @@ public class CONDITIONLIST extends Variable
 	public Object execute(Object args[]) 
 	{
 		boolean go = false;
-		if(conType.equals("CONDITIONLIST"))
+		if(conType.equals(CONDITIONLIST))
 		{		
 			go = (boolean) ((CONDITIONLIST)con).execute(null);
 		}
-		else if(conType.equals("CONDITION"))
+		else if(conType.equals(CONDITION))
 		{
 			go = (boolean) ((CONDITION)con).execute(null);
 		}

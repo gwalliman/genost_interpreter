@@ -1,7 +1,5 @@
 package robotinterpreter.variables.methods;
 
-import java.util.ArrayList;
-
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
@@ -28,7 +26,7 @@ public class CALLPARAMLIST extends Variable
 		String argument = "";
 		String remainder = "";
 		
-		if(tokens[0].equals("method"))
+		if(tokens[0].equals(Terminals.METHOD))
 		{
 			if(tokens[2] != Terminals.OPENPAREN)
 			{
