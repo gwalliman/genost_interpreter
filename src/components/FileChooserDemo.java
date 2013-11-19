@@ -36,13 +36,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.*;
 
 /*
  * FileChooserDemo.java uses these files:
  *   images/Open16.gif
  *   images/Save16.gif
  */
+@SuppressWarnings("serial")
 public class FileChooserDemo extends JPanel
                              implements ActionListener {
     static public final String newline = "\n";

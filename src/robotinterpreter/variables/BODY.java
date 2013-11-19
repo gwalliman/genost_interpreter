@@ -10,15 +10,39 @@ import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.vars.VARDECL;
 
+/**
+ * class BODY
+ * 
+ * The BODY variable contains a series of statements and a scope for variables.
+ * BODY variables are nestable: bodies may appear within other bodies, in which case the former is the parent body of the latter.
+ * Note that all variables should be linked to their parent body by passing the parent body in via the constructor.
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
 public class BODY extends Variable
 {
+	//The list of statements associated with the body.
 	private STMTLIST stmtList;
+	//The code lines on which the body starts and ends.
 	private int startLine;
 	private int finishLine;
 	
+	//If the BODY is the body of a method, we link to the methoddefine stmt here.
 	public METHODDEFINE method;
+	
+	//This table contains the list of variables specifically defined within this BODY's scope
 	public ArrayList<VARDECL> varTable;
 
+	/**
+	 * public BODY(BODY b, Code c)
+	 * 
+	 * Links the body to its parent body, creates a var table,
+	 * finds the bounds of the body and creates the stmtList within the body's bounds.
+	 * 
+	 * @param b	the parent body, or null if this is the main body.
+	 * @param c	the Code object
+	 */
 	public BODY(BODY b, Code c)
 	{
 		body = b;
@@ -38,8 +62,17 @@ public class BODY extends Variable
 		else RobotInterpreter.halt("BODY", c.currentLineNum(), c.currentLine(), "Body must begin with {");
 	}
 	
+	/**
+	 * public void findCloseBrace(Code c)
+	 * 
+	 * Goes through the code trying to find a matching closeBrace for the body.
+	 * Accounts for the existence of subbodies within the body we are searching.
+	 * 
+	 * @param c	the Code object
+	 */
 	public void findCloseBrace(Code c)
 	{
+		//We know we have one open paren.
 		int numOpens = 1;
 		while(numOpens != 0 && c.nextLine() != null)
 		{
@@ -55,21 +88,48 @@ public class BODY extends Variable
 
 	}
 	
+	/**
+	 * public STMTLIST getStmtList()
+	 * 
+	 * Getter for the stmtlist variable.
+	 * 
+	 * @return the body's stmtlist
+	 */
 	public STMTLIST getStmtList()
 	{
 		return stmtList;
 	}
 	
+	/**
+	 * public int getStartLine()
+	 * 
+	 * Getter for the startLine (the line which contains the body's open brace)
+	 * 
+	 * @return the starting line for the body
+	 */
 	public int getStartLine()
 	{
 		return startLine;
 	}
 	
+	/**
+	 * public int getFinishLine()
+	 * 
+	 * Getter for the finishLine (the line which contains the body's close brace)
+	 * 
+	 * @return the finishing line for the body
+	 */
 	public int getFinishLine()
 	{
 		return finishLine;
 	}
 	
+	/**
+	 * public void print()
+	 * 
+	 * Prints the body and its stmts.
+	 * Also prints a line indicating the body's open and close line numbers.
+	 */
 	public void print() 
 	{
 		if(stmtList != null)
@@ -85,7 +145,12 @@ public class BODY extends Variable
 		else RobotInterpreter.write("parse", "EMPTY BODY");
 	}
 
-	//Validate stmtlist
+	/**
+	 * public void validate()
+	 * 
+	 * Validation function for the body.
+	 * Validates the stmtlist, if it exists.
+	 */
 	public void validate() 
 	{
 		RobotInterpreter.writeln("validate", "Validating BODY");
@@ -95,16 +160,31 @@ public class BODY extends Variable
 		}
 	}
 
+	/**
+	 * public Object execute(Object[] args)
+	 * 
+	 * Execution function for the body.
+	 * We first add a layer to the varStack and populate it with entries for each vardecl in this body's scope.
+	 * We then execute the stmtList, if there is one.
+	 * After the stmtList has returned, we remove the top layer of the varStack, as we no longer care about those variables' values.
+	 * Finally, we return whatever value the stmtList returned.
+	 * 
+	 * @param args	If this is a method's codebody, then the method params will be passed in via args. Entries for these args will be made in the varStack.
+	 */
 	public Object execute(Object[] args) 
 	{
-		//Create map for holding variables
+		//Create map for holding variable values.
+		//This includes any variables declared in the body scope and any method parameters, if this is a method body.
 		Map<String, Object> varMap = new HashMap<String, Object>();
+		
+		//Add entries for all vars in the varTable
 		for(VARDECL v : varTable)
 		{
 			varMap.put(v.id(), "");
 		}
 		RobotInterpreter.varStack.add(varMap);
 		
+		//If this is a method codebody and it has parameters, set the value for the param vars in the varstack to those params.
 		if(method != null && args != null)
 		{
 			for(int x = 0; x < args.length; x++)
@@ -114,6 +194,7 @@ public class BODY extends Variable
 			}
 		}
 		
+		//Execute the body statements.
 		Object retVal = null;
 		if(stmtList != null)
 		{

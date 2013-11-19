@@ -9,11 +9,36 @@ import robotinterpreter.variables.constants.STRING;
 import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.vars.VAR;
 
+/**
+ * class CALL
+ * 
+ * A CALL can be one of a handful of different items, all of which return data.
+ * A CALL may be:
+ * 1. A variable call, returning the value of the variable
+ * 2. A method call, returning a value. (therefore, a VOID method cannot be a CALL)
+ * 3. An int, string or boolean literal, returning that literal.
+ * 
+ * CALLS may appear on the RHS of an assign statement, as method parameters, or as a standalone statement if it is a method call.
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
 public class CALL extends Variable 
 {
+	//The call itself. Can be a METHOD, VAR, INTEGER, STRING or BOOL
 	private Object call;
+	//The type of call
 	private String callType;
 	
+	/**
+	 * public CALL(BODY b, Code c, String callCode)
+	 * 
+	 * Determines what type of call we are dealing with, and parses it accordingly.
+	 * 
+	 * @param b	the parent body
+	 * @param c	the Code object
+	 * @param callCode	a string containing the call itself. This code should not contain any other tokens or characters except those involved in the call.
+	 */
 	public CALL(BODY b, Code c, String callCode)
 	{
 		body = b;
@@ -23,7 +48,10 @@ public class CALL extends Variable
 		String[] tokens = Code.tokenize(code);
 		
 		callType = tokens[0];
-		if(Terminals.callTypes.contains(callType) || Terminals.dataTypes.contains(callType))
+		
+		//Switch statement to determine what type the call is and parse it accordingly.
+		//If the call type is not found in the two included arrays, something has gone wrong.
+		if(Terminals.callTypes.contains(callType) || (Terminals.dataTypes.contains(callType) && !callType.equals(Terminals.VOID)))
 		{
 			switch(callType)
 			{
@@ -48,6 +76,13 @@ public class CALL extends Variable
 		else RobotInterpreter.halt("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
 	}
 	
+	/**
+	 * public String type()
+	 * 
+	 * Gets the datatype returned by the call.
+	 * 
+	 * @return	a string containing the datatype
+	 */
 	public String type()
 	{
 		switch(callType)
@@ -57,17 +92,22 @@ public class CALL extends Variable
 			case Terminals.METHOD:
 				return RobotInterpreter.findMethod(((METHOD)call).id()).type();
 			case Terminals.INT:
-				return "int";
+				return Terminals.INT;
 			case Terminals.STRING:
-				return "string";
+				return Terminals.STRING;
 			case Terminals.BOOL:
-				return "bool";
+				return Terminals.BOOL;
 		}
 		RobotInterpreter.halt("CALL", lineNum, code, "Invalid call type");
 		return null;
 	}
 
-	
+	/**
+	 * public void print()
+	 * 
+	 * Prints the call by determining what type it is, and printing the corresponding variable.
+	 * 
+	 */
 	public void print() 
 	{
 		switch(callType)
@@ -90,7 +130,11 @@ public class CALL extends Variable
 		}
 	}
 
-	//Validate whatever we are calling
+	/**
+	 * public void validate()
+	 * 
+	 * Simply validates whatever type of call we have, using that variable's own validate function.
+	 */
 	public void validate() 
 	{
 		RobotInterpreter.writeln("validate",  "Validating CALL");
@@ -115,7 +159,14 @@ public class CALL extends Variable
 	}
 
 
-	@Override
+	/**
+	 * public Object execute(Object args[])
+	 * 
+	 * Simply executes whatever type of call we have, using that variable's own execute function.
+	 * 
+	 * @param args	should always be null in this context.
+	 * @return	an Object containing the value returned by the call. CALLs should ALWAYS return some value!
+	 */
 	public Object execute(Object args[]) 
 	{
 		switch(callType)
