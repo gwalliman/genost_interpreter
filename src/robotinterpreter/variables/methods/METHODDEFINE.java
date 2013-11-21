@@ -14,6 +14,23 @@ import robotinterpreter.variables.Variable;
 import robotinterpreter.variables.methods.external.ExtMethod;
 import robotinterpreter.variables.vars.VARDECL;
 
+/**
+ * class METHODDEFINE
+ * 
+ * A METHODDEFINE, as its name suggests, defines a method, which may be executed elsewhere in the code.
+ * The METHODDEFINE consists of three items: 
+ * 1. A code body to execute
+ * 2. A list of parameter types which are passed in when executing the method
+ * 3. A return value type which should be returned by the code body execution.
+ * 
+ * We use the METHODDEFINE for two types of methods: internal and external.
+ * An internal method is defined entirely within the provided code. We must parse the code to determine the three items listed above.
+ * An external method is one that is preprogrammed - its parameter types and return types are stored in packaged code, and must be read in at runtime.
+ * Note that an external method has no BODY - its own execution is handled by an execution function that it defines in its packaged code.
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
 public class METHODDEFINE extends Variable {
 	
 	private String type;
