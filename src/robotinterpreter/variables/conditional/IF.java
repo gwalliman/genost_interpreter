@@ -54,6 +54,7 @@ public class IF extends Variable
 			RobotInterpreter.halt("IF", lineNum, code, "IF must close with )");
 		}
 		
+		//PARSE CONDITIONLIST
 		//If we have more than 3 tokens, then we have at least something in the CONDITIONLIST.
 		if(tokens.length > 3)
 		{
@@ -61,12 +62,14 @@ public class IF extends Variable
 		}
 		else RobotInterpreter.halt("IF", lineNum, code, "IF must contain a condition list!");
 
+		//PARSE BODY
 		//Move on to the next line and parse the BODY.
 		c.nextLine();
 		codeBody = new BODY(body, c);
 		
 		c.nextLine();
 		
+		//PARSE ELSEIF
 		//Get the next line. If we find an ELSEIF, parse it.
 		String[] newTokens = Code.tokenize(c.currentLine());
 		if(newTokens[0].equals(Terminals.ELSEIF))
@@ -78,13 +81,18 @@ public class IF extends Variable
 		//To handle both cases, we get the tokens of the current line again.
 		newTokens = Code.tokenize(c.currentLine());
 		
+		//PARSE ELSE
 		//If we find an ELSE on this line, we parse it.
 		//If we don't find an ELSE, we go back to the previous line.
 		//This is because an ELSE follows either an IF or an ELSEIF, which, in both cases, went forward one line more than usual to check for the ELSE.
 		//So, if an ELSE is not found, we must go back one line to return to normal execution order.
 		if(newTokens[0].equals(Terminals.ELSE))
 		{
-			els = new ELSE(body, c);
+			if(newTokens.length == 1)
+			{
+				els = new ELSE(body, c);
+			}
+			else RobotInterpreter.halt("IF", lineNum, code, "Syntax error related to ELSE");
 		}
 		else c.prevLine();
 	}
