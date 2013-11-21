@@ -1,4 +1,4 @@
-package robotinterpreter.variables.constants;
+package robotinterpreter.variables.literals;
 
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
@@ -6,10 +6,28 @@ import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
+/**
+ * class BOOLEAN
+ *
+ * Represents a literal boolean object.
+ * Can be either true or false.
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
 public class BOOLEAN extends Variable
 {
 	private boolean value;
 	
+	/**
+	 * public BOOLEAN(BODY b, Code c, String s)
+	 * 
+	 * Ensures that the boolean value is valid and adopts it if so.
+	 * 
+	 * @param b	the parent body
+	 * @param c	the Code file
+	 * @param s	a string containing just the literal, i.e. "true" or "false"
+	 */
 	public BOOLEAN(BODY b, Code c, String s)
 	{
 		body = b;
@@ -18,6 +36,7 @@ public class BOOLEAN extends Variable
 		
 		String[] tokens = Code.tokenize(s);
 
+		//We should only have one token here, the literal itself
 		if(tokens.length == 1)
 		{
 			if(Terminals.booleanVals.contains(tokens[0]))
@@ -29,17 +48,34 @@ public class BOOLEAN extends Variable
 		else RobotInterpreter.halt("BOOLEAN", lineNum, code, "Syntax error in boolean.");
 	}
 
+	/**
+	 * public void print()
+	 * 
+	 * Simple print function - prints the value.
+	 */
 	public void print() 
 	{
 		RobotInterpreter.write("parse", "bool " + value);
 	}
 
-	//Nothing to validate, value was validated during parsing.
+	/**
+	 * public void validate()
+	 * 
+	 * We have nothing to validate here, but we must implement the function.
+	 */
 	public void validate() 
 	{ 
 		RobotInterpreter.writeln("validate", "Validating BOOLEAN");
 	}
 
+	/**
+	 * public Object execute(Object args[])
+	 * 
+	 * Return the value.
+	 * 
+	 * @param args	always null
+	 * @return	the boolean value
+	 */
 	public Object execute(Object args[]) 
 	{
 		return value;

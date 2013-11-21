@@ -5,10 +5,26 @@ import robotinterpreter.RobotInterpreter;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
+/**
+ * class ELSE
+ * 
+ * ELSE is much simpler than IF or ELSEIF. It has a body and, if the ELSE is executed, the body will always execute.
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
 public class ELSE extends Variable
 {
 	private BODY codeBody;
 	
+	/**
+	 * public ELSE(BODY b, Code c)
+	 * 
+	 * Parse the body and store it. That's it!
+	 * 
+	 * @param b	the parent body
+	 * @param c	the Code object
+	 */
 	public ELSE(BODY b, Code c)
 	{
 		body = b;
@@ -19,13 +35,23 @@ public class ELSE extends Variable
 		codeBody = new BODY(body, c);
 	}
 	
+	/**
+	 * public void print()
+	 * 
+	 * Simply prints the code body.
+	 * 
+	 */
 	public void print() 
 	{
 		RobotInterpreter.writeln("parse", "else");
 		codeBody.print();
 	}
 
-	//Validate the body.
+	/**
+	 * public void validate()
+	 * 
+	 * Simply validates the code body.
+	 */
 	public void validate() 
 	{
 		RobotInterpreter.writeln("validate", "Validating ELSE");
@@ -33,7 +59,14 @@ public class ELSE extends Variable
 		codeBody.validate();
 	}
 
-	@Override
+	/**
+	 * public Object execute(Object[] args)
+	 * 
+	 * Simply executes the code body. Always executes it; there are no conditionlists to worry about.
+	 * 
+	 * @param args	will always be null
+	 * @return always returns null
+	 */
 	public Object execute(Object[] args) 
 	{
 		codeBody.execute(null);

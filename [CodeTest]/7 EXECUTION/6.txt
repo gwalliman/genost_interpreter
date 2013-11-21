@@ -24,7 +24,7 @@
 	{
 		method print(string "Fail 2");
 	}
-	else if([method square(var x) < var y])
+	elseif ([method square(var x) < var y])
 	{
 		method print(string "Pass 2");
 	}
@@ -46,4 +46,22 @@
 	{
 		method print(string "Fail 4");
 	}
+	
+	if ([method square(var x) < var y])
+	{
+		method print(string "Pass 5");
+	}
+	
+	if ([method square(var x) < var y] and [var x == var y])
+	{
+		method print(string "Fail 6");
+	}
+	elseif ([method square(var x) < var y])
+	{
+		method print(string "Pass 6");
+	}
+	else
+	{
+		method print(string "Fail 6");
+	} 
 }

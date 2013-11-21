@@ -3,9 +3,9 @@ package robotinterpreter.variables;
 import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
-import robotinterpreter.variables.constants.BOOLEAN;
-import robotinterpreter.variables.constants.INTEGER;
-import robotinterpreter.variables.constants.STRING;
+import robotinterpreter.variables.literals.BOOLEAN;
+import robotinterpreter.variables.literals.INTEGER;
+import robotinterpreter.variables.literals.STRING;
 import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.vars.VAR;
 
