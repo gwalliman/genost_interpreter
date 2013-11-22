@@ -7,8 +7,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class IF
- * 
  * An IF statement conditionally executes a body of code depending on whether a linked CONDITIONLIST evaluates to true or not.
  * The codeBody here is treated as having the same scope as its parent body, unlike a METHOD codeBody.
  * 
@@ -24,8 +22,6 @@ public class IF extends Variable
 	private ELSE els;
 	
 	/**
-	 * public IF(BODY b, Code c)
-	 * 
 	 * Gets the CONDITIONLIST code and parses it.
 	 * Then parses the BODY.
 	 * 
@@ -98,8 +94,6 @@ public class IF extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Simple print function: prints the if, and the elseif / else if we have them.
 	 */
 	public void print() 
@@ -123,8 +117,6 @@ public class IF extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * First, we validate the condition list.
 	 * Second, we validate the if body.
 	 * Third, we validate the elseif, if it exists.
@@ -150,8 +142,6 @@ public class IF extends Variable
 
 	
 	/**
-	 * public Object execute(Object[] args)
-	 * 
 	 * We get the result of executing the CONDITIONLIST.
 	 * If it is true, we execute the codeBody.
 	 * If it is not true, we execute the ELSEIF. This returns a boolean indicating whether it executed or not.

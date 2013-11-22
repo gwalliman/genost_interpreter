@@ -7,8 +7,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class ELSEIF
- * 
  * An ELSEIF is much like an IF; it has a CONDITIONLIST and a BODY.
  * There may be multiple ELSEIFs in one IF tree. To account for this, we treat ELSEIF like a linked list node and contain a link to another ELSEIF, if one exists.
  * 
@@ -23,8 +21,6 @@ public class ELSEIF extends Variable
 	private ELSEIF elseif;
 	
 	/**
-	 * public ELSEIF(BODY b, Code c)
-	 * 
 	 * Goes through the same functions the IF does to get the CONDITIONLIST / codeBody.
 	 * Afterwards, checks if the next line is another ELSEIF.
 	 * If it is, recursively parse that ELSEIF.
@@ -73,8 +69,6 @@ public class ELSEIF extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Simple print function; prints the conditionlist and the codeBody.
 	 * Prints the next ELSEIF, if there is one.
 	 */
@@ -93,8 +87,6 @@ public class ELSEIF extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * Validates three things:
 	 * 1. The CONDITIONLIST
 	 * 2. The BODY
@@ -114,8 +106,6 @@ public class ELSEIF extends Variable
 	}
 
 	/**
-	 * public Object execute(Object[] args)
-	 * 
 	 * Executes the CONDITIONLIST and gets the result.
 	 * If the result is true, executes the code body.
 	 * If the result is false, go on to the next ELSEIF and execute that.

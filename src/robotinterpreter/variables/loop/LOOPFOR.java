@@ -6,8 +6,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class LOOPFOR
- * 
  * Executes a body of code for a certain number of iterations.
  * We specify the number of iterations with an integer literal. The integer may be in the range (-1, infinity).
  * A positive or zero integer will execute for exactly that many times. -1 will execute infinitely.
@@ -21,8 +19,6 @@ public class LOOPFOR extends Variable
 	private BODY codeBody;
 	
 	/**
-	 * public LOOPFOR(BODY b, Code c)
-	 * 
 	 * Gets the iterations number and ensures that it is of the proper format.
 	 * Then parses the body.
 	 * 
@@ -51,8 +47,6 @@ public class LOOPFOR extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Simple print function.
 	 */
 	public void print() 
@@ -62,8 +56,6 @@ public class LOOPFOR extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * First, ensure that the iterations integer is greater than or equal to -1.
 	 * Second, validate the body itself.
 	 */
@@ -79,8 +71,6 @@ public class LOOPFOR extends Variable
 	}
 
 	/**
-	 * public Object execute(Object[] args)
-	 * 
 	 * If iterations is equal to -1, we create an infinite loop and run it.
 	 * TODO: create a way of breaking out of this loop.
 	 * 

@@ -7,8 +7,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class CONDITIONLIST
- * 
  * CONDITIONLISTS are used to build advanced logical statement. At the core, a CONDITIONLIST allows various ways of comparing multiple CONDITION using "and" or "or".
  * A basic logical statement (x AND y) should be extensible in two ways: first, by concatenating (x AND y OR z) and second, by nesting (x AND (y OR z)).
  * CONDITIONLIST structures are able to accomplish both of these functionalities.
@@ -42,8 +40,6 @@ public class CONDITIONLIST extends Variable
 	private final String CONDITION = "CONDITION";
 	
 	/**
-	 * public CONDITIONLIST(BODY b, Code c, String s)
-	 * 
 	 * Takes a logical statement. 
 	 * This statement will consist of either a CONDITION, or some structure built from a stack of CONDITIONLISTS
 	 * If it is the former, we pass the CONDITION on to the CONDITION parser.
@@ -112,8 +108,6 @@ public class CONDITIONLIST extends Variable
 	}
 	
 	/**
-	 * private int findCloseBracket(String[] tokens)
-	 * 
 	 * Goes through the tokenList and finds the closing bracket that matches an opening bracket.
 	 * Handles having inner bracket pairs.
 	 * 
@@ -141,8 +135,6 @@ public class CONDITIONLIST extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Print function. Determines how to print con (as a CONDITION or a CONDITIONLIST).
 	 * Next prints the logop and nextCon, if we have one.
 	 */
@@ -168,8 +160,6 @@ public class CONDITIONLIST extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * Validates the con by determining what type it is and calling the validation function for that one.
 	 * Next, validates the nextCon, if there is one.
 	 */
@@ -193,8 +183,6 @@ public class CONDITIONLIST extends Variable
 	}
 
 	/**
-	 * public Object execute(Object args[])
-	 * 
 	 * Execute con by calling its proper execute function.
 	 * Both functions will return a boolean value.
 	 * 

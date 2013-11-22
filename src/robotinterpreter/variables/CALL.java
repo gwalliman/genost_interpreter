@@ -10,8 +10,6 @@ import robotinterpreter.variables.methods.METHOD;
 import robotinterpreter.variables.vars.VAR;
 
 /**
- * class CALL
- * 
  * A CALL can be one of a handful of different items, all of which return data.
  * A CALL may be:
  * 1. A variable call, returning the value of the variable
@@ -31,8 +29,6 @@ public class CALL extends Variable
 	private String callType;
 	
 	/**
-	 * public CALL(BODY b, Code c, String callCode)
-	 * 
 	 * Determines what type of call we are dealing with, and parses it accordingly.
 	 * 
 	 * @param b	the parent body
@@ -77,8 +73,6 @@ public class CALL extends Variable
 	}
 	
 	/**
-	 * public String type()
-	 * 
 	 * Gets the datatype returned by the call.
 	 * 
 	 * @return	a string containing the datatype
@@ -103,8 +97,6 @@ public class CALL extends Variable
 	}
 
 	/**
-	 * public void print()
-	 * 
 	 * Prints the call by determining what type it is, and printing the corresponding variable.
 	 * 
 	 */
@@ -131,8 +123,6 @@ public class CALL extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * Simply validates whatever type of call we have, using that variable's own validate function.
 	 */
 	public void validate() 
@@ -160,8 +150,6 @@ public class CALL extends Variable
 
 
 	/**
-	 * public Object execute(Object args[])
-	 * 
 	 * Simply executes whatever type of call we have, using that variable's own execute function.
 	 * 
 	 * @param args	should always be null in this context.

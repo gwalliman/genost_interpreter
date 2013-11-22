@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
 import robotinterpreter.terminals.Terminals;
 
 /**
- * class Code
- * 
  * This class holds the textual code being interpreted,
  * and contains various functions which may be called to
  * get certain parts of said code.
@@ -37,8 +35,6 @@ public class Code
 	public static final String newline = "\n";
 	
 	/**
-	 * public Code
-	 * 
 	 * Receives the file object, reads it in
 	 * and populates the code and codeLine variables.
 	 * 
@@ -77,8 +73,6 @@ public class Code
 	}
 	
 	/**
-	 * public String prevLine()
-	 * 
 	 * Moves the internal pointer back one line.
 	 * Skips over blank lines.
 	 * If we are on the first line of code, returns null.
@@ -97,8 +91,6 @@ public class Code
 	}
 	
 	/**
-	 * public int currentLineNum()
-	 * 
 	 * @return	the current line number
 	 */
 	public int currentLineNum()
@@ -107,8 +99,6 @@ public class Code
 	}
 	
 	/**
-	 * public String currentLine()
-	 * 
 	 * @return	the text of the current line
 	 */
 	public String currentLine()
@@ -117,8 +107,6 @@ public class Code
 	}
 	
 	/**
-	 * public String nextLine()
-	 * 
 	 * Moves the internal pointer forward one line
 	 * Skips over blank lines.
 	 * If we are on the last line, returns null.
@@ -137,8 +125,6 @@ public class Code
 	}
 	
 	/**
-	 * public String lastLine()
-	 * 
 	 * Useful for ensuring that the main body is enclosed in braces
 	 * 
 	 * @return	the final line of code.
@@ -149,8 +135,6 @@ public class Code
 	}
 	
 	/**
-	 * public String getLine(int num)
-	 * 
 	 * Returns the line of code specified by the provided line number
 	 * 
 	 * @param num	the line number we want returned
@@ -162,8 +146,6 @@ public class Code
 	}
 	
 	/**
-	 * public String setCurrentLine(int num)
-	 * 
 	 * Moves the internal pointer to the provided line number
 	 * Checks to ensure that the provided line number is valid. If not valid, returns null
 	 * 
@@ -181,8 +163,6 @@ public class Code
 	}
 	
 	/**
-	 * public int getMax()
-	 * 
 	 * @return	the maximum line number for the provided code.
 	 */
 	public int getMax()
@@ -191,8 +171,6 @@ public class Code
 	}
 	
 	/**
-	 * public String getCode()
-	 * 
 	 * @return	a String containing the code from the codeFile
 	 */
 	public String getCode()
@@ -201,8 +179,6 @@ public class Code
 	}
 	
 	/**
-	 * public static boolean checkAlphaNumeric(String s)
-	 * 
 	 * Used to check whether a string contains only numbers and letters
 	 * 
 	 * @param s	the String to be checked
@@ -214,8 +190,6 @@ public class Code
 	}
 	
 	/**
-	 * public static String[] tokenize(String s)
-	 * 
 	 * Takes a string and splits it up into tokens as follows.
 	 * 		1. Each symbol (see the Terminals class for the list of symbols) will be considered one token
 	 * 		2. Every set of alphanumeric characters, separated from other tokens by spaces, will be one token
@@ -302,8 +276,6 @@ public class Code
 	}
 	
 	/**
-	 * private static String exciseString(String s, ArrayList<String> tokens)
-	 * 
 	 * This function is used to "excise" a quoted string from a line of code.
 	 * When we get the code line (param s) we assume that the first character is the opening quote of the string.
 	 * We attempt to find the end of the string and add the entire string as one large token to the provided tokens array.
@@ -335,8 +307,6 @@ public class Code
 	}
 	
 	/**
-	 * public static String implode(String[] s, String sep)
-	 * 
 	 * Performs the same function as PHP's implode.
 	 * Takes each element of the provided String array s and attaches them together in order
 	 * as one large string, separated by the provided separator, sep
@@ -358,8 +328,6 @@ public class Code
 	}
 	
 	/**
-	 * public static String implode(String[] s, String sep, int start)
-	 * 
 	 * Takes each element of the provided String array s and attaches them together in order
 	 * as one large string, separated by the provided separator, sep
 	 * 
@@ -384,8 +352,6 @@ public class Code
 	}
 	
 	/**
-	 * public static String implode(String[] s, String sep, int start, int end)
-	 * 
 	 * Takes each element of the provided String array s and attaches them together in order
 	 * as one large string, separated by the provided separator, sep
 	 * 
@@ -411,8 +377,6 @@ public class Code
 	}
 	
 	/**
-	 * public static void printTokens(String[] tokens)
-	 * 
 	 * A simple print function which will print out the tokens in the provided tokens array.
 	 * 
 	 * @param tokens a tokens array to print

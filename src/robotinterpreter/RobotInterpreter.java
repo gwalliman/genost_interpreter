@@ -15,8 +15,6 @@ import robotinterpreter.variables.methods.external.ExtMethod;
 import robotinterpreter.variables.vars.VARDECL;
 
 /**
- * class RobotInterpreter
- * 
  * This class is the "main" class for the Robot Interpreter program.
  * It contains functions for managing master tables of defined methods and the values of variables in execution.
  * It also contains functions pertaining to data being output to a log.
@@ -49,8 +47,6 @@ public class RobotInterpreter
 	public static BODY b;
 	
 	/**
-	 * public static void interpret(File codeFile)
-	 * 
 	 * This function is the "master" function, orchestrating virtually all interpretation functionality.
 	 * 
 	 * The function first reads in all externally defined methods.
@@ -125,8 +121,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static Object getVar(String id)
-	 * 
 	 * Used to get the value of a variable stored in the variable stack.
 	 * We start at the top of the stack and try to find a variable matching the provided id.
 	 * If none is found, then the variable must be defined at a lower level, so we move down one level and try again.
@@ -150,8 +144,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static Object setVar(String id, Object val)
-	 * 
 	 * Used to set the value of a variable stored in the variable stack.
 	 * We start at the top of the stack and try to find a variable matching the provided id.
 	 * If none is found, then the variable must be defined at a lower level, so we move down one level and try again.
@@ -175,8 +167,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static VARDECL findVar(BODY b, String id)
-	 * 
 	 * This function is used to find the declaration of a variable.
 	 * These VARDECLs are stored in tables located within code bodies. The main code body will contain all variables defined within its scope,
 	 * and method bodies will contain all parameters and any other variables defined in its scope.
@@ -209,8 +199,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static METHODDEFINE findMethod(String id)
-	 * 
 	 * This method is used to find the method declaration structure in the methodTable.
 	 * The methodTable is universal and unscoped (unlike variables) so we simply search the table to find the correct method.
 	 * 
@@ -230,8 +218,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static void printAllVars()
-	 * 
 	 * Printer function that prints the defined variables.
 	 * First prints the vars defined in the main codebody,
 	 * and then prints the vars defined in each individual method's codebody.
@@ -250,8 +236,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static void printVars(BODY b, String s)
-	 * 
 	 * Prints the defined variables for a single codebody.;
 	 * 
 	 * @param b	the body which we are printing variables for
@@ -272,10 +256,7 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static void printMethods()
-	 * 
 	 * Prints all defined methods using the methods' print function.
-	 * 
 	 */
 	public static void printMethods()
 	{
@@ -292,8 +273,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * private static boolean showMessage(String t)
-	 * 
 	 * This function is used to control which printed messages should be printed to the screen.
 	 * Modify the values in here to turn on or off different message printings.
 	 * 
@@ -322,8 +301,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static void write(String type, String s)
-	 * 
 	 * This function should be used within the program to write a message to the screen WITHOUT a linebreak.
 	 * We wrap standard print calls in our own message to both control whether messages are printed or not,
 	 * as well as to make it easy to control where those messages are printed to (i.e. Java console log vs. a JTextField)
@@ -341,8 +318,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static void writeln(String type, String s)
-	 * 
 	 * This function should be used within the program to write a message to the screen WITH a linebreak.
 	 * We wrap standard print calls in our own message to both control whether messages are printed or not,
 	 * as well as to make it easy to control where those messages are printed to (i.e. Java console log vs. a JTextField)
@@ -360,8 +335,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static void halt(String var, int lineNum, String c, String error)
-	 * 
 	 * This method should be called anytime the parser / validator / execution encounters an error in the code.
 	 * The method will print an error message to the screen and stop the program.
 	 * 
@@ -381,8 +354,6 @@ public class RobotInterpreter
 	}
 	
 	/**
-	 * public static void main(String args[])
-	 * 
 	 * Main function.
 	 * Initializes the terminals, sets up the GUI.
 	 * 

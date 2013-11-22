@@ -7,8 +7,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class BOOLEAN
- *
  * Represents a literal boolean object.
  * Can be either true or false.
  * 
@@ -20,8 +18,6 @@ public class BOOLEAN extends Variable
 	private boolean value;
 	
 	/**
-	 * public BOOLEAN(BODY b, Code c, String s)
-	 * 
 	 * Ensures that the boolean value is valid and adopts it if so.
 	 * 
 	 * @param b	the parent body
@@ -49,8 +45,6 @@ public class BOOLEAN extends Variable
 	}
 
 	/**
-	 * public void print()
-	 * 
 	 * Simple print function - prints the value.
 	 */
 	public void print() 
@@ -59,8 +53,6 @@ public class BOOLEAN extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * We have nothing to validate here, but we must implement the function.
 	 */
 	public void validate() 
@@ -69,8 +61,6 @@ public class BOOLEAN extends Variable
 	}
 
 	/**
-	 * public Object execute(Object args[])
-	 * 
 	 * Return the value.
 	 * 
 	 * @param args	always null

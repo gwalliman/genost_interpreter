@@ -4,8 +4,6 @@ import robotinterpreter.Code;
 import robotinterpreter.RobotInterpreter;
 
 /**
- * class STMTLIST
- * 
  * A STMTLIST is simply a linked-list interpretation for statements.
  * Each STMTLIST node is one node in the linked list and has a reference to its consitituant STMT, along with various helper functions.
  * 
@@ -19,8 +17,6 @@ public class STMTLIST extends Variable
 	private STMTLIST nextStmt;
 	
 	/**
-	 * public STMTLIST(BODY b, Code c)
-	 * 
 	 * Gets the next STMT, parses it, and moves on to the next one, if it exists.
 	 * 
 	 * @param b	the parent body
@@ -50,8 +46,6 @@ public class STMTLIST extends Variable
 	}
 	
 	/**
-	 * public STMT getStmt()
-	 *
 	 * @return	the STMT for this STMTLIST
 	 */
 	public STMT getStmt() 
@@ -60,8 +54,6 @@ public class STMTLIST extends Variable
 	}
 	
 	/**
-	 * public STMTLIST getNextStmt()
-	 * 
 	 * @return	returns the next statement in the list. Returns NULL if this STMTLIST does not exist.
 	 */
 	public STMTLIST getNextStmt()
@@ -70,8 +62,6 @@ public class STMTLIST extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Print function. Prints the current stmt and, if the next STMTLIST exists, prints that.
 	 */
 	public void print() 
@@ -88,8 +78,6 @@ public class STMTLIST extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * Validation function. If the STMT exists, call its validation function. If the next STMTLIST exists, call its validation function
 	 * 
 	 */
@@ -104,8 +92,6 @@ public class STMTLIST extends Variable
 	}
 
 	/**
-	 * public Object execute(Object args[])
-	 * 
 	 * Executes the current stmt. Tries to get a return value.
 	 * We will only ever get a return value if we are in a codeBody. If we do get one, we stop immediately and return the value.
 	 * If we do not get one, then we continue execution until we either get a return value or run out of stmts to execute.

@@ -7,8 +7,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class STRING
- * 
  * Represents a string literal.
  * 
  * @author Garret Walliman (gwallima@asu.edu)
@@ -19,8 +17,6 @@ public class STRING extends Variable
 	private String value;
 	
 	/**
-	 * public STRING(BODY b, Code c, String s)
-	 * 
 	 * Takes the provided value and ensures that it is an String.
 	 * If so, adopts it as a value.
 	 * 
@@ -43,8 +39,6 @@ public class STRING extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Simple print function - prints the value.
 	 */
 	public void print() 
@@ -53,8 +47,6 @@ public class STRING extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * We have nothing to validate here, but we must implement the function.
 	 */
 	public void validate() 
@@ -63,8 +55,6 @@ public class STRING extends Variable
 	}
 	
 	/**
-	 * public Object execute(Object args[])
-	 * 
 	 * Return the value.
 	 * 
 	 * @param args	always null

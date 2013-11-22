@@ -6,8 +6,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class ELSE
- * 
  * ELSE is much simpler than IF or ELSEIF. It has a body and, if the ELSE is executed, the body will always execute.
  * 
  * @author Garret Walliman (gwallima@asu.edu)
@@ -18,8 +16,6 @@ public class ELSE extends Variable
 	private BODY codeBody;
 	
 	/**
-	 * public ELSE(BODY b, Code c)
-	 * 
 	 * Parse the body and store it. That's it!
 	 * 
 	 * @param b	the parent body
@@ -36,8 +32,6 @@ public class ELSE extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Simply prints the code body.
 	 * 
 	 */
@@ -48,8 +42,6 @@ public class ELSE extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * Simply validates the code body.
 	 */
 	public void validate() 
@@ -60,8 +52,6 @@ public class ELSE extends Variable
 	}
 
 	/**
-	 * public Object execute(Object[] args)
-	 * 
 	 * Simply executes the code body. Always executes it; there are no conditionlists to worry about.
 	 * 
 	 * @param args	will always be null

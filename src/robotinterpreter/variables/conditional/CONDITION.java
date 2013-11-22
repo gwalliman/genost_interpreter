@@ -8,8 +8,6 @@ import robotinterpreter.variables.CALL;
 import robotinterpreter.variables.Variable;
 
 /**
- * class Condition
- * 
  * A condition is a single comparison between two values of matching types.
  * Possible comparisons are: 
  * - logical equality (==)
@@ -32,8 +30,6 @@ public class CONDITION extends Variable
 	private String comparator;
 	
 	/**
-	 * public CONDITION(BODY b, Code c, String s)
-	 * 
 	 * Takes a string of code which should contain the comparison.
 	 * Tokenizes the code and finds the token containing the comparator.
 	 * Splits the string by the comparator, and sends the two halves to CALLs.
@@ -69,10 +65,7 @@ public class CONDITION extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Prints the CONDITION.
-	 * 
 	 */
 	public void print() 
 	{
@@ -87,8 +80,6 @@ public class CONDITION extends Variable
 	//Comparator must be valid for comparison type
 	//Validate vars and methods
 	/**
-	 * public void validate()
-	 * 
 	 * Validation function for the CONDITION.
 	 * We need to ensure:
 	 * - That the lhs and the rhs both validate.
@@ -114,8 +105,6 @@ public class CONDITION extends Variable
 	}
 
 	/**
-	 * public Object execute(Object[] args)
-	 * 
 	 * Execution function - executes the CONDITION and returns whether it is true or false.
 	 * First we execute the lhs and the rhs to get their respective values.
 	 * We then compare the two values using the provided comparator.

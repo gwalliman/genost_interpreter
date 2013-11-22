@@ -15,8 +15,6 @@ import robotinterpreter.variables.wait.WAITFOR;
 import robotinterpreter.variables.wait.WAITUNTIL;
 
 /**
- * class STMT
- * 
  * A STMT is a single unit of functional code. One STMT performs one function.
  * STMT types are:
  * 1. Variable declarations (VARDECLs)
@@ -41,8 +39,6 @@ public class STMT extends Variable
 	private String stmtType;
 	
 	/**
-	 * public STMT(BODY b, Code c)
-	 * 
 	 * Determines what type of statement we have, and calls that corresponding type's parse function on the statement code.
 	 * 
 	 * @param b	the parent body
@@ -111,8 +107,6 @@ public class STMT extends Variable
 	}
 	
 	/**
-	 * public String type()
-	 * 
 	 * Simple getter function, returns the statement type.
 	 * 
 	 * @return	the statement type
@@ -123,8 +117,6 @@ public class STMT extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Printing function, determines what type of stmt this is ands calls that type's print function.
 	 */
 	public void print() 
@@ -165,8 +157,6 @@ public class STMT extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * Simple validation function, determines what kind of statement we have, and calls that type's validation function.
 	 */
 	public void validate() 
@@ -208,8 +198,6 @@ public class STMT extends Variable
 	}
 
 	/**
-	 * public Object execute(Object args[])
-	 * 
 	 * Determines what type of statement we have, and calls that statement's execute function.
 	 * Note that we do not execute METHODDEFINE, as this will execute the METHODDEFINE's code body, which should not happen until that method is actually called!
 	 * 

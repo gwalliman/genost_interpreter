@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * class Terminals
- * 
  * This class contains static references to constants and constant arrays for each terminal item used in the interpreter.
  * A terminal is just a fixed string of letter(s), number(s) and/or symbol(s). It is a literal which, if it appears in input code, appears exactly as defined in the documents below
  * 

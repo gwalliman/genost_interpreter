@@ -5,8 +5,6 @@ import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
 /**
- * class ID
- * 
  * This class is used simply to validate an ID. It confirms that the ID can be used.
  * An ID must conform to two rules:
  * 1. Must be alphanumeric

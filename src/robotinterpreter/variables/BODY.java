@@ -11,8 +11,6 @@ import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.vars.VARDECL;
 
 /**
- * class BODY
- * 
  * The BODY variable contains a series of statements and a scope for variables.
  * BODY variables are nestable: bodies may appear within other bodies, in which case the former is the parent body of the latter.
  * Note that all variables should be linked to their parent body by passing the parent body in via the constructor.
@@ -34,9 +32,7 @@ public class BODY extends Variable
 	//This table contains the list of variables specifically defined within this BODY's scope
 	public ArrayList<VARDECL> varTable;
 
-	/**
-	 * public BODY(BODY b, Code c)
-	 * 
+	/** 
 	 * Links the body to its parent body, creates a var table,
 	 * finds the bounds of the body and creates the stmtList within the body's bounds.
 	 * 
@@ -63,8 +59,6 @@ public class BODY extends Variable
 	}
 	
 	/**
-	 * public void findCloseBrace(Code c)
-	 * 
 	 * Goes through the code trying to find a matching closeBrace for the body.
 	 * Accounts for the existence of subbodies within the body we are searching.
 	 * 
@@ -89,8 +83,6 @@ public class BODY extends Variable
 	}
 	
 	/**
-	 * public STMTLIST getStmtList()
-	 * 
 	 * Getter for the stmtlist variable.
 	 * 
 	 * @return the body's stmtlist
@@ -101,8 +93,6 @@ public class BODY extends Variable
 	}
 	
 	/**
-	 * public int getStartLine()
-	 * 
 	 * Getter for the startLine (the line which contains the body's open brace)
 	 * 
 	 * @return the starting line for the body
@@ -113,8 +103,6 @@ public class BODY extends Variable
 	}
 	
 	/**
-	 * public int getFinishLine()
-	 * 
 	 * Getter for the finishLine (the line which contains the body's close brace)
 	 * 
 	 * @return the finishing line for the body
@@ -125,8 +113,6 @@ public class BODY extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Prints the body and its stmts.
 	 * Also prints a line indicating the body's open and close line numbers.
 	 */
@@ -146,8 +132,6 @@ public class BODY extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * Validation function for the body.
 	 * Validates the stmtlist, if it exists.
 	 */
@@ -161,8 +145,6 @@ public class BODY extends Variable
 	}
 
 	/**
-	 * public Object execute(Object[] args)
-	 * 
 	 * Execution function for the body.
 	 * We first add a layer to the varStack and populate it with entries for each vardecl in this body's scope.
 	 * We then execute the stmtList, if there is one.

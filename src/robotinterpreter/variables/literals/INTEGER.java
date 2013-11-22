@@ -6,8 +6,6 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
 /**
- * class INTEGER
- * 
  * Represents a literal integer, which can be positive or negative.
  * 
  * @author Garret Walliman (gwallima@asu.edu)
@@ -18,8 +16,6 @@ public class INTEGER extends Variable
 	private int value;
 	
 	/**
-	 * public INTEGER(BODY b, Code c, String s)
-	 * 
 	 * Takes the provided value and ensures that it is an integer.
 	 * If so, adopts it as a value.
 	 * 
@@ -49,8 +45,6 @@ public class INTEGER extends Variable
 	}
 	
 	/**
-	 * public void print()
-	 * 
 	 * Simple print function - prints the value.
 	 */
 	public void print() 
@@ -59,8 +53,6 @@ public class INTEGER extends Variable
 	}
 
 	/**
-	 * public void validate()
-	 * 
 	 * We have nothing to validate here, but we must implement the function.
 	 */
 	public void validate() 	
@@ -69,8 +61,6 @@ public class INTEGER extends Variable
 	}
 
 	/**
-	 * public Object execute(Object args[])
-	 * 
 	 * Return the value.
 	 * 
 	 * @param args	always null
