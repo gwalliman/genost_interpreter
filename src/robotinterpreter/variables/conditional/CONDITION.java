@@ -36,7 +36,7 @@ public class CONDITION extends Variable
 	 * 
 	 * @param b	the parent body
 	 * @param c	the Code object
-	 * @param s	a string of code containing a comparison. It should ONLY contain the comparison, and not any enclosing brackets
+	 * @param s	a string of code containing a comparison. It should ONLY contain the comparison, and not any enclosing brackets. Format: "x > y", "a == b"
 	 */
 	public CONDITION(BODY b, Code c, String s)
 	{

@@ -9,11 +9,27 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
-public class VARDECL extends Variable {
-	
+/**
+ * A VARDECL is a declaration of a variable.
+ * It consists of an id and a type (int, string, bool)
+ * 
+ * When we declare a variable, we add it to the variable table of its parent body.
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
+public class VARDECL extends Variable 
+{
 	private String id;
 	private String type;
 	
+	/**
+	 * This constructor is used when VARDECL is a STMT.
+	 * We get the ID and the type, ensure that it is a valid type, and add it to its parent body's vartable.
+	 * 
+	 * @param b	the parent body
+	 * @param c	the Code object
+	 */
 	public VARDECL(BODY b, Code c)
 	{
 		body = b;
@@ -23,9 +39,12 @@ public class VARDECL extends Variable {
 		String[] tokens = Code.tokenize(code);
 
 		type = tokens[1];
+		
+		//Ensure that the type is int, string or bool.
 		if(!Terminals.dataTypes.contains(type)) RobotInterpreter.halt("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");
 		if(type.equals(Terminals.VOID)) RobotInterpreter.halt("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");	
 		
+		//Get the ID
 		id = ID.validate(tokens[2], c);
 		
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
@@ -33,25 +52,44 @@ public class VARDECL extends Variable {
 			RobotInterpreter.halt("VARDECL", lineNum, code, "Missing semicolon");
 		}
 		
+		//Add to the varTable of the parent body
 		body.varTable.add(this);
 	}
 	
+	/**
+	 * This constructor is used when we are creating VARDECLs out of method parameters.
+	 * This is called in METHODDEFINE after parsing a DEFPARAMLIST.
+	 * 
+	 * Creating VARDECLs out of parameters prevents us from declaring new vars within a method body with the same ID as a parameter.
+	 * 
+	 * @param i	the id
+	 * @param t	the type
+	 */
 	public VARDECL(String i, String t) 
 	{
 		id = i;
 		type = t;
 	}
 
+	/**
+	 * @return	the variable id
+	 */
 	public String id()
 	{
 		return id;
 	}
 	
+	/**
+	 * @return the variable type
+	 */
 	public String type()
 	{
 		return type;
 	}
 
+	/**
+	 * Simple print function
+	 */
 	public void print() 
 	{
 		if(id != null && type != null)
@@ -61,7 +99,9 @@ public class VARDECL extends Variable {
 		else RobotInterpreter.write("parse", "Empty VARDECL");
 	}
 	
-	//Ensure that var doesn't exist twice
+	/**
+	 * Ensure that the var doesn't exist twice in the same varTable (it can exist in different varTables)
+	 */
 	public void validate() 
 	{
 		RobotInterpreter.writeln("validate", "Validating VARDECL");
@@ -72,6 +112,12 @@ public class VARDECL extends Variable {
 		}			
 	}
 
+	/**
+	 * We never "execute" a VARDECL, so this should never be called.
+	 * 
+	 * @param args	should always be null
+	 * @return	always returns null
+	 */
 	public Object execute(Object args[]) 
 	{
 		return null;

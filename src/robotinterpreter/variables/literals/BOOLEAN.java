@@ -22,7 +22,7 @@ public class BOOLEAN extends Variable
 	 * 
 	 * @param b	the parent body
 	 * @param c	the Code file
-	 * @param s	a string containing just the literal, i.e. "true" or "false"
+	 * @param s	a string containing just the literal. Format: "true", "false"
 	 */
 	public BOOLEAN(BODY b, Code c, String s)
 	{

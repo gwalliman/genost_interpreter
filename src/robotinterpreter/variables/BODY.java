@@ -160,9 +160,15 @@ public class BODY extends Variable
 		Map<String, Object> varMap = new HashMap<String, Object>();
 		
 		//Add entries for all vars in the varTable
+		//We set default values here.
 		for(VARDECL v : varTable)
 		{
-			varMap.put(v.id(), "");
+			if(v.type().equals(Terminals.INT))
+				varMap.put(v.id(), 0);
+			else if(v.type().equals(Terminals.STRING))
+				varMap.put(v.id(), "");
+			else if(v.type().equals(Terminals.BOOL))
+				varMap.put(v.id(), false);
 		}
 		RobotInterpreter.varStack.add(varMap);
 		

@@ -47,7 +47,7 @@ public class CONDITIONLIST extends Variable
 	 * 
 	 * @param b	the parent body
 	 * @param c	the Code object
-	 * @param s	a string consisting of a logical statement
+	 * @param s	a string consisting of a logical statement. Format: "[var a == int 6]", "[var a > int 6] and [string "asdf" != var s]", "[[var a > int 6] and [string "asdf" != var s]] or [bool true == var b]"
 	 */
 	public CONDITIONLIST(BODY b, Code c, String s)
 	{
@@ -120,9 +120,9 @@ public class CONDITIONLIST extends Variable
 		int tokenNum = 0;
 		for(String token : tokens)
 		{
-			if(token == Terminals.OPENBRACKET)
+			if(token.equals(Terminals.OPENBRACKET))
 				openBrackets++;
-			else if(token == Terminals.CLOSEBRACKET)
+			else if(token.equals(Terminals.CLOSEBRACKET))
 				openBrackets--;
 			
 			if(openBrackets == 0)

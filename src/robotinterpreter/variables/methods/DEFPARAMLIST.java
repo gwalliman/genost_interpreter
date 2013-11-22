@@ -35,7 +35,7 @@ public class DEFPARAMLIST extends Variable
 	 * 
 	 * @param b	the parent body
 	 * @param c	the Code file
-	 * @param s	a string consisting solely of the parameters, separated by commas
+	 * @param s	a string consisting solely of the parameters, separated by commas. Format: "int x", "int x, string z, bool a"
 	 * @param p	the param number. The first time the constructor is called, this should be 0.
 	 */
 	public DEFPARAMLIST(BODY b, Code c, String s, int p) 
@@ -63,7 +63,7 @@ public class DEFPARAMLIST extends Variable
 			if(tokens.length > 3)
 			{
 				//The third token must be a comma.
-				if(tokens[2] == Terminals.COMMA)
+				if(tokens[2].equals(Terminals.COMMA))
 				{
 					//We recursively call this constructor after removing the string containing the parameter we have just defined from the code.
 					nextParam = new DEFPARAMLIST(body, c, Code.implode(tokens, " ", 3, tokens.length - 1), ++p);

@@ -22,7 +22,7 @@ public class STRING extends Variable
 	 * 
 	 * @param b	the parent body
 	 * @param c	the Code file
-	 * @param s	a String containing just the literal value (which here should be wrapped in quotes)
+	 * @param s	a String containing just the literal value (which here should be wrapped in quotes). Format: ""String test"", ""ASDFf1234!@%""
 	 */
 	public STRING(BODY b, Code c, String s)
 	{

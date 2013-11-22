@@ -109,7 +109,7 @@ public class METHODDEFINE extends Variable {
 		//Link the codebody to this method
 		codeBody.method = this;
 		
-		//If we have parameters, then we add them to the variable table of the code body.
+		//If we have parameters, create VARDECLs for them and add them to the variable table of the code body.
 		if(params != null)
 		{
 			DEFPARAMLIST p;
@@ -132,7 +132,7 @@ public class METHODDEFINE extends Variable {
 	 * 1. Return Type
 	 * 2. Parameters
 	 * 
-	 * @param s	the external method's ID
+	 * @param s	the external method's ID. Format: "print", "add"
 	 */
 	public METHODDEFINE(String s)
 	{

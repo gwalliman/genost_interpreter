@@ -6,26 +6,46 @@ import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
+/**
+ * The VAR class represents a call to a variable. When we call a variable, we simply return its value.
+ * All we have here is an id, which can be used to link up the called var to a VARDECL in the parent body varTable.
+ * 
+ * @author Garret Walliman (gwallima@asu.edu)
+ *
+ */
 public class VAR extends Variable 
 {
 	private String id;
 	private VARDECL var;
 	
-	public VAR(BODY b, Code c, String callCode)
+	/**
+	 * Very simple parse function: just get the ID.
+	 * 
+	 * @param b	the parent body
+	 * @param c	the Code file
+	 * @param callCode	the code containing the actual variable, of the form "var x"
+	 */
+	public VAR(BODY b, Code c, String s)
 	{
 		body = b;
-		code = callCode;
+		code = s;
 		lineNum = c.currentLineNum();
 		
 		String[] tokens = Code.tokenize(code);
 		id = ID.validate(tokens[0], c);
 	}
 	
+	/**
+	 * @return	the variable id
+	 */
 	public String id()
 	{
 		return id;
 	}
 
+	/**
+	 * Simple print functions
+	 */
 	public void print() 
 	{
 		if(id != null)
@@ -35,7 +55,9 @@ public class VAR extends Variable
 		else RobotInterpreter.write("parse", "Empty VARCALL");
 	}
 
-	//Ensure that var exists
+	/**
+	 * Ensure that the var actually exists in the varTable.
+	 */
 	public void validate() 
 	{
 		RobotInterpreter.writeln("validate", "Validating VAR");
@@ -47,7 +69,12 @@ public class VAR extends Variable
 		}
 	}
 
-	@Override
+	/**
+	 * We get the variable's current value from the varTable and return it.
+	 * 
+	 * @param args	should always be null
+	 * @return	the variable's current value
+	 */
 	public Object execute(Object args[]) 
 	{
 		return RobotInterpreter.getVar(id);

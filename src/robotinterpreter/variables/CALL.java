@@ -16,7 +16,7 @@ import robotinterpreter.variables.vars.VAR;
  * 2. A method call, returning a value. (therefore, a VOID method cannot be a CALL)
  * 3. An int, string or boolean literal, returning that literal.
  * 
- * CALLS may appear on the RHS of an assign statement, as method parameters, or as a standalone statement if it is a method call.
+ * CALLs may appear on the RHS of an assign statement, as method parameters, or as a standalone statement if it is a method call.
  * 
  * @author Garret Walliman (gwallima@asu.edu)
  *
@@ -33,13 +33,13 @@ public class CALL extends Variable
 	 * 
 	 * @param b	the parent body
 	 * @param c	the Code object
-	 * @param callCode	a string containing the call itself. This code should not contain any other tokens or characters except those involved in the call.
+	 * @param callCode	a string containing the call itself. This code should not contain any other tokens or characters except those involved in the call. Format: "int 0", "var x", "method foo(int 0, var y)"
 	 */
-	public CALL(BODY b, Code c, String callCode)
+	public CALL(BODY b, Code c, String s)
 	{
 		body = b;
 		lineNum = c.currentLineNum();
-		code = callCode;
+		code = s;
 		
 		String[] tokens = Code.tokenize(code);
 		

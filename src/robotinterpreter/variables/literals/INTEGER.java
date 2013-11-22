@@ -21,7 +21,7 @@ public class INTEGER extends Variable
 	 * 
 	 * @param b	the parent body
 	 * @param c	the Code file
-	 * @param s	a string containing only the integer value
+	 * @param s	a string containing only the integer value. Format: "-1", "7"
 	 */
 	public INTEGER(BODY b, Code c, String s)
 	{
