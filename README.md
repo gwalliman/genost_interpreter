@@ -1,6 +1,7 @@
 Robot Interpreter
 Author: Garret Walliman (gwallima@asu.edu)
 Developed for Master's Thesis at Arizona State University, 2013-2014
+
 ======================================================================
 
 0. Introduction
@@ -54,6 +55,7 @@ Variable Scoping: 	Dynamic
 The code this language interprets is intended to be automatically generated. 
 The following section is a reference both for those that develop the automatic code generation, and for anyone who, for whatever reason, wants to actually hand-write code for the interpreter.
 
+
 1.1. Body
 -----------------
 All written code must exist within the "main body". This includes all statements, variable declarations, and method declarations.
@@ -67,6 +69,7 @@ A parent body cannot, however, access variables declared within a child body.
 
 Note that methods can be declared anywhere, including inside other method bodies. However, all methods are accessible from everywhere in the program.
 
+
 1.2. Statements
 -----------------
 Each statement must have its own dedicated line (or lines, if the statement has a body) with at least one newline between each statement. 
@@ -76,6 +79,7 @@ NOTE: Statements without bodies must always end with a semicolon!
 For statements with bodies (Method declarations, Ifs, Loops) the header part of these statements must also have exactly one line to themselves. The line immediately after must be the body's open brace. Refer to the Body section above on how the body must be formatted.
 
 IMPORTANT: There may be empty lines between statements, but two or more statements CANNOT occupy the same line!
+
 
 1.3. Literals
 -----------------
@@ -95,10 +99,12 @@ Examples:
 	string "ASDF"
 	bool true
 
+
 1.4. Variables
 -----------------
 A Variable (var) is a single-type multi-use variable which may be read and written within its scope.
 There are two items related to variables in our language: a Variable Declaration (which is a Statement) and a variable call.
+
 
 1.4.1. Variable Declarations
 -----------------
@@ -120,6 +126,7 @@ Examples of a Variable Declaration
 	
 Variable Declarations are Statements. This means that they must always appear on their own line, followed by a semicolon, followed by at least one newline.
 	
+	
 1.4.2. Variable Calls
 -----------------
 A Variable Call is used to retrieve the value of a variable. Like Literals, they are used either on the RHS of an assignment, within a Condition, or as a parameter in a Method call.
@@ -131,6 +138,7 @@ The variable call is formatted as follows:
 Examples:
 	var x
 	var y
+
 
 1.5. Methods
 -----------------
