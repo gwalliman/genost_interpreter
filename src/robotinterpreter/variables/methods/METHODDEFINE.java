@@ -77,6 +77,10 @@ public class METHODDEFINE extends Variable {
 			
 		//Get the ID, which should always be the third token.
 		id = ID.validate(tokens[2], c);
+		if(ExtMethod.extMethods.contains(id))
+		{
+			RobotInterpreter.halt("METHODDEFINE", lineNum, code, "Cannot create method of the name " + id + ", this is a reserved method");
+		}
 		
 		//Fourth token should always be OPENPAREN
 		if(tokens[3] != Terminals.OPENPAREN)

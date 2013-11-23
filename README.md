@@ -16,9 +16,13 @@ Developed for Master's Thesis at Arizona State University, 2013-2014
 	1.5. Methods
 		1.5.1. Internal Methods
 		1.5.2. External Methods
+		1.5.3. Calling Methods
 	1.6. Assignment
 	1.7. Conditions
-	1.8. If
+	1.8. If Statements
+		1.8.1. If
+		1.8.2. Elseif
+		1.8.3. Else
 	1.9. Loop
 		1.9.1. Loop For
 		1.9.2. Loop Until
@@ -45,7 +49,7 @@ Language Paradigm:	Procedural
 Type Expression: 	Explicit
 Type Checking: 		Static
 Language Types:		integer (int), string (string), boolean (bool)	//See section 1.3 for definitions of these types
-Variable Scoping: 	Dynamic
+Variable Scoping: 	Semi-dynamic: child bodies declared within a parent body may access the parent body's variables. However, two bodies declared separately (i.e. on the same level) cannot access each others variables if one calls the other during runtime.
 
 ======================================================================
 
@@ -66,6 +70,8 @@ This means that the first line of every program must be the opening brace ({) of
 
 Bodies have variable scopes, although this is only pertinent for the main body, and for method bodies. Variables declared within a body belong to that body's scope and are accessible by any child bodies within that body. 
 A parent body cannot, however, access variables declared within a child body.
+Effectively, this gives us a semi-dynamic scope. A child body within a parent body has access to both its own local variables and the parent body's variables. This continues for as deep as the child bodies are defined.
+However, a body cannot access the variables of a body that is not its ancestor, even if that non-ancestor body has called it.
 
 Note that methods can be declared anywhere, including inside other method bodies. However, all methods are accessible from everywhere in the program.
 
@@ -142,21 +148,234 @@ Examples:
 
 1.5. Methods
 -----------------
+A Method consists of three items:
+1. A return type (void, int, bool, string)
+2. A list of parameters
+3. A body of code
+
+Methods, when called, are sent certain parameters upon call, execute a body of code, and return some value of the proper return type.
+For a method to be used in the code, it must be defined somewhere.
+
+Methods have variable scopes: each method has access to its own local variables and the variables of the parent scopes (i.e. ancestor bodies).
+Methods always have access to the main body's variables, since all methods are declared within the main body. Theoretically, we could declare a method within another method, so that the child method could access the parent's variables.
+However, by convention, all methods will be defined on the same level at the beginning of the automatically generated code, and so we will have effectively a two-level variable scope.
+
+We allow two kinds of methods in this program: internal methods, and external methods. 
+
 
 1.5.1. Internal Methods
 -----------------
+Internal methods are methods whose id, parameters, return type and code bodies are defined in the provided code.
+These methods are defined at runtime. Because internal methods have inline code bodies, they can only utilize functionality already programmed into the language.
+
+Internal methods are defined using the "methoddefine" statement. This statement works as follows:
+The first line of the methoddefine statement provides the method return type, method id, and a list of parameters that the method will execute.
+The list of parameters is a set of pairs of two items: the parameter datatype, and the parameter id. Every parameter is followed by a comma, except for the last one.
+
+After the first line and a newline, the code body is defined. The line immediately after the methoddefine line must be the opening brace to the method code.
+Method code will continue until a closebrace is provided, again, on its own line.
+
+The format of a methoddefine statement is:
+	The word "methoddefine", followed by one or more spaces, an open parentheses, a list of parameter variables, a close parentheses, a newline, and the code body
+The format of a parameter list is:
+	The datatype of the first parameter, followed by one or more spaces, the id of the first parameter. If there is a second parameter, the id is followed by a comma. The next parameter is then listed.
+	
+Examples:
+	methoddefine int x()
+	{
+		//Method code
+	}
+	
+	methoddefine string y(int z, bool a)
+	{
+		//Method code
+	}
+	
+If the internal method has a non-void return type, a RETURN stmt must appear within the method's codebody.
+Multiple return types may appear in the code body. However, the first one that we execute will be the last statement we execute within the code body.
+
+Note that every method MUST have a return statement on the main level of its code body. If the only return statement(s) appear in other bodies (loops, ifs) this will throw an error.
+We will handle this convention by forcing a return statement to appear at the very end of every method in our automatically generated code.
+
+This RETURN statement is of the following format:
+	The word "return", followed by one or more spaces, followed by a variable call, literal, or method call of the same type as the internal method's return type, followed by a semicolon
+
+Examples:
+	return int 0;
+	return var x;
+	return method a(int 7);
+
 
 1.5.2. External Methods
 -----------------
+External methods are methods whose id, parameters, return type and execution code are defined in the Java package.
+Effectively, these external methods provide all of the actual "stuff" the language can do. At time of writing, we have provided external method code for:
+- Printing values to the screen
+- Basic arithmetic: addition, subtraction, multiplication, division
+
+Future external methods will define robot drive / sensor code.
+
+To create an External Method:
+1. Create a new class in the robotinterpreter.variables.methods.external package. This class must extend ExtMethod
+2. The class should be named what we want the method id to be.
+3. The class constructor should instantiate the following variables (to literals)
+	- The method name (Must be alphanumeric. Should be the same as the class name, this will be the id by which the method will be called)
+	- The return type (Must be int, string or bool)
+	- An array of strings should be instantiated, with length equal to the number of arguments this function will take.
+	- Each entry in the above string array should be initialized to the datatype of the corresponding argument.
+4. The class must implement method "execute". This method will contain the functionality of the method.
+	- Method arguments will be passed in through the args array. They will be passed in in the order defined in the paramTypes array.
+	- If the external method has a non-void return type, it must return a value.
+5. Finally, the method's class name / id must be added to the extMethodsArray in the ExtMethods class. If this is not done, the method will not be detected!
+
+
+1.5.3. Calling Methods
+-----------------
+When a method is called, its parameters are evaluated and sent to the method's code body, which is executed. If the method is non-void, it returns a value.
+A method may be called as either a statement, as a data element in a Condition, or as a parameter to another method call.
+
+When a method is called, its local variables (including its parameters) are instantiated and given default values. The values of these variables will persist until we exit the method.
+Note that this means that, if we call another method (method #2) from inside the method (method #1), even though #2 cannot access #1's variables, #1's variables will keep their values while #2 is executed.
+
+A method call is formatted in the following way:
+	The word "method", followed by one or more spaces, followed by the method id, followed by an open parentheses, followed by a full parameter call list, followed by a close paren. If this method is being called as a statement, it must be followed by a semicolon.
+The format of a parameter list is:
+	A variable call, method call or literal of the proper type. If there is a second parameter, the id is followed by a comma. The next parameter is then listed.
+	
+Examples:
+	method a();
+	method b(int 0, var y);
+	method c(method f(int 0));
+	
 
 1.6. Assignment
 -----------------
+In an Assignment statement, we assign the value of either a literal, a method call, or another variable to a specified variable.
+The right hand side (rhs) of the Assignment statement must be of the same datatype as the left hand side (lhs) variable. The only valid datatypes that may be assigned are int, string and bool.
+
+An Assignment statement is the ONLY way in which variables may take on non-default values.
+
+The format of an Assignment statement is the following:
+	The word "assign", followed by one or more spaces, followed by the id of a valid variable, followed by one or more spaces, followed by an equals sign, followed by one or more spaces, followed by a variable call, method call, or literal, followed by a semicolon.
+	
+Examples:
+	assign x = int 0;
+	assign y = var x;
+	assign z = method a(var y);
+	
 
 1.7. Conditions
 -----------------
+A Condition is a logical statement containing at least one comparison between two pieces of data (variable calls, method calls or literals) and possibly one or more logical operations (AND, OR).
+Conditions are used within If statements and Loops. See those sections for more details on the specifics of how they are used.
+A Condition always returns a boolean value - true or false - indicating what it evaluated to!
 
-1.8. If
+The comparison in a Condition requires two calls of the same type and has one comparator. The comparator may be:
+- Logical equality (==)
+- Logical inequality (!=)
+- Greater Than (>)
+- Less Than (<)
+- Greater Than or Equal To (>=)
+- Less Than or Equal To (<=)
+NOTE: All of these logical operators may be used if we are comparing int datatypes; but only the first two (==, !=) may be used if we are comparing strings or bools.
+
+Every comparison must be wrapped in brackets ([ ]).
+The format of a comparison is as follows:
+	An open bracket, followed by a variable call / method call / literal, followed by one or more spaces, followed by a comparator, followed by a variable call / method call / literal, followed by a close bracket.
+
+Examples:
+	[var x > int y]
+	[method x() == method y(int 0)]
+	
+A Condition may also have a logical operation. The logical operation requires two comparisons and a logical operator, which may be either "and" or "or".
+
+The most basic logical operation is of the form of "comparison #1 and comparison #2" / "comparison #1 or comparision #2". 
+
+The format of the basic logical operation is the following:
+	A comparison, followed by one or more spaces, followed by the word "and" or "or", followed by one or more spaces, followed by another comparison.
+Examples:
+	[var x > int y] and [method x() == method y(int 0)]
+	[int 5 != method y()] or [string "ASDF" == var s]
+
+There are two ways which we may extend this basic logical operation
+1. Concatination: we may add another logical comparison to the end. 
+	Example: "comparison #1 and comparison #2 or comparison #3"
+2. Nesting: The comparison on one side of the logical operator may be replaced with a full logical statement. Whenever we nest, we wrap the nested logical statement in brackets ([ ])
+	Example: "[comparison #1 and comparison #2] or comparison #3"
+
+Examples:
+	[var x > int y] and [method x() == method y(int 0)] or [string "ASDF" == var s]				//Concationation Example
+	[[method x() == method y(int 0)] or [string "ASDF" == var s]] or [string "ASDF" == var s]	//Nesting Example
+
+
+1.8. If Statements
 -----------------
+An If statement conditionally executes a body / bodies of code depending on whether an included Condition evaluates as true or false.
+Every If statement must include a Condition to evaluate, and a body to execute if that Condition evaluates to true. It may optionally include Elseifs or Elses to modify how the If operates.
+
+This body has the same scope as the parent body (unlike methods) and, if it executes at all, will execute as if the code was in the parent body.
+
+1.8.1. If
+-----------------
+The If is the basic building block, and is required with every If statement.
+
+The If format is as follows:
+	The word "if", followed by one or more spaces, followed by an open parentheses, followed by a Condition, followed by a close parentheses, followed by a newline, followed by a body.	
+	NOTE: DO NOT FORGET THE SPACE BETWEEN IF AND THE OPENPAREN
+Examples:
+	if ([var x > int y])
+	{
+		//Code
+	}
+	
+	if ([int 5 != method y()] or [string "ASDF" == var s])
+	{
+		//Code
+	}
+	
+
+1.8.2. Elseif
+-----------------
+The optional Elseif provides another Condition to evaluate and another body to possibly execute if the If Condition fails.
+An Elseif appears on the immediate next line after an If statement's body closing brace.
+There may be multiple Elseifs associated with an If. They are processed in the order they appear. Only one Elseif will have its body executed; once an Elseif Condition evaluates to true, its body will execute, and the rest of the If statement will be ignored.
+
+An Elseif MUST follow an If statement (or another Elseif). It cannot appear under any other circumstances!
+
+The Elseif format is as follows:
+	The word "elseif", followed by one or more spaces, followed by an open parentheses, followed by a Condition, followed by a close parentheses, followed by a newline, followed by a body.	
+	NOTE: DO NOT FORGET THE SPACE BETWEEN ELSEIF AND THE OPENPAREN
+Examples:
+	if ([var x > int y])
+	{
+		//Code
+	}
+	elseif ([int 5 != method y()] or [string "ASDF" == var s])
+	{
+		//Code
+	}
+
+1.8.3. Else
+-----------------
+The optional Else appears after an If or after an Elseif. If an Else appears, no more Elseifs may appear; the Else is always the last item in an If statement.
+Else will execute only if none of the Conditions in the If / Elseif(s) evaluated to true. As such, it has no condition itself.
+
+The Else format is as follows:
+	The word "else", followed by a newline, followed by a body.	
+Examples:
+	if ([var x > int y])
+	{
+		//Code
+	}
+	elseif ([int 5 != method y()] or [string "ASDF" == var s])
+	{
+		//Code
+	}
+	else
+	{
+		//Code
+	}
+
 
 1.9. Loop
 -----------------
@@ -176,3 +395,8 @@ Examples:
 1.10.2. Wait Until
 -----------------
 
+
+======================================================================
+
+2. Future Development
+-----------------
