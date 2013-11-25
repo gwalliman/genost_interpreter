@@ -117,6 +117,14 @@ public class STMT extends Variable
 	}
 	
 	/**
+	 * @return	the stmt object itself.
+	 */
+	public Object getStmt()
+	{
+		return stmt;
+	}
+	
+	/**
 	 * Printing function, determines what type of stmt this is ands calls that type's print function.
 	 */
 	public void print() 

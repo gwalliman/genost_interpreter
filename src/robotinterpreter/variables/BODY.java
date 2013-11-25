@@ -11,9 +11,13 @@ import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.vars.VARDECL;
 
 /**
- * The BODY variable contains a series of statements and a scope for variables.
+ * Every BODY variable contains a series of statements and a scope for variables.
+ * 
  * BODY variables are nestable: bodies may appear within other bodies, in which case the former is the parent body of the latter.
- * Note that all variables should be linked to their parent body by passing the parent body in via the constructor.
+ * In a nested (child) body, newly declared variables will override variables declared in a parent body, if the variables have the same ID.
+ * However, no two variables may have the same name within a single body.
+ * 
+ * Note that all BODYs should be linked to their parent BODY by passing the parent BODY in via the constructor.
  * 
  * @author Garret Walliman (gwallima@asu.edu)
  *

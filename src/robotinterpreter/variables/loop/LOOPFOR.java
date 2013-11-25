@@ -10,6 +10,8 @@ import robotinterpreter.variables.Variable;
  * We specify the number of iterations with an integer literal. The integer may be in the range (-1, infinity).
  * A positive or zero integer will execute for exactly that many times. -1 will execute infinitely.
  * 
+ * Note that LOOPFORs create a new scope for their code bodies, so any variables declared within the code body will be accessible only from within that body (and any child bodies).
+ * 
  * @author Garret Walliman (gwallima@asu.edu)
  *
  */
@@ -44,6 +46,14 @@ public class LOOPFOR extends Variable
 		//PARSING BODY
 		c.nextLine();
 		codeBody = new BODY(body, c);
+	}
+	
+	/**
+	 * @return	the code body for this statement
+	 */
+	public BODY getCodeBody()
+	{
+		return codeBody;
 	}
 	
 	/**

@@ -27,7 +27,7 @@ import robotinterpreter.variables.vars.VARDECL;
  * Note that an external method has no BODY - its own execution is handled by an execution function that it defines in its packaged code.
  * We create a METHODDEFINE for our external methods so that we have one unified way of calling methods, which is using the METHODDEFINE.
  * 
- * Note that METHODDEFINEs create a new scope for their code bodies, so any variables declared within the code body will be accessible only from within that body.
+ * Note that METHODDEFINEs create a new scope for their code bodies, so any variables declared within the code body will be accessible only from within that body (and any child bodies).
  * 
  * @author Garret Walliman (gwallima@asu.edu)
  *

@@ -8,6 +8,8 @@ import robotinterpreter.variables.Variable;
 /**
  * ELSE is much simpler than IF or ELSEIF. It has a body and, if the ELSE is executed, the body will always execute.
  * 
+ * Note that ELSEs create a new scope for their code bodies, so any variables declared within the code body will be accessible only from within that body (and any child bodies).
+ * 
  * @author Garret Walliman (gwallima@asu.edu)
  *
  */
@@ -32,8 +34,15 @@ public class ELSE extends Variable
 	}
 	
 	/**
+	 * @return	the code body for this statement
+	 */
+	public BODY getCodeBody()
+	{
+		return codeBody;
+	}
+	
+	/**
 	 * Simply prints the code body.
-	 * 
 	 */
 	public void print() 
 	{

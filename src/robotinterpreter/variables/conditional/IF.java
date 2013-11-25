@@ -8,7 +8,8 @@ import robotinterpreter.variables.Variable;
 
 /**
  * An IF statement conditionally executes a body of code depending on whether a linked CONDITIONLIST evaluates to true or not.
- * The codeBody here is treated as having the same scope as its parent body, unlike a METHOD codeBody.
+ * Note that IFs create a new scope for their code bodies, so any variables declared within the code body will be accessible only from within that body (and any child bodies).
+
  * 
  * @author Garret Walliman (gwallima@asu.edu)
  *
@@ -91,6 +92,30 @@ public class IF extends Variable
 			else RobotInterpreter.halt("IF", lineNum, code, "Syntax error related to ELSE");
 		}
 		else c.prevLine();
+	}
+	
+	/**
+	 * @return	the first ELSEIF. If there are subsequent ones, must call the ELSEIF's own get function.
+	 */
+	public ELSEIF getElseIf()
+	{
+		return elseif;
+	}
+	
+	/**
+	 * @return	the ELSE, if there is one.
+	 */
+	public ELSE getElse()
+	{
+		return els;
+	}
+	
+	/**
+	 * @return	the code body for this statement
+	 */
+	public BODY getCodeBody()
+	{
+		return codeBody;
 	}
 	
 	/**

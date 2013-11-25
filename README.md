@@ -68,10 +68,9 @@ Every body must be enclosed by braces ({, }). Both the opening and close braces 
 
 This means that the first line of every program must be the opening brace ({) of the main body, and the last line of every program must be the close brace (})
 
-Bodies have variable scopes, although this is only pertinent for the main body, and for method bodies. Variables declared within a body belong to that body's scope and are accessible by any child bodies within that body. 
-A parent body cannot, however, access variables declared within a child body.
+Bodies have variable scopes. Variables declared within a body belong to that body's scope and are accessible by any child bodies within that body. A parent body cannot, however, access variables declared within a child body.
 Effectively, this gives us a semi-dynamic scope. A child body within a parent body has access to both its own local variables and the parent body's variables. This continues for as deep as the child bodies are defined.
-However, a body cannot access the variables of a body that is not its ancestor, even if that non-ancestor body has called it.
+However, a body cannot access the variables of a body that is not its ancestor, even if that non-ancestor body has called it (so the scoping is not truly dynamic)
 
 Note that methods can be declared anywhere, including inside other method bodies. However, all methods are accessible from everywhere in the program.
 
@@ -158,7 +157,7 @@ For a method to be used in the code, it must be defined somewhere.
 
 Methods have variable scopes: each method has access to its own local variables and the variables of the parent scopes (i.e. ancestor bodies).
 Methods always have access to the main body's variables, since all methods are declared within the main body. Theoretically, we could declare a method within another method, so that the child method could access the parent's variables.
-However, by convention, all methods will be defined on the same level at the beginning of the automatically generated code, and so we will have effectively a two-level variable scope.
+However, by convention, all methods will be defined separately in the main code body at the beginning of the automatically generated code, and so effectively, each method will only have access to its own local variables and those in the scope of the main code body.
 
 We allow two kinds of methods in this program: internal methods, and external methods. 
 
@@ -313,7 +312,7 @@ Examples:
 An If statement conditionally executes a body / bodies of code depending on whether an included Condition evaluates as true or false.
 Every If statement must include a Condition to evaluate, and a body to execute if that Condition evaluates to true. It may optionally include Elseifs or Elses to modify how the If operates.
 
-This body has the same scope as the parent body (unlike methods) and, if it executes at all, will execute as if the code was in the parent body.
+If/Elseif/Else bodies, like all bodies, have their own scope and may declare variables within them accessible only to these bodies (or any child bodies within them)
 
 1.8.1. If
 -----------------
@@ -379,22 +378,86 @@ Examples:
 
 1.9. Loop
 -----------------
+A Loop, like an If, contains a code body which will be executed under certain conditions.
+Loops will repeatedly execute their code bodies until a certain condition is met. This condition differs between the two variants.
+
+Loop bodies, like all bodies, have their own scope and may declare variables within them accessible only to these bodies (or any child bodies within them)
 
 1.9.1. Loop For
 -----------------
+A Loop For executes its code body for a specified number of times. The number must be an integer and may be either a positive integer, zero, or -1.
+The positive number will execute for specifically that many times. If the integer is zero, the loop for will not execute.
+Finally, if -1 is provided, the loop for will loop infinitely, until the program is halted.
+
+The format of a Loop For is as follows:
+	The word "loopfor", followed by one or more spaces, an integer (as described above), followed by a newline, followed by a body.
+		NOTE: DO NOT FORGET THE SPACE BETWEEN LOOPFOR AND THE INTEGER
+Examples:
+	loopfor 5
+	{
+		//Code
+	}
+	
+	loopfor -1
+	{
+		//Code
+	}
 
 1.9.2. Loop Until
 -----------------
+A Loop Until has a Condition associated with it and will execute for as long as that condition remains false.
+The Condition is evaluated before we enter the loop body, so if the Condition is true on first evaluation, the body is never executed.
+
+Note that it is possible to enter an infinite loop using a Loop Until. However, if you intend to create an infinite loop, the Loop For would be better for this.
+
+The format of a Loop Until is as follows:
+	The word "loopuntil", followed by one or more spaces, followed by an open parentheses, followed by a Condition, followed by a close parentheses, followed by a newline, followed by a body.	
+	NOTE: DO NOT FORGET THE SPACE BETWEEN LOOPUNTIL AND THE OPENPAREN
+Examples:
+	loopuntil ([var x > int y])
+	{
+		//Code
+	}
+	
+	loopuntil ([int 5 != method y()] or [string "ASDF" == var s])
+	{
+		//Code
+	}
 
 1.10. Wait
 -----------------
+A Wait statement causes the program to pause (sleep) for a certain amount of time.
+There are two variants: one which waits until a certain condition is met, and one which waits for a specified amount of time.
 
 1.10.1. Wait For
 -----------------
+A Wait For simply waits for a specified amount of time. This amount of time is provided in the form of an integer. The integer must be either positive or zero. NEGATIVE INTEGERS ARE NOT ALLOWED.
+The integer in this case represents the number of seconds that we wait. Once that amount of time has passed, we wake up and continue execution.
+
+The format of a Wait For is as follows:
+	The word "waitfor", followed by one or more spaces, followed by an integer (as described above). followed by a semicolon.
+	NOTE: DO NOT FORGET THE SPACE BETWEEN WAITFOR AND THE INTEGER
+Examples:
+	waitfor 5;
+	waitfor 20;
 
 1.10.2. Wait Until
 -----------------
+The Wait Until statement causes the program to sleep until a provided Condition evaluates to true.
+It is very important to note that the Condition should be something that could actually ever evaluate to true. Because the interpreter is sleeping, no internal values (i.e. variables) will ever change, 
+and so the Condition on which we are waiting should involve values external. The most common example for our robot code will be sensor values, which will be retrieved by an external method.
 
+The Wait Until has a polling frequency. It will sleep for a certain amount of time, wake up, and evaluate the condition. The polling frequency is currently set to 250ms.
+Once the Condition evaluates to true, the interpreter will wake up and continue execution.
+
+If the Condition evaluates to true on first evaluation, the Wait will never occur and the code will continue as normal.
+
+The format of a Wait Until is as follows:
+	The word "waituntil", followed by one or more spaces, followed by an open parentheses, followed by a Condition, followed by a close parentheses, followed by a semicolon.
+	NOTE: DO NOT FORGET THE SPACE BETWEEN WAITUNTIL AND THE OPENPAREN
+Examples:
+	waituntil ([var x > int y]);
+	waituntil ([int 5 != method y()] or [string "ASDF" == var s]);
 
 ======================================================================
 

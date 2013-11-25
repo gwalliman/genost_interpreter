@@ -10,6 +10,8 @@ import robotinterpreter.variables.Variable;
  * An ELSEIF is much like an IF; it has a CONDITIONLIST and a BODY.
  * There may be multiple ELSEIFs in one IF tree. To account for this, we treat ELSEIF like a linked list node and contain a link to another ELSEIF, if one exists.
  * 
+ * Note that ELSEIFs create a new scope for their code bodies, so any variables declared within the code body will be accessible only from within that body (and any child bodies).
+ * 
  * @author Garret Walliman (gwallima@asu.edu)
  *
  */
@@ -66,6 +68,22 @@ public class ELSEIF extends Variable
 			elseif = new ELSEIF(body, c);
 		}
 		
+	}
+	
+	/**
+	 * @return	the next ELSEIF.
+	 */
+	public ELSEIF getNextElseIf()
+	{
+		return elseif;
+	}
+	
+	/**
+	 * @return	the code body for this statement
+	 */
+	public BODY getCodeBody()
+	{
+		return codeBody;
 	}
 	
 	/**

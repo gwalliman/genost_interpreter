@@ -86,6 +86,18 @@ public class VARDECL extends Variable
 	{
 		return type;
 	}
+	
+	/**
+	 * This is a special print function we use for printing the variable tables.
+	 */
+	public void printVar() 
+	{
+		if(id != null && type != null)
+		{
+			RobotInterpreter.write("debug", type + " " + id);
+		}
+		else RobotInterpreter.write("debug", "Empty VARDECL");		
+	}
 
 	/**
 	 * Simple print function
@@ -122,5 +134,4 @@ public class VARDECL extends Variable
 	{
 		return null;
 	}
-
 }

@@ -13,6 +13,8 @@ import robotinterpreter.variables.conditional.CONDITIONLIST;
  * A LOOPUNTIL repeatedly executes a code body until a certain condition is TRUE. (If the condition is initially true, the body is never executed)
  * Contains a CONDITIONLIST and a BODY to execute.
  * 
+ * Note that LOOPUNTILs create a new scope for their code bodies, so any variables declared within the code body will be accessible only from within that body (and any child bodies).
+ * 
  * @author Garret Walliman (gwallima@asu.edu)
  *
  */
@@ -59,6 +61,14 @@ public class LOOPUNTIL extends Variable
 		//PARSING BODY
 		c.nextLine();
 		codeBody = new BODY(body, c);
+	}
+	
+	/**
+	 * @return	the code body for this statement
+	 */
+	public BODY getCodeBody()
+	{
+		return codeBody;
 	}
 	
 	/**

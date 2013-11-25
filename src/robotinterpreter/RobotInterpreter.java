@@ -10,6 +10,13 @@ import javax.swing.UIManager;
 import components.FileChooserDemo;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
+import robotinterpreter.variables.STMT;
+import robotinterpreter.variables.STMTLIST;
+import robotinterpreter.variables.conditional.ELSE;
+import robotinterpreter.variables.conditional.ELSEIF;
+import robotinterpreter.variables.conditional.IF;
+import robotinterpreter.variables.loop.LOOPFOR;
+import robotinterpreter.variables.loop.LOOPUNTIL;
 import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.methods.external.ExtMethod;
 import robotinterpreter.variables.vars.VARDECL;
@@ -95,8 +102,8 @@ public class RobotInterpreter
 		//Go over each line of code and populate with information immediately available
 		b = new BODY(null, c);
 		b.print();
-		RobotInterpreter.writeln("message", Code.newline + "=================");
-		RobotInterpreter.writeln("message", "Code fully parsed!" + Code.newline + "=================");
+		RobotInterpreter.writeln("parse", Code.newline + "=================");
+		RobotInterpreter.writeln("parse", "Code fully parsed!" + Code.newline + "=================");
 		
 		//Step 2: Link and Validate
 		//Link up certain items: varcalls to variable array, method calls to actual method code, if/loop eventualities, etc.
@@ -109,9 +116,11 @@ public class RobotInterpreter
 			findMethod(id).validate();
 		}
 		
-		RobotInterpreter.writeln("message", "=================");
-		RobotInterpreter.writeln("message", "Code fully validated!" + Code.newline + "=================");
+		RobotInterpreter.writeln("validate", "=================");
+		RobotInterpreter.writeln("validate", "Code fully validated!" + Code.newline + "=================");
 
+		printAllVars();
+		
 		//Step 3: Execute program
 		RobotInterpreter.writeln("message", "=================");
 		RobotInterpreter.writeln("message", "Execution output follows:" + Code.newline + "=================" + Code.newline);
@@ -168,8 +177,7 @@ public class RobotInterpreter
 	
 	/**
 	 * This function is used to find the declaration of a variable.
-	 * These VARDECLs are stored in tables located within code bodies. The main code body will contain all variables defined within its scope,
-	 * and method bodies will contain all parameters and any other variables defined in its scope.
+	 * These VARDECLs are stored in tables located within code bodies. Each body will contain all variables defined within its scope; method bodies will also contain all parameters to the method.
 	 * Every body also contains a link to its parent body.
 	 * 
 	 * In this function we search the varTable of the provided body for a VARDECL matching the provided id.
@@ -249,10 +257,49 @@ public class RobotInterpreter
 
 		for(VARDECL var : b.varTable)
 		{
-			var.print();
+			var.printVar();
 			RobotInterpreter.write("debug", Code.newline);
 		}
+		
+		STMTLIST stmts = b.getStmtList();
+		while(stmts != null)
+		{
+			STMT stmt = stmts.getStmt();
+			if(stmt.type().equals(Terminals.IF))
+			{
+				IF i = ((IF)stmt.getStmt());
+				ELSEIF elseif = i.getElseIf();
+				ELSE els = i.getElse();
+				
+				printVars(i.getCodeBody(), "IF Statement (Line " + stmt.lineNum() + ") within scope of " + s);
+				
+				while(elseif != null)
+				{
+					printVars(elseif.getCodeBody(), "ELSEIF Statement (Line " + elseif.lineNum() + ") within scope of " + s);
+					elseif = elseif.getNextElseIf();
+				}
+				
+				if(els != null)
+				{
+					printVars(els.getCodeBody(), "ELSE Statement (Line " + els.lineNum() + ") within scope of " + s);
+				}
+			}
+			else if(stmt.type().equals(Terminals.LOOPUNTIL))
+			{
+				printVars(((LOOPUNTIL)stmt.getStmt()).getCodeBody(), "LOOPUNTIL Statement (Line " + stmt.lineNum() + ") within scope of " + s);
+
+			}
+			else if(stmt.type().equals(Terminals.LOOPFOR))
+			{
+				printVars(((LOOPFOR)stmt.getStmt()).getCodeBody(), "LOOPFOR Statement (Line " + stmt.lineNum() + ") within scope of " + s);
+			}
+			stmts = stmts.getNextStmt();
+		}
+		
 		RobotInterpreter.writeln("debug", "===================");
+		RobotInterpreter.writeln("debug", "End Variable Table for " + s);
+		RobotInterpreter.writeln("debug", "===================");
+
 	}
 	
 	/**
