@@ -41,7 +41,7 @@ public class LOOPFOR extends Variable
 		{
 			iterations = Integer.parseInt(tokens[1]);
 		}
-		else RobotInterpreter.halt("LOOPFOR", lineNum, code, "LOOPFOR iterations integer is missing or of invalid format.");
+		else RobotInterpreter.error("LOOPFOR", lineNum, code, "LOOPFOR iterations integer is missing or of invalid format.");
 		
 		//PARSING BODY
 		c.nextLine();
@@ -75,7 +75,7 @@ public class LOOPFOR extends Variable
 
 		if(iterations < -1)
 		{
-			RobotInterpreter.halt("LOOPFOR", lineNum, code, "LOOPFOR iterations integer cannot be less than -1");
+			RobotInterpreter.error("LOOPFOR", lineNum, code, "LOOPFOR iterations integer cannot be less than -1");
 		}
 		codeBody.validate();
 	}

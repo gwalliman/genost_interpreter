@@ -37,6 +37,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import robotinterpreter.RobotInterpreter;
+
 /*
  * FileChooserDemo.java uses these files:
  *   images/Open16.gif
@@ -46,9 +48,11 @@ import javax.swing.*;
 public class FileChooserDemo extends JPanel
                              implements ActionListener {
     static public final String newline = "\n";
-    JButton openButton, saveButton, clearButton;
+    JButton openButton, saveButton, clearButton, executeButton, stopButton;
     public static JTextArea log;
     JFileChooser fc;
+    private File file;
+    private RobotInterpreter r;
 
     public FileChooserDemo() {
         super(new BorderLayout());
@@ -87,12 +91,22 @@ public class FileChooserDemo extends JPanel
         
         clearButton = new JButton("Clear Log");
         clearButton.addActionListener(this);
+        
+        executeButton = new JButton("Execute");
+        executeButton.addActionListener(this);
+        executeButton.setEnabled(false);
+        
+        stopButton = new JButton("Stop");
+        stopButton.addActionListener(this);
+        stopButton.setEnabled(false);
 
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
         buttonPanel.add(openButton);
         buttonPanel.add(saveButton);
         buttonPanel.add(clearButton);
+        buttonPanel.add(executeButton);
+        buttonPanel.add(stopButton);
 
         //Add the buttons and the log to this panel.
         add(buttonPanel, BorderLayout.PAGE_START);
@@ -104,32 +118,58 @@ public class FileChooserDemo extends JPanel
     	log.append(s);
     }
 
-    public void actionPerformed(ActionEvent e) {
-
+    public void actionPerformed(ActionEvent e) 
+    {
         //Handle open button action.
-        if (e.getSource() == openButton) {
+        if (e.getSource() == openButton) 
+        {
             int returnVal = fc.showOpenDialog(FileChooserDemo.this);
 
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
+            if (returnVal == JFileChooser.APPROVE_OPTION) 
+            {
+                file = fc.getSelectedFile();
                 //This is where a real application would open the file.
                 log.append("Opening: " + file.getName() + "." + newline);
-                robotinterpreter.RobotInterpreter.interpret(file);
+                SwingWorker<Void, Void> loader = new SwingWorker<Void, Void>()
+                {
+                	@Override
+                	public Void doInBackground()
+                	{
+                		r = new RobotInterpreter(file);
+
+                		return null;
+                	}
+                	
+                	public void done()
+                	{
+                        executeButton.setEnabled(true);
+                	}
+
+                	public void process(String msg)
+                	{
+                		writeLog(msg);
+                	}
+                };
+                loader.execute();
             } 
             else 
             {
                 log.append("Open command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
-
         //Handle save button action.
-        } else if (e.getSource() == saveButton) {
+        } 
+        else if (e.getSource() == saveButton) 
+        {
             int returnVal = fc.showSaveDialog(FileChooserDemo.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == JFileChooser.APPROVE_OPTION) 
+            {
                 File file = fc.getSelectedFile();
                 //This is where a real application would save the file.
                 log.append("Saving: " + file.getName() + "." + newline);
-            } else {
+            } 
+            else 
+            {
                 log.append("Save command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
@@ -137,6 +177,32 @@ public class FileChooserDemo extends JPanel
         else if (e.getSource() == clearButton) 
         {
                 log.setText(null);
+        }
+        else if(e.getSource() == executeButton)
+        {
+            SwingWorker<Void, Void> executor = new SwingWorker<Void, Void>()
+            {
+            	@Override
+            	public Void doInBackground()
+            	{
+                    stopButton.setEnabled(true);
+            	    r.execute();
+					return null;
+            	}
+            	
+            	public void done()
+            	{
+                    stopButton.setEnabled(false);
+            	}
+            };
+            executor.execute();
+
+        }
+        else if(e.getSource() == stopButton)
+        {
+        	r.halt();
+            log.append("Program Halted");
+            stopButton.setEnabled(false);
         }
     }
 
@@ -169,3 +235,5 @@ public class FileChooserDemo extends JPanel
         frame.setVisible(true);
     }
 }
+
+

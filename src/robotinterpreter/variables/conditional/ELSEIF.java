@@ -41,12 +41,12 @@ public class ELSEIF extends Variable
 		//An ELSEIF CONDITIONLIST must be surrounded by parentheses.
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.halt("ELSEIF", lineNum, code, "ELSEIF must open with (");
+			RobotInterpreter.error("ELSEIF", lineNum, code, "ELSEIF must open with (");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.halt("ELSEIF", lineNum, code, "ELSEIF must close with )");
+			RobotInterpreter.error("ELSEIF", lineNum, code, "ELSEIF must close with )");
 		}
 
 		//If we have more than 3 tokens, then we have at least something in the CONDITIONLIST.
@@ -54,7 +54,7 @@ public class ELSEIF extends Variable
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(8, code.length() - 1));
 		}
-		else RobotInterpreter.halt("ELSEIF", lineNum, code, "ELSEIF must contain a condition list!");
+		else RobotInterpreter.error("ELSEIF", lineNum, code, "ELSEIF must contain a condition list!");
 
 		//Move on to the next line and parse the BODY.
 		c.nextLine();

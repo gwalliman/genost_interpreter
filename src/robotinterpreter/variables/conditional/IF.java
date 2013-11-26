@@ -42,13 +42,13 @@ public class IF extends Variable
 		//token[0] is "if", so token[1] should be the open paren to the CONDITIONLIST
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.halt("IF", lineNum, code, "IF must open with (");
+			RobotInterpreter.error("IF", lineNum, code, "IF must open with (");
 		}
 		
 		//The last token should always be a closeparen.
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.halt("IF", lineNum, code, "IF must close with )");
+			RobotInterpreter.error("IF", lineNum, code, "IF must close with )");
 		}
 		
 		//PARSE CONDITIONLIST
@@ -57,7 +57,7 @@ public class IF extends Variable
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(4, code.length() - 1));
 		}
-		else RobotInterpreter.halt("IF", lineNum, code, "IF must contain a condition list!");
+		else RobotInterpreter.error("IF", lineNum, code, "IF must contain a condition list!");
 
 		//PARSE BODY
 		//Move on to the next line and parse the BODY.
@@ -89,7 +89,7 @@ public class IF extends Variable
 			{
 				els = new ELSE(body, c);
 			}
-			else RobotInterpreter.halt("IF", lineNum, code, "Syntax error related to ELSE");
+			else RobotInterpreter.error("IF", lineNum, code, "Syntax error related to ELSE");
 		}
 		else c.prevLine();
 	}

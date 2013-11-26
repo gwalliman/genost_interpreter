@@ -19,7 +19,7 @@ public class divide extends ExtMethod
 		int denom = ((int)args[1]);
 		if(denom == 0)
 		{
-			RobotInterpreter.halt("DIVIDE", -1, "Externally defined", "Divide by 0 error");
+			RobotInterpreter.error("DIVIDE", -1, "Externally defined", "Divide by 0 error");
 		}
 		return ((int)args[0]) / ((int)args[1]);
 	}

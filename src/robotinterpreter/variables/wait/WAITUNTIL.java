@@ -41,12 +41,12 @@ public class WAITUNTIL extends Variable
 		//Ensure that we have a matching OPEN and CLOSE parentheses around the CONDITIONLIST
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.halt("WAITUNTIL", lineNum, code, "WAITUNTIL must open with (");
+			RobotInterpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must open with (");
 		}
 		
 		if(tokens[tokens.length - 2] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.halt("WAITUNTIL", lineNum, code, "WAITUNTIL must close with )");
+			RobotInterpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must close with )");
 		}
 		
 		//We must have a CONDITIONLIST; we error out if there is not one present.
@@ -54,11 +54,11 @@ public class WAITUNTIL extends Variable
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 2));
 		}
-		else RobotInterpreter.halt("WAITUNTIL", lineNum, code, "WAITUNTIL must contain a condition list!");
+		else RobotInterpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must contain a condition list!");
 
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
 		{
-			RobotInterpreter.halt("WAITUNTIL", lineNum, code, "Missing semicolon");
+			RobotInterpreter.error("WAITUNTIL", lineNum, code, "Missing semicolon");
 		}		
 	}
 	

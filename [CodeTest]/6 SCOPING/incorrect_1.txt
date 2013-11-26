@@ -1,7 +1,7 @@
 {
 	vardecl int x;
 	
-	methoddefine int countTo10(int z)
+	methoddefine void countTo10(int z)
 	{
 		loopuntil ([var z == int 10])
 		{

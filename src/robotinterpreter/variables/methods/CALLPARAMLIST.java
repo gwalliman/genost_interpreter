@@ -62,7 +62,7 @@ public class CALLPARAMLIST extends Variable
 			//We do this by finding the close paren to this method's CALLPARAMLIST; the character immediately after this will be the comma, and hence the end of the CALL.
 			if(tokens[2] != Terminals.OPENPAREN)
 			{
-				RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "METHOD argument must have open paren following ID!");
+				RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument must have open paren following ID!");
 			}
 			
 			//The closeparen index is at least 2 (0 is "method", 1 is open paren)
@@ -90,7 +90,7 @@ public class CALLPARAMLIST extends Variable
 			}
 			else
 			{
-				RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "METHOD argument does not have corresponding closeparen!");
+				RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument does not have corresponding closeparen!");
 			}
 		}
 		//Case 2
@@ -117,7 +117,7 @@ public class CALLPARAMLIST extends Variable
 		{
 			call = new CALL(body, c, argument);
 		}
-		else RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
+		else RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
 
 		//If we have a remainder, recursively call CALLPARAMLIST
 		if(!remainder.isEmpty())
@@ -163,7 +163,7 @@ public class CALLPARAMLIST extends Variable
 			DEFPARAMLIST paramdef = methdef.getParam(paramNum);
 			if(paramdef == null)
 			{
-				RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " does not exist for method " + methdef.id());
+				RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " does not exist for method " + methdef.id());
 			}
 			else
 			{
@@ -172,7 +172,7 @@ public class CALLPARAMLIST extends Variable
 				String defType = paramdef.type();
 				if(!callType.equals(defType))
 				{
-					RobotInterpreter.halt("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
+					RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
 				}
 			}
 		}

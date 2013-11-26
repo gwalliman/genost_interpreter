@@ -72,7 +72,7 @@ public class STMT extends Variable
 					//Ensure that the semicolon exists. If it does, remove it and call the METHOD parser.
 					String lastchar = c.currentLine().substring(c.currentLine().length() - 1);
 					if(!lastchar.equals(Terminals.SEMICOLON))
-						RobotInterpreter.halt("METHOD", lineNum, code, "Missing Semicolon");
+						RobotInterpreter.error("METHOD", lineNum, code, "Missing Semicolon");
 					stmt = new METHOD(body, c, c.currentLine().substring(0, c.currentLine().length() - 1));
 					break;
 				case Terminals.RETURN:
@@ -84,10 +84,10 @@ public class STMT extends Variable
 				//ELSEIFs and ELSEs should be handled in the IF code.
 				//If we find a separate statement beginning with ELSEIF or ELSE, we must halt.
 				case Terminals.ELSEIF:
-					RobotInterpreter.halt("STMT", lineNum, code, "ELSEIF must follow IF");
+					RobotInterpreter.error("STMT", lineNum, code, "ELSEIF must follow IF");
 					break;
 				case Terminals.ELSE:
-					RobotInterpreter.halt("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
+					RobotInterpreter.error("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
 					break;
 				case Terminals.LOOPUNTIL:
 					stmt = new LOOPUNTIL(body, c);
@@ -103,7 +103,7 @@ public class STMT extends Variable
 					break;
 			}
 		}
-		else RobotInterpreter.halt("STMT", lineNum, code, "STMT type is not valid.");
+		else RobotInterpreter.error("STMT", lineNum, code, "STMT type is not valid.");
 	}
 	
 	/**

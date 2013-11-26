@@ -59,12 +59,12 @@ public class CONDITIONLIST extends Variable
 		
 		//Every CONDITIONLIST will always have a bracket as its first character.
 		if(tokens[0] != Terminals.OPENBRACKET)
-			RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "CONDITIONLIST must begin with [");
+			RobotInterpreter.error("CONDITIONLIST", lineNum, code, "CONDITIONLIST must begin with [");
 		
 		//We must now find a matching close bracket. This may be the close bracket to a CONDITION or a CONDITIONLIST.
 		int closeBracket = findCloseBracket(tokens);
 		if(closeBracket == -1)
-			RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "Missing ]! CONDITIONLIST must have matching brackets!");
+			RobotInterpreter.error("CONDITIONLIST", lineNum, code, "Missing ]! CONDITIONLIST must have matching brackets!");
 
 		//Next we figure out whether the code within the two brackets we have identified contains a logical operator.
 		boolean hasLogOp = false;
@@ -100,9 +100,9 @@ public class CONDITIONLIST extends Variable
 				{
 					nextCon = new CONDITIONLIST(body, c, Code.implode(tokens, " ", closeBracket + 2, tokens.length - 1));
 				}
-				else RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "A CONDITION or CONDITIONLIST must follow an AND or OR");
+				else RobotInterpreter.error("CONDITIONLIST", lineNum, code, "A CONDITION or CONDITIONLIST must follow an AND or OR");
 			}
-			else RobotInterpreter.halt("CONDITIONLIST", lineNum, code, "Only AND or OR may follow a CONDITIONLIST");
+			else RobotInterpreter.error("CONDITIONLIST", lineNum, code, "Only AND or OR may follow a CONDITIONLIST");
 
 		}
 	}

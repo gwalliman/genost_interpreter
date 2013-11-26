@@ -39,9 +39,9 @@ public class BOOLEAN extends Variable
 			{
 				value = Boolean.parseBoolean(tokens[0]);
 			}
-			else RobotInterpreter.halt("BOOLEAN", lineNum, code, "Boolean value must be either true or false");
+			else RobotInterpreter.error("BOOLEAN", lineNum, code, "Boolean value must be either true or false");
 		}
-		else RobotInterpreter.halt("BOOLEAN", lineNum, code, "Syntax error in boolean.");
+		else RobotInterpreter.error("BOOLEAN", lineNum, code, "Syntax error in boolean.");
 	}
 
 	/**

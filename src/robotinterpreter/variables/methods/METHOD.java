@@ -44,13 +44,13 @@ public class METHOD extends Variable
 		//The third token should always be an OPENPAREN
 		if(tokens[2] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.halt("METHOD", lineNum, code, "ID must be followed by (");
+			RobotInterpreter.error("METHOD", lineNum, code, "ID must be followed by (");
 		}
 		
 		//The last token should always be a CLOSEPAREN
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.halt("METHOD", lineNum, code, "METHOD header must end with )");
+			RobotInterpreter.error("METHOD", lineNum, code, "METHOD header must end with )");
 		}
 		
 		//If the CLOSEPAREN is not the fourth token, then we must have parameters.
@@ -64,7 +64,7 @@ public class METHOD extends Variable
 		}
 		else if(tokens.length != 4)
 		{
-			RobotInterpreter.halt("METHOD", lineNum, code, "Syntax error in METHOD: invalid characters after CLOSEPAREN");
+			RobotInterpreter.error("METHOD", lineNum, code, "Syntax error in METHOD: invalid characters after CLOSEPAREN");
 		}
 	}
 	
@@ -107,7 +107,7 @@ public class METHOD extends Variable
 		method = RobotInterpreter.findMethod(id);
 		if(method == null)
 		{
-			RobotInterpreter.halt("METHOD", lineNum, code, "Method " + id + " is not defined.");
+			RobotInterpreter.error("METHOD", lineNum, code, "Method " + id + " is not defined.");
 		}
 		
 		//Validate the CALLPARAMLIST if we have one.

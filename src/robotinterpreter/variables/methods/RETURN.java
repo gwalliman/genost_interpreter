@@ -37,7 +37,7 @@ public class RETURN extends Variable
 		//Check to ensure that the semicolon is present.
 		if(!code.substring(code.length() - 1, code.length()).equals(Terminals.SEMICOLON))
 		{
-			RobotInterpreter.halt("RETURN", lineNum, code, "Missing semicolon!");
+			RobotInterpreter.error("RETURN", lineNum, code, "Missing semicolon!");
 		}
 	}
 
@@ -66,10 +66,10 @@ public class RETURN extends Variable
 		call.validate();
 		
 		//Ensure that the RETURN stmt appears in a method body.
-		if(body.method == null) RobotInterpreter.halt("RETURN", lineNum, code, "RETURN statement may only appear in a method!");
+		if(body.method == null) RobotInterpreter.error("RETURN", lineNum, code, "RETURN statement may only appear in a method!");
 		
 		//Ensure that the RETURN type is proper.
-		if(!body.method.type().equals(type)) RobotInterpreter.halt("RETURN", lineNum, code, "Method " + body.method.id() + " returns type " + body.method.type() + ", but RETURN statement is of type " + type);
+		if(!body.method.type().equals(type)) RobotInterpreter.error("RETURN", lineNum, code, "Method " + body.method.id() + " returns type " + body.method.type() + ", but RETURN statement is of type " + type);
 	}
 
 	/**

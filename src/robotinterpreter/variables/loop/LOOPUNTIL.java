@@ -44,19 +44,19 @@ public class LOOPUNTIL extends Variable
 		//Ensure that the CONDITIONLIST is surrounded by parentheses
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.halt("LOOPUNTIL", lineNum, code, "LOOPUNTIL must open with (");
+			RobotInterpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must open with (");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.halt("LOOPUNTIL", lineNum, code, "LOOPUNTIL must close with )");
+			RobotInterpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must close with )");
 		}
 		
 		if(tokens.length > 3)
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 1));
 		}
-		else RobotInterpreter.halt("LOOPUNTIL", lineNum, code, "LOOPUNTIL must contain a condition list!");
+		else RobotInterpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must contain a condition list!");
 
 		//PARSING BODY
 		c.nextLine();

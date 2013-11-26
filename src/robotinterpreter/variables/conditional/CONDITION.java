@@ -61,7 +61,7 @@ public class CONDITION extends Variable
 			}
 		}
 		if(symbolNum == -1)
-			RobotInterpreter.halt("CONDITION", lineNum, code, "CONDITION must have a comparator (==, !=, >, <, >=, <=)");
+			RobotInterpreter.error("CONDITION", lineNum, code, "CONDITION must have a comparator (==, !=, >, <, >=, <=)");
 	}
 	
 	/**
@@ -96,11 +96,11 @@ public class CONDITION extends Variable
 		String rhsType = rhs.type();
 		if(!lhsType.equals(rhsType))
 		{
-			RobotInterpreter.halt("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
+			RobotInterpreter.error("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
 		}
 		if((lhsType.equals(Terminals.STRING) || lhsType.equals(Terminals.BOOL)) && (comparator != Terminals.EQ && comparator != Terminals.NEQ))
 		{
-			RobotInterpreter.halt("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
+			RobotInterpreter.error("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
 		}
 	}
 

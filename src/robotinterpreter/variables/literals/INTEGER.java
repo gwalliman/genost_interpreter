@@ -39,9 +39,9 @@ public class INTEGER extends Variable
 			{
 				value = Integer.parseInt(tokens[0]);
 			}
-			else RobotInterpreter.halt("INTEGER", lineNum, code, "Provided integer is of invalid format");
+			else RobotInterpreter.error("INTEGER", lineNum, code, "Provided integer is of invalid format");
 		}
-		else RobotInterpreter.halt("INTEGER", lineNum, code, "Syntax error in integer.");
+		else RobotInterpreter.error("INTEGER", lineNum, code, "Syntax error in integer.");
 	}
 	
 	/**

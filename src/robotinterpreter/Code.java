@@ -296,7 +296,7 @@ public class Code
 		//If there is no found quote, then the string is not enclosed.
 		if(h.length == 1)
 		{
-			RobotInterpreter.halt("STRING", -1, s, "Unenclosed string!");
+			RobotInterpreter.error("STRING", -1, s, "Unenclosed string!");
 		}
 		
 		//We add the left half of the split (the string) to the tokens array.

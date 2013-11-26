@@ -69,7 +69,7 @@ public class CALL extends Variable
 					break;
 			}
 		}
-		else RobotInterpreter.halt("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
+		else RobotInterpreter.error("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class CALL extends Variable
 			case Terminals.BOOL:
 				return Terminals.BOOL;
 		}
-		RobotInterpreter.halt("CALL", lineNum, code, "Invalid call type");
+		RobotInterpreter.error("CALL", lineNum, code, "Invalid call type");
 		return null;
 	}
 

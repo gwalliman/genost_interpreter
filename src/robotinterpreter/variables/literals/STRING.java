@@ -35,7 +35,7 @@ public class STRING extends Variable
 		{
 			value = code.substring(1, code.length() - 1);
 		}
-		else RobotInterpreter.halt("STRING", lineNum, code, "String must be wrapped in quotes");
+		else RobotInterpreter.error("STRING", lineNum, code, "String must be wrapped in quotes");
 	}
 	
 	/**

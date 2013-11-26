@@ -19,12 +19,12 @@ public class ID
 	{
 		if(!Code.checkAlphaNumeric(s))
 		{
-			RobotInterpreter.halt("ID", c.currentLineNum(), c.currentLine(), "ID must be alphanumeric.");
+			RobotInterpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID must be alphanumeric.");
 		}
 		
 		if(Terminals.reservedWords.contains(s))
 		{
-			RobotInterpreter.halt("ID", c.currentLineNum(), c.currentLine(), "ID cannot be resereved word " + s);
+			RobotInterpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID cannot be resereved word " + s);
 		}
 		
 		return s;

@@ -65,7 +65,7 @@ public class VAR extends Variable
 		var = RobotInterpreter.findVar(body, id);
 		if(var == null)
 		{
-			RobotInterpreter.halt("VAR", lineNum, code, "Var " + id + " is not defined.");
+			RobotInterpreter.error("VAR", lineNum, code, "Var " + id + " is not defined.");
 		}
 	}
 

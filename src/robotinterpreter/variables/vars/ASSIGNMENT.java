@@ -40,12 +40,12 @@ public class ASSIGNMENT extends Variable
 		//Equals should always be the second token.
 		if(tokens[2] != Terminals.EQUALS)
 		{
-			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "Assignment statement requires an =");
+			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "Assignment statement requires an =");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
 		{
-			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "Missing semicolon");
+			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "Missing semicolon");
 		}
 		
 		//Parsing CALL
@@ -79,7 +79,7 @@ public class ASSIGNMENT extends Variable
 		lhs = RobotInterpreter.findVar(body, id);
 		if(lhs == null)
 		{
-			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "Variable " + id + " is not defined.");
+			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "Variable " + id + " is not defined.");
 		}
 		
 		//3. Ensure that lhs and rhs are of same type
@@ -88,7 +88,7 @@ public class ASSIGNMENT extends Variable
 		
 		if(!lhsType.equals(rhsType))
 		{
-			RobotInterpreter.halt("ASSIGNMENT", lineNum, code, "LHS and RHS of an assignment must be of same type, but LHS is " + lhsType + " and RHS is " + rhsType);
+			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "LHS and RHS of an assignment must be of same type, but LHS is " + lhsType + " and RHS is " + rhsType);
 		}
 	}
 

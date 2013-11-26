@@ -41,15 +41,15 @@ public class VARDECL extends Variable
 		type = tokens[1];
 		
 		//Ensure that the type is int, string or bool.
-		if(!Terminals.dataTypes.contains(type)) RobotInterpreter.halt("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");
-		if(type.equals(Terminals.VOID)) RobotInterpreter.halt("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");	
+		if(!Terminals.dataTypes.contains(type)) RobotInterpreter.error("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");
+		if(type.equals(Terminals.VOID)) RobotInterpreter.error("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");	
 		
 		//Get the ID
 		id = ID.validate(tokens[2], c);
 		
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
 		{
-			RobotInterpreter.halt("VARDECL", lineNum, code, "Missing semicolon");
+			RobotInterpreter.error("VARDECL", lineNum, code, "Missing semicolon");
 		}
 		
 		//Add to the varTable of the parent body
@@ -120,7 +120,7 @@ public class VARDECL extends Variable
 
 		if(Collections.frequency(body.varTable, RobotInterpreter.findVar(body, id)) > 1)
 		{
-			RobotInterpreter.halt("VARDECL", lineNum, code, "Var " + id + " cannot be declared more than once!");
+			RobotInterpreter.error("VARDECL", lineNum, code, "Var " + id + " cannot be declared more than once!");
 		}			
 	}
 

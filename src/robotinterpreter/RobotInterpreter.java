@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import components.FileChooserDemo;
@@ -68,7 +69,7 @@ public class RobotInterpreter
 	 * 
 	 * @param codeFile the file which contains the program code
 	 */
-	public static void interpret(File codeFile)
+	public RobotInterpreter(File codeFile)
 	{
 		//Initialize the stacks / tables
 		varStack = new ArrayList<Map<String, Object>>();
@@ -118,9 +119,10 @@ public class RobotInterpreter
 		
 		RobotInterpreter.writeln("validate", "=================");
 		RobotInterpreter.writeln("validate", "Code fully validated!" + Code.newline + "=================");
-
-		printAllVars();
-		
+	}
+	
+	public void execute()
+	{
 		//Step 3: Execute program
 		RobotInterpreter.writeln("message", "=================");
 		RobotInterpreter.writeln("message", "Execution output follows:" + Code.newline + "=================" + Code.newline);
@@ -334,7 +336,7 @@ public class RobotInterpreter
 		{
 			//Display Parser messages
 			case "parse":
-				return true;
+				return false;
 			//Display Validate messages
 			case "validate":
 				return false;
@@ -385,7 +387,6 @@ public class RobotInterpreter
 	 * This method should be called anytime the parser / validator / execution encounters an error in the code.
 	 * The method will print an error message to the screen and stop the program.
 	 * 
-	 * TODO: Make this stop the code interpretation but not the Robot Interpreter program itself.
 	 * TODO: Allow us to scan for multiple errors instead of halting at the very first error.
 	 * 
 	 * @param var	the Variable structure (i.e. BODY, IF, ASSIGN) where the error occurred
@@ -393,11 +394,16 @@ public class RobotInterpreter
 	 * @param c	the code fragment which contains the error
 	 * @param error	a String describing the error
 	 */
-	public static void halt(String var, int lineNum, String c, String error)
+	public static void error(String var, int lineNum, String c, String error)
 	{
 		String fu = var.toUpperCase() + " ERROR Near Line " + lineNum + ": " + c + Code.newline + error;
 		JOptionPane.showMessageDialog(null, fu, var + " ERROR", JOptionPane.ERROR_MESSAGE);
-		System.exit(1);
+	}
+	
+	public static void halt()
+	{
+		Thread.currentThread().interrupt();
+		return;
 	}
 	
 	/**
@@ -410,6 +416,11 @@ public class RobotInterpreter
 	{
 		Terminals.init();
 		UIManager.put("swing.boldMetal", Boolean.FALSE);
-        components.FileChooserDemo.createAndShowGUI();
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	components.FileChooserDemo.createAndShowGUI();;
+		    }
+		});
+        
 	}
 }

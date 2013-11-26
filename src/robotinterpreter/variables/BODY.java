@@ -59,7 +59,13 @@ public class BODY extends Variable
 				stmtList = new STMTLIST(this, c);
 
 		}
-		else RobotInterpreter.halt("BODY", c.currentLineNum(), c.currentLine(), "Body must begin with {");
+		else 
+		{
+			RobotInterpreter.error("BODY", c.currentLineNum(), c.currentLine(), "Body must begin with {");
+			findCloseBrace(c);
+			c.setCurrentLine(finishLine);
+			c.nextLine();
+		}
 	}
 	
 	/**
@@ -70,7 +76,7 @@ public class BODY extends Variable
 	 */
 	public void findCloseBrace(Code c)
 	{
-		//We know we have one open paren.
+		//We know we have one open brace.
 		int numOpens = 1;
 		while(numOpens != 0 && c.nextLine() != null)
 		{
@@ -82,7 +88,11 @@ public class BODY extends Variable
 			finishLine = c.currentLineNum();
 			c.setCurrentLine(startLine);
 		}
-		else RobotInterpreter.halt("BODY", c.currentLineNum(), c.currentLine(), "Body must end with }");
+		else 
+		{
+			RobotInterpreter.error("BODY", c.currentLineNum(), c.currentLine(), "Body must end with }");
+			RobotInterpreter.halt();
+		}
 
 	}
 	
