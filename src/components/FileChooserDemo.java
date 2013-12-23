@@ -53,6 +53,7 @@ public class FileChooserDemo extends JPanel
     JFileChooser fc;
     private File file;
     private RobotInterpreter r;
+    SwingWorker<Void, Void> executor;
 
     public FileChooserDemo() {
         super(new BorderLayout());
@@ -118,6 +119,27 @@ public class FileChooserDemo extends JPanel
     	log.append(s);
     }
 
+    public void loadFile()
+    {
+        SwingWorker<Void, Void> loader = new SwingWorker<Void, Void>()
+        {
+        	@Override
+        	public Void doInBackground()
+        	{
+        		r = new RobotInterpreter(file);
+
+        		return null;
+        	}
+        	
+        	public void done()
+        	{
+                executeButton.setEnabled(true);
+        	}
+
+        };
+        loader.execute();
+    }
+    
     public void actionPerformed(ActionEvent e) 
     {
         //Handle open button action.
@@ -130,27 +152,7 @@ public class FileChooserDemo extends JPanel
                 file = fc.getSelectedFile();
                 //This is where a real application would open the file.
                 log.append("Opening: " + file.getName() + "." + newline);
-                SwingWorker<Void, Void> loader = new SwingWorker<Void, Void>()
-                {
-                	@Override
-                	public Void doInBackground()
-                	{
-                		r = new RobotInterpreter(file);
-
-                		return null;
-                	}
-                	
-                	public void done()
-                	{
-                        executeButton.setEnabled(true);
-                	}
-
-                	public void process(String msg)
-                	{
-                		writeLog(msg);
-                	}
-                };
-                loader.execute();
+                loadFile();
             } 
             else 
             {
@@ -180,18 +182,21 @@ public class FileChooserDemo extends JPanel
         }
         else if(e.getSource() == executeButton)
         {
-            SwingWorker<Void, Void> executor = new SwingWorker<Void, Void>()
+            executor = new SwingWorker<Void, Void>()
             {
             	@Override
             	public Void doInBackground()
             	{
                     stopButton.setEnabled(true);
+            		executeButton.setEnabled(false);
+
             	    r.execute();
 					return null;
             	}
             	
             	public void done()
             	{
+            		executeButton.setEnabled(true);
                     stopButton.setEnabled(false);
             	}
             };
@@ -200,9 +205,10 @@ public class FileChooserDemo extends JPanel
         }
         else if(e.getSource() == stopButton)
         {
-        	r.halt();
-            log.append("Program Halted");
+        	executor.cancel(true);
+            log.append("Program Halted!\n\n");
             stopButton.setEnabled(false);
+            loadFile();
         }
     }
 

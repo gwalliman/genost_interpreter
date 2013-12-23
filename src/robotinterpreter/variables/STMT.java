@@ -214,31 +214,39 @@ public class STMT extends Variable
 	 */
 	public Object execute(Object args[]) 
 	{
-		switch(stmtType)
+		if(Thread.interrupted())
 		{
-			case Terminals.VARDECL:
-				return ((VARDECL)stmt).execute(null);
-			case Terminals.ASSIGN:
-				return ((ASSIGNMENT)stmt).execute(null);
-			case Terminals.METHODDEFINE:
-				//We don't execute the METHODDEFINE, as this will execute the actual method!
-				return null;
-			case Terminals.METHOD:
-				return ((METHOD)stmt).execute(args);
-			case Terminals.RETURN:
-				return ((RETURN)stmt).execute(null);
-			case Terminals.IF:
-				return ((IF)stmt).execute(null);
-			case Terminals.LOOPUNTIL:
-				return ((LOOPUNTIL)stmt).execute(null);
-			case Terminals.LOOPFOR:
-				return ((LOOPFOR)stmt).execute(null);
-			case Terminals.WAITUNTIL:
-				return ((WAITUNTIL)stmt).execute(null);
-			case Terminals.WAITFOR:
-				return ((WAITFOR)stmt).execute(null);
-			default:
-				return null;
+			RobotInterpreter.halt();
+			return null;
+		}
+		else
+		{
+			switch(stmtType)
+			{
+				case Terminals.VARDECL:
+					return ((VARDECL)stmt).execute(null);
+				case Terminals.ASSIGN:
+					return ((ASSIGNMENT)stmt).execute(null);
+				case Terminals.METHODDEFINE:
+					//We don't execute the METHODDEFINE, as this will execute the actual method!
+					return null;
+				case Terminals.METHOD:
+					return ((METHOD)stmt).execute(args);
+				case Terminals.RETURN:
+					return ((RETURN)stmt).execute(null);
+				case Terminals.IF:
+					return ((IF)stmt).execute(null);
+				case Terminals.LOOPUNTIL:
+					return ((LOOPUNTIL)stmt).execute(null);
+				case Terminals.LOOPFOR:
+					return ((LOOPFOR)stmt).execute(null);
+				case Terminals.WAITUNTIL:
+					return ((WAITUNTIL)stmt).execute(null);
+				case Terminals.WAITFOR:
+					return ((WAITFOR)stmt).execute(null);
+				default:
+					return null;
+			}
 		}
 	}
 }
