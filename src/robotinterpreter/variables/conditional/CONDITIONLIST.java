@@ -1,7 +1,7 @@
 package robotinterpreter.variables.conditional;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
@@ -59,12 +59,12 @@ public class CONDITIONLIST extends Variable
 		
 		//Every CONDITIONLIST will always have a bracket as its first character.
 		if(tokens[0] != Terminals.OPENBRACKET)
-			RobotInterpreter.error("CONDITIONLIST", lineNum, code, "CONDITIONLIST must begin with [");
+			Interpreter.error("CONDITIONLIST", lineNum, code, "CONDITIONLIST must begin with [");
 		
 		//We must now find a matching close bracket. This may be the close bracket to a CONDITION or a CONDITIONLIST.
 		int closeBracket = findCloseBracket(tokens);
 		if(closeBracket == -1)
-			RobotInterpreter.error("CONDITIONLIST", lineNum, code, "Missing ]! CONDITIONLIST must have matching brackets!");
+			Interpreter.error("CONDITIONLIST", lineNum, code, "Missing ]! CONDITIONLIST must have matching brackets!");
 
 		//Next we figure out whether the code within the two brackets we have identified contains a logical operator.
 		boolean hasLogOp = false;
@@ -100,9 +100,9 @@ public class CONDITIONLIST extends Variable
 				{
 					nextCon = new CONDITIONLIST(body, c, Code.implode(tokens, " ", closeBracket + 2, tokens.length - 1));
 				}
-				else RobotInterpreter.error("CONDITIONLIST", lineNum, code, "A CONDITION or CONDITIONLIST must follow an AND or OR");
+				else Interpreter.error("CONDITIONLIST", lineNum, code, "A CONDITION or CONDITIONLIST must follow an AND or OR");
 			}
-			else RobotInterpreter.error("CONDITIONLIST", lineNum, code, "Only AND or OR may follow a CONDITIONLIST");
+			else Interpreter.error("CONDITIONLIST", lineNum, code, "Only AND or OR may follow a CONDITIONLIST");
 
 		}
 	}
@@ -142,9 +142,9 @@ public class CONDITIONLIST extends Variable
 	{
 		if(conType.equals(CONDITIONLIST))
 		{		
-			RobotInterpreter.write("parse", "[");
+			Interpreter.write("parse", "[");
 			((CONDITIONLIST)con).print();
-			RobotInterpreter.write("parse", "]");
+			Interpreter.write("parse", "]");
 		}
 		else if(conType.equals(CONDITION))
 		{
@@ -154,7 +154,7 @@ public class CONDITIONLIST extends Variable
 		
 		if(logOp != null)
 		{
-			RobotInterpreter.write("parse", " " + logOp + " ");
+			Interpreter.write("parse", " " + logOp + " ");
 			nextCon.print();
 		}
 	}
@@ -165,7 +165,7 @@ public class CONDITIONLIST extends Variable
 	 */
 	public void validate() 
 	{ 
-		RobotInterpreter.writeln("validate", "Validating CONDITIONLIST");
+		Interpreter.writeln("validate", "Validating CONDITIONLIST");
 
 		if(conType.equals(CONDITIONLIST))
 		{		

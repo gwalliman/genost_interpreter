@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.methods.METHODDEFINE;
 import robotinterpreter.variables.vars.VARDECL;
@@ -61,7 +61,7 @@ public class BODY extends Variable
 		}
 		else 
 		{
-			RobotInterpreter.error("BODY", c.currentLineNum(), c.currentLine(), "Body must begin with {");
+			Interpreter.error("BODY", c.currentLineNum(), c.currentLine(), "Body must begin with {");
 			findCloseBrace(c);
 			c.setCurrentLine(finishLine);
 			c.nextLine();
@@ -90,8 +90,8 @@ public class BODY extends Variable
 		}
 		else 
 		{
-			RobotInterpreter.error("BODY", c.currentLineNum(), c.currentLine(), "Body must end with }");
-			RobotInterpreter.halt();
+			Interpreter.error("BODY", c.currentLineNum(), c.currentLine(), "Body must end with }");
+			Interpreter.halt();
 		}
 
 	}
@@ -134,15 +134,15 @@ public class BODY extends Variable
 	{
 		if(stmtList != null)
 		{
-			RobotInterpreter.writeln("parse", "BODY: Start Line " + startLine + ", Finish Line " + finishLine);
-			RobotInterpreter.writeln("parse", "{");
+			Interpreter.writeln("parse", "BODY: Start Line " + startLine + ", Finish Line " + finishLine);
+			Interpreter.writeln("parse", "{");
 			if(stmtList != null)
 				stmtList.print();
 			else
-				RobotInterpreter.write("parse", "EMPTY BODY");
-			RobotInterpreter.write("parse", "}");
+				Interpreter.write("parse", "EMPTY BODY");
+			Interpreter.write("parse", "}");
 		}
-		else RobotInterpreter.write("parse", "EMPTY BODY");
+		else Interpreter.write("parse", "EMPTY BODY");
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class BODY extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating BODY");
+		Interpreter.writeln("validate", "Validating BODY");
 		if(stmtList != null)
 		{
 			stmtList.validate();
@@ -184,7 +184,7 @@ public class BODY extends Variable
 			else if(v.type().equals(Terminals.BOOL))
 				varMap.put(v.id(), false);
 		}
-		RobotInterpreter.varStack.add(varMap);
+		Interpreter.varStack.add(varMap);
 		
 		//If this is a method codebody and it has parameters, set the value for the param vars in the varstack to those params.
 		if(method != null && args != null)
@@ -192,7 +192,7 @@ public class BODY extends Variable
 			for(int x = 0; x < args.length; x++)
 			{
 				String id = method.getParam(x).id();
-				RobotInterpreter.setVar(id, args[x]);
+				Interpreter.setVar(id, args[x]);
 			}
 		}
 		
@@ -204,7 +204,7 @@ public class BODY extends Variable
 		}
 		
 		//Remove this map from the top of the stack
-		RobotInterpreter.varStack.remove(RobotInterpreter.varStack.size() - 1);
+		Interpreter.varStack.remove(Interpreter.varStack.size() - 1);
 		
 		return retVal;
 	}

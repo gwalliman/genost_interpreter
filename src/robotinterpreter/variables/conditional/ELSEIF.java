@@ -1,7 +1,7 @@
 package robotinterpreter.variables.conditional;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
@@ -41,12 +41,12 @@ public class ELSEIF extends Variable
 		//An ELSEIF CONDITIONLIST must be surrounded by parentheses.
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.error("ELSEIF", lineNum, code, "ELSEIF must open with (");
+			Interpreter.error("ELSEIF", lineNum, code, "ELSEIF must open with (");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.error("ELSEIF", lineNum, code, "ELSEIF must close with )");
+			Interpreter.error("ELSEIF", lineNum, code, "ELSEIF must close with )");
 		}
 
 		//If we have more than 3 tokens, then we have at least something in the CONDITIONLIST.
@@ -54,7 +54,7 @@ public class ELSEIF extends Variable
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(8, code.length() - 1));
 		}
-		else RobotInterpreter.error("ELSEIF", lineNum, code, "ELSEIF must contain a condition list!");
+		else Interpreter.error("ELSEIF", lineNum, code, "ELSEIF must contain a condition list!");
 
 		//Move on to the next line and parse the BODY.
 		c.nextLine();
@@ -92,14 +92,14 @@ public class ELSEIF extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "elseif (");
+		Interpreter.write("parse", "elseif (");
 		cl.print();
-		RobotInterpreter.writeln("parse", ")");
+		Interpreter.writeln("parse", ")");
 		codeBody.print();
 		
 		if(elseif != null)
 		{
-			RobotInterpreter.write("parse", Code.newline);
+			Interpreter.write("parse", Code.newline);
 			elseif.print();
 		}
 	}
@@ -112,7 +112,7 @@ public class ELSEIF extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating ELSEIF");
+		Interpreter.writeln("validate", "Validating ELSEIF");
 
 		cl.validate();
 		codeBody.validate();

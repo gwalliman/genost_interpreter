@@ -1,7 +1,7 @@
 package robotinterpreter.variables.literals;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
@@ -39,9 +39,9 @@ public class BOOLEAN extends Variable
 			{
 				value = Boolean.parseBoolean(tokens[0]);
 			}
-			else RobotInterpreter.error("BOOLEAN", lineNum, code, "Boolean value must be either true or false");
+			else Interpreter.error("BOOLEAN", lineNum, code, "Boolean value must be either true or false");
 		}
-		else RobotInterpreter.error("BOOLEAN", lineNum, code, "Syntax error in boolean.");
+		else Interpreter.error("BOOLEAN", lineNum, code, "Syntax error in boolean.");
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class BOOLEAN extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "bool " + value);
+		Interpreter.write("parse", "bool " + value);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class BOOLEAN extends Variable
 	 */
 	public void validate() 
 	{ 
-		RobotInterpreter.writeln("validate", "Validating BOOLEAN");
+		Interpreter.writeln("validate", "Validating BOOLEAN");
 	}
 
 	/**

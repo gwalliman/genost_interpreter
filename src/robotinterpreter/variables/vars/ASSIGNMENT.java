@@ -1,7 +1,7 @@
 package robotinterpreter.variables.vars;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.CALL;
@@ -40,12 +40,12 @@ public class ASSIGNMENT extends Variable
 		//Equals should always be the second token.
 		if(tokens[2] != Terminals.EQUALS)
 		{
-			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "Assignment statement requires an =");
+			Interpreter.error("ASSIGNMENT", lineNum, code, "Assignment statement requires an =");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
 		{
-			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "Missing semicolon");
+			Interpreter.error("ASSIGNMENT", lineNum, code, "Missing semicolon");
 		}
 		
 		//Parsing CALL
@@ -58,7 +58,7 @@ public class ASSIGNMENT extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "assign " + id + " = ");
+		Interpreter.write("parse", "assign " + id + " = ");
 		call.print();
 	}
 
@@ -70,16 +70,16 @@ public class ASSIGNMENT extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating ASSIGNMENT");
+		Interpreter.writeln("validate", "Validating ASSIGNMENT");
 		
 		//1. Validating CALL
 		call.validate();
 		
 		//2. Ensure that lhs exists.
-		lhs = RobotInterpreter.findVar(body, id);
+		lhs = Interpreter.findVar(body, id);
 		if(lhs == null)
 		{
-			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "Variable " + id + " is not defined.");
+			Interpreter.error("ASSIGNMENT", lineNum, code, "Variable " + id + " is not defined.");
 		}
 		
 		//3. Ensure that lhs and rhs are of same type
@@ -88,7 +88,7 @@ public class ASSIGNMENT extends Variable
 		
 		if(!lhsType.equals(rhsType))
 		{
-			RobotInterpreter.error("ASSIGNMENT", lineNum, code, "LHS and RHS of an assignment must be of same type, but LHS is " + lhsType + " and RHS is " + rhsType);
+			Interpreter.error("ASSIGNMENT", lineNum, code, "LHS and RHS of an assignment must be of same type, but LHS is " + lhsType + " and RHS is " + rhsType);
 		}
 	}
 
@@ -104,7 +104,7 @@ public class ASSIGNMENT extends Variable
 		
 		//Note that we don't have to worry about types,
 		//This was taken care of in Validation
-		RobotInterpreter.setVar(lhs.id(), val);
+		Interpreter.setVar(lhs.id(), val);
 		
 		return null;
 	}

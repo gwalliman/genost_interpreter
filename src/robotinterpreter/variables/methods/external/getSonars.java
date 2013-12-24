@@ -4,30 +4,24 @@ import robotinterpreter.RobotListener;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
-public class drive extends ExtMethod 
+public class getSonars extends ExtMethod 
 {
 	
-	public drive()
+	public getSonars()
 	{
-		id = "drive";
-		type = Terminals.VOID;
+		id = "getSonars";
+		type = Terminals.INT;
 		paramTypes = new String[1];
-		paramTypes[0] = Terminals.STRING;
+		paramTypes[0] = Terminals.INT;
 	}
 	
 	public Object execute(Object[] args) 
 	{
+		int data = 0;
 		for(RobotListener l : RobotInterpreter.getRobotListeners())
 		{
-			if(args[0].equals("f"))
-			{
-				l.driveForward();
-			}
-			else if(args[0].equals("b"))
-			{
-				l.driveBackwards();
-			}
+			data = l.getSonarData((int)args[0]);
 		}
-		return null;
+		return data;
 	}
 }

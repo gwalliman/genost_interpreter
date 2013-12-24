@@ -1,7 +1,7 @@
 package robotinterpreter.variables.literals;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
@@ -39,9 +39,9 @@ public class INTEGER extends Variable
 			{
 				value = Integer.parseInt(tokens[0]);
 			}
-			else RobotInterpreter.error("INTEGER", lineNum, code, "Provided integer is of invalid format");
+			else Interpreter.error("INTEGER", lineNum, code, "Provided integer is of invalid format");
 		}
-		else RobotInterpreter.error("INTEGER", lineNum, code, "Syntax error in integer.");
+		else Interpreter.error("INTEGER", lineNum, code, "Syntax error in integer.");
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class INTEGER extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "int " + value);
+		Interpreter.write("parse", "int " + value);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class INTEGER extends Variable
 	 */
 	public void validate() 	
 	{ 
-		RobotInterpreter.writeln("validate", "Validating INTEGER");
+		Interpreter.writeln("validate", "Validating INTEGER");
 	}
 
 	/**

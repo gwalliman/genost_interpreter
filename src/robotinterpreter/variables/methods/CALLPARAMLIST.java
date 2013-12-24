@@ -1,7 +1,7 @@
 package robotinterpreter.variables.methods;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.CALL;
@@ -62,7 +62,7 @@ public class CALLPARAMLIST extends Variable
 			//We do this by finding the close paren to this method's CALLPARAMLIST; the character immediately after this will be the comma, and hence the end of the CALL.
 			if(tokens[2] != Terminals.OPENPAREN)
 			{
-				RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument must have open paren following ID!");
+				Interpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument must have open paren following ID!");
 			}
 			
 			//The closeparen index is at least 2 (0 is "method", 1 is open paren)
@@ -90,7 +90,7 @@ public class CALLPARAMLIST extends Variable
 			}
 			else
 			{
-				RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument does not have corresponding closeparen!");
+				Interpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument does not have corresponding closeparen!");
 			}
 		}
 		//Case 2
@@ -117,7 +117,7 @@ public class CALLPARAMLIST extends Variable
 		{
 			call = new CALL(body, c, argument);
 		}
-		else RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
+		else Interpreter.error("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
 
 		//If we have a remainder, recursively call CALLPARAMLIST
 		if(!remainder.isEmpty())
@@ -131,12 +131,12 @@ public class CALLPARAMLIST extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", paramNum + " ");
+		Interpreter.write("parse", paramNum + " ");
 		call.print();
 			
 		if(nextParam != null)
 		{
-			RobotInterpreter.write("parse", ", ");
+			Interpreter.write("parse", ", ");
 			nextParam.print();
 		}
 	}
@@ -150,11 +150,11 @@ public class CALLPARAMLIST extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating CALLPARAMLIST");
+		Interpreter.writeln("validate", "Validating CALLPARAMLIST");
 
 		//1: Validate CALL
 		call.validate();
-		METHODDEFINE methdef = RobotInterpreter.findMethod(method.id());
+		METHODDEFINE methdef = Interpreter.findMethod(method.id());
 		
 		//As the method should always be validated before the calllist, it should always be non-null, but just in case we check.
 		if(methdef != null)
@@ -163,7 +163,7 @@ public class CALLPARAMLIST extends Variable
 			DEFPARAMLIST paramdef = methdef.getParam(paramNum);
 			if(paramdef == null)
 			{
-				RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " does not exist for method " + methdef.id());
+				Interpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " does not exist for method " + methdef.id());
 			}
 			else
 			{
@@ -172,7 +172,7 @@ public class CALLPARAMLIST extends Variable
 				String defType = paramdef.type();
 				if(!callType.equals(defType))
 				{
-					RobotInterpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
+					Interpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
 				}
 			}
 		}

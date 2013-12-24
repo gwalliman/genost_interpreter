@@ -1,7 +1,7 @@
 package robotinterpreter.variables.conditional;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.CALL;
@@ -61,7 +61,7 @@ public class CONDITION extends Variable
 			}
 		}
 		if(symbolNum == -1)
-			RobotInterpreter.error("CONDITION", lineNum, code, "CONDITION must have a comparator (==, !=, >, <, >=, <=)");
+			Interpreter.error("CONDITION", lineNum, code, "CONDITION must have a comparator (==, !=, >, <, >=, <=)");
 	}
 	
 	/**
@@ -69,11 +69,11 @@ public class CONDITION extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "[");
+		Interpreter.write("parse", "[");
 		lhs.print();
-		RobotInterpreter.write("parse", " " + comparator + " ");
+		Interpreter.write("parse", " " + comparator + " ");
 		rhs.print();
-		RobotInterpreter.write("parse", "]");
+		Interpreter.write("parse", "]");
 	}
 
 	//lhs and rhs must be of same type
@@ -88,7 +88,7 @@ public class CONDITION extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating CONDITION");
+		Interpreter.writeln("validate", "Validating CONDITION");
 
 		lhs.validate();
 		rhs.validate();
@@ -96,11 +96,11 @@ public class CONDITION extends Variable
 		String rhsType = rhs.type();
 		if(!lhsType.equals(rhsType))
 		{
-			RobotInterpreter.error("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
+			Interpreter.error("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
 		}
 		if((lhsType.equals(Terminals.STRING) || lhsType.equals(Terminals.BOOL)) && (comparator != Terminals.EQ && comparator != Terminals.NEQ))
 		{
-			RobotInterpreter.error("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
+			Interpreter.error("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
 		}
 	}
 

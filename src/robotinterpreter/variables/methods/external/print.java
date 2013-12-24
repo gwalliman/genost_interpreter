@@ -1,6 +1,6 @@
 package robotinterpreter.variables.methods.external;
 
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class print extends ExtMethod 
@@ -15,7 +15,7 @@ public class print extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		RobotInterpreter.writeln("message", (String)args[0]);
+		Interpreter.writeln("message", (String)args[0]);
 		return null;
 	}
 }

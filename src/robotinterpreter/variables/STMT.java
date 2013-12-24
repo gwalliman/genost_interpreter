@@ -1,7 +1,7 @@
 package robotinterpreter.variables;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.conditional.IF;
 import robotinterpreter.variables.loop.LOOPFOR;
@@ -72,7 +72,7 @@ public class STMT extends Variable
 					//Ensure that the semicolon exists. If it does, remove it and call the METHOD parser.
 					String lastchar = c.currentLine().substring(c.currentLine().length() - 1);
 					if(!lastchar.equals(Terminals.SEMICOLON))
-						RobotInterpreter.error("METHOD", lineNum, code, "Missing Semicolon");
+						Interpreter.error("METHOD", lineNum, code, "Missing Semicolon");
 					stmt = new METHOD(body, c, c.currentLine().substring(0, c.currentLine().length() - 1));
 					break;
 				case Terminals.RETURN:
@@ -84,10 +84,10 @@ public class STMT extends Variable
 				//ELSEIFs and ELSEs should be handled in the IF code.
 				//If we find a separate statement beginning with ELSEIF or ELSE, we must halt.
 				case Terminals.ELSEIF:
-					RobotInterpreter.error("STMT", lineNum, code, "ELSEIF must follow IF");
+					Interpreter.error("STMT", lineNum, code, "ELSEIF must follow IF");
 					break;
 				case Terminals.ELSE:
-					RobotInterpreter.error("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
+					Interpreter.error("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
 					break;
 				case Terminals.LOOPUNTIL:
 					stmt = new LOOPUNTIL(body, c);
@@ -103,7 +103,7 @@ public class STMT extends Variable
 					break;
 			}
 		}
-		else RobotInterpreter.error("STMT", lineNum, code, "STMT type is not valid.");
+		else Interpreter.error("STMT", lineNum, code, "STMT type is not valid.");
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public class STMT extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating STMT");
+		Interpreter.writeln("validate", "Validating STMT");
 		switch(stmtType)
 		{
 			case Terminals.VARDECL:
@@ -216,7 +216,7 @@ public class STMT extends Variable
 	{
 		if(Thread.interrupted())
 		{
-			RobotInterpreter.halt();
+			Interpreter.halt();
 			return null;
 		}
 		else

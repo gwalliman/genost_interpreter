@@ -1,7 +1,7 @@
 package robotinterpreter.variables.conditional;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
 
@@ -46,7 +46,7 @@ public class ELSE extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.writeln("parse", "else");
+		Interpreter.writeln("parse", "else");
 		codeBody.print();
 	}
 
@@ -55,7 +55,7 @@ public class ELSE extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating ELSE");
+		Interpreter.writeln("validate", "Validating ELSE");
 
 		codeBody.validate();
 	}

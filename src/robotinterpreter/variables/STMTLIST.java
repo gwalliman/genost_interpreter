@@ -1,7 +1,7 @@
 package robotinterpreter.variables;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 
 /**
  * A STMTLIST is simply a linked-list interpretation for statements.
@@ -69,12 +69,12 @@ public class STMTLIST extends Variable
 		if(stmt != null)
 		{
 			stmt.print();
-			RobotInterpreter.write("parse", Code.newline);
+			Interpreter.write("parse", Code.newline);
 			
 			if(nextStmt != null)
 				nextStmt.print();
 		}
-		else RobotInterpreter.writeln("parse", "EMPTY STMTLIST");
+		else Interpreter.writeln("parse", "EMPTY STMTLIST");
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class STMTLIST extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating STMTLIST");
+		Interpreter.writeln("validate", "Validating STMTLIST");
 		stmt.validate();
 		if(nextStmt != null)
 		{

@@ -1,7 +1,7 @@
 package robotinterpreter.variables;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 
 /**
@@ -19,12 +19,12 @@ public class ID
 	{
 		if(!Code.checkAlphaNumeric(s))
 		{
-			RobotInterpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID must be alphanumeric.");
+			Interpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID must be alphanumeric.");
 		}
 		
 		if(Terminals.reservedWords.contains(s))
 		{
-			RobotInterpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID cannot be resereved word " + s);
+			Interpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID cannot be resereved word " + s);
 		}
 		
 		return s;

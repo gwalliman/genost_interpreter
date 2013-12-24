@@ -1,7 +1,7 @@
 package robotinterpreter.variables.methods;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
@@ -44,13 +44,13 @@ public class METHOD extends Variable
 		//The third token should always be an OPENPAREN
 		if(tokens[2] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.error("METHOD", lineNum, code, "ID must be followed by (");
+			Interpreter.error("METHOD", lineNum, code, "ID must be followed by (");
 		}
 		
 		//The last token should always be a CLOSEPAREN
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.error("METHOD", lineNum, code, "METHOD header must end with )");
+			Interpreter.error("METHOD", lineNum, code, "METHOD header must end with )");
 		}
 		
 		//If the CLOSEPAREN is not the fourth token, then we must have parameters.
@@ -64,7 +64,7 @@ public class METHOD extends Variable
 		}
 		else if(tokens.length != 4)
 		{
-			RobotInterpreter.error("METHOD", lineNum, code, "Syntax error in METHOD: invalid characters after CLOSEPAREN");
+			Interpreter.error("METHOD", lineNum, code, "Syntax error in METHOD: invalid characters after CLOSEPAREN");
 		}
 	}
 	
@@ -89,10 +89,10 @@ public class METHOD extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "method " + id + "(");
+		Interpreter.write("parse", "method " + id + "(");
 		if(params != null)
 			params.print();
-		RobotInterpreter.write("parse", ")");
+		Interpreter.write("parse", ")");
 	}
 
 	/**
@@ -101,13 +101,13 @@ public class METHOD extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating METHOD");
+		Interpreter.writeln("validate", "Validating METHOD");
 
 		//Look the method up in the method table. If it does not exist, we have a problem.
-		method = RobotInterpreter.findMethod(id);
+		method = Interpreter.findMethod(id);
 		if(method == null)
 		{
-			RobotInterpreter.error("METHOD", lineNum, code, "Method " + id + " is not defined.");
+			Interpreter.error("METHOD", lineNum, code, "Method " + id + " is not defined.");
 		}
 		
 		//Validate the CALLPARAMLIST if we have one.

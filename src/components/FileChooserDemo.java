@@ -37,7 +37,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 
 /*
  * FileChooserDemo.java uses these files:
@@ -52,7 +52,7 @@ public class FileChooserDemo extends JPanel
     public static JTextArea log;
     JFileChooser fc;
     private File file;
-    private RobotInterpreter r;
+    private Interpreter r;
     SwingWorker<Void, Void> executor;
 
     public FileChooserDemo() {
@@ -126,7 +126,7 @@ public class FileChooserDemo extends JPanel
         	@Override
         	public Void doInBackground()
         	{
-        		r = new RobotInterpreter(file);
+        		r = new Interpreter(file);
 
         		return null;
         	}

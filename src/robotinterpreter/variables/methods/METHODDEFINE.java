@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
@@ -73,25 +73,25 @@ public class METHODDEFINE extends Variable {
 		
 		//Get the method's return type, which should always be the first token
 		type = tokens[1];
-		if(!Terminals.dataTypes.contains(type)) RobotInterpreter.error("METHODDEFINE", lineNum, code, "Invalid METHODDEFINE data type. Must be void, int, string, or bool");
+		if(!Terminals.dataTypes.contains(type)) Interpreter.error("METHODDEFINE", lineNum, code, "Invalid METHODDEFINE data type. Must be void, int, string, or bool");
 			
 		//Get the ID, which should always be the third token.
 		id = ID.validate(tokens[2], c);
 		if(ExtMethod.extMethods.contains(id))
 		{
-			RobotInterpreter.error("METHODDEFINE", lineNum, code, "Cannot create method of the name " + id + ", this is a reserved method");
+			Interpreter.error("METHODDEFINE", lineNum, code, "Cannot create method of the name " + id + ", this is a reserved method");
 		}
 		
 		//Fourth token should always be OPENPAREN
 		if(tokens[3] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.error("METHODDEFINE", lineNum, code, "ID must be followed by (");
+			Interpreter.error("METHODDEFINE", lineNum, code, "ID must be followed by (");
 		}
 		
 		//Last token should always be CLOSEPAREN
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.error("METHODDEFINE", lineNum, code, "METHODDEFINE header must end with )");
+			Interpreter.error("METHODDEFINE", lineNum, code, "METHODDEFINE header must end with )");
 		}
 		
 		//Parsing DEFPARAMLIST
@@ -103,7 +103,7 @@ public class METHODDEFINE extends Variable {
 		//If the fifth token is a CLOSEPAREN, we must ensure that it is the last token.
 		else if(tokens.length != 5)
 		{
-			RobotInterpreter.error("METHODDEFINE", lineNum, code, "Syntax error in METHODDEFINE: characters after CLOSEPAREN");
+			Interpreter.error("METHODDEFINE", lineNum, code, "Syntax error in METHODDEFINE: characters after CLOSEPAREN");
 		}
 		
 		//Parsing BODY
@@ -123,7 +123,7 @@ public class METHODDEFINE extends Variable {
 				{
 					if(v.id().equals(p.id()))
 					{
-						RobotInterpreter.error("VARDECL", v.lineNum(), v.code(), "Cannot declare VARDECL with same name as method parameter!");
+						Interpreter.error("VARDECL", v.lineNum(), v.code(), "Cannot declare VARDECL with same name as method parameter!");
 					}
 				}
 				VARDECL v = new VARDECL(p.id(), p.type());
@@ -132,7 +132,7 @@ public class METHODDEFINE extends Variable {
 		}
 		
 		//Add this method to the global method table.
-		RobotInterpreter.methodTable.add(this);
+		Interpreter.methodTable.add(this);
 	}
 	
 	/**
@@ -158,15 +158,18 @@ public class METHODDEFINE extends Variable {
 		//The extMethodTable is populated before we begin parsing the code.
 		//Additionally, we only call this constructor on the external method IDs.
 		//So, we will always find the method and don't have to worry about the id not appearing in the table.
-		for(Object ext : RobotInterpreter.extMethodTable)
+		for(Object ext : Interpreter.extMethodTable)
 		{
 			if(((ExtMethod)ext).id().equals(s))
 			{
 				//Get the return type
 				type = ((ExtMethod)ext).type();
-				//Get the parameters and create a DEFPARAMLIST for them.
-				ArrayList<String> pt = new ArrayList<String>(Arrays.asList(((ExtMethod)ext).paramTypes()));
-				params = new DEFPARAMLIST(pt, 0);
+				if(((ExtMethod)ext).paramTypes() != null)
+				{
+					//Get the parameters and create a DEFPARAMLIST for them.
+					ArrayList<String> pt = new ArrayList<String>(Arrays.asList(((ExtMethod)ext).paramTypes()));
+					params = new DEFPARAMLIST(pt, 0);
+				}
 			}
 		}
 		
@@ -237,10 +240,10 @@ public class METHODDEFINE extends Variable {
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "methoddefine " + type + " " + id + "(");
+		Interpreter.write("parse", "methoddefine " + type + " " + id + "(");
 		if(params != null)
 			params.print();
-		RobotInterpreter.writeln("parse", ")");
+		Interpreter.writeln("parse", ")");
 		codeBody.print();
 	}
 
@@ -255,12 +258,12 @@ public class METHODDEFINE extends Variable {
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating METHODDEFINE");
+		Interpreter.writeln("validate", "Validating METHODDEFINE");
 
 		//Ensure the method has not already been defined
-		if(Collections.frequency(RobotInterpreter.methodTable, RobotInterpreter.findMethod(id)) > 1)
+		if(Collections.frequency(Interpreter.methodTable, Interpreter.findMethod(id)) > 1)
 		{
-			RobotInterpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " cannot be defined more than once!");
+			Interpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " cannot be defined more than once!");
 		}		
 		//If we have params, validate them.
 		if(params != null)
@@ -284,7 +287,7 @@ public class METHODDEFINE extends Variable {
 			//If this method has a non-void return type, but the body has no return statement, we have a problem.
 			if(!type.equals(Terminals.VOID) && !hasReturn())
 			{
-				RobotInterpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
+				Interpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
 			}
 		}
 	}
@@ -335,7 +338,7 @@ public class METHODDEFINE extends Variable {
 		else if(methodType.equals(EXTERNAL))
 		{
 			//Find the method in the table and run its execute function.
-			for(Object ext : RobotInterpreter.extMethodTable)
+			for(Object ext : Interpreter.extMethodTable)
 			{
 				if(((ExtMethod)ext).id().equals(id))
 				{

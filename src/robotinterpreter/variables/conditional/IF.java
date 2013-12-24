@@ -1,7 +1,7 @@
 package robotinterpreter.variables.conditional;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
@@ -42,13 +42,13 @@ public class IF extends Variable
 		//token[0] is "if", so token[1] should be the open paren to the CONDITIONLIST
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.error("IF", lineNum, code, "IF must open with (");
+			Interpreter.error("IF", lineNum, code, "IF must open with (");
 		}
 		
 		//The last token should always be a closeparen.
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.error("IF", lineNum, code, "IF must close with )");
+			Interpreter.error("IF", lineNum, code, "IF must close with )");
 		}
 		
 		//PARSE CONDITIONLIST
@@ -57,7 +57,7 @@ public class IF extends Variable
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(4, code.length() - 1));
 		}
-		else RobotInterpreter.error("IF", lineNum, code, "IF must contain a condition list!");
+		else Interpreter.error("IF", lineNum, code, "IF must contain a condition list!");
 
 		//PARSE BODY
 		//Move on to the next line and parse the BODY.
@@ -89,7 +89,7 @@ public class IF extends Variable
 			{
 				els = new ELSE(body, c);
 			}
-			else RobotInterpreter.error("IF", lineNum, code, "Syntax error related to ELSE");
+			else Interpreter.error("IF", lineNum, code, "Syntax error related to ELSE");
 		}
 		else c.prevLine();
 	}
@@ -123,20 +123,20 @@ public class IF extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "if (");
+		Interpreter.write("parse", "if (");
 		cl.print();
-		RobotInterpreter.writeln("parse", ")");
+		Interpreter.writeln("parse", ")");
 		codeBody.print();
 		
 		if(elseif != null)
 		{
-			RobotInterpreter.write("parse", Code.newline);
+			Interpreter.write("parse", Code.newline);
 			elseif.print();
 		}
 		
 		if(els != null)
 		{
-			RobotInterpreter.write("parse", Code.newline);
+			Interpreter.write("parse", Code.newline);
 			els.print();
 		}
 	}
@@ -149,7 +149,7 @@ public class IF extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating IF");
+		Interpreter.writeln("validate", "Validating IF");
 
 		cl.validate();
 		codeBody.validate();

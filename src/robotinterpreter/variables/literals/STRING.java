@@ -1,7 +1,7 @@
 package robotinterpreter.variables.literals;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
@@ -35,7 +35,7 @@ public class STRING extends Variable
 		{
 			value = code.substring(1, code.length() - 1);
 		}
-		else RobotInterpreter.error("STRING", lineNum, code, "String must be wrapped in quotes");
+		else Interpreter.error("STRING", lineNum, code, "String must be wrapped in quotes");
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class STRING extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "string \"" + value + "\"");
+		Interpreter.write("parse", "string \"" + value + "\"");
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class STRING extends Variable
 	 */
 	public void validate() 
 	{ 
-		RobotInterpreter.writeln("validate", "Validating STRING");
+		Interpreter.writeln("validate", "Validating STRING");
 	}
 	
 	/**

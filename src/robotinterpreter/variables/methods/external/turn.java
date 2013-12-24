@@ -4,12 +4,12 @@ import robotinterpreter.RobotListener;
 import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
-public class drive extends ExtMethod 
+public class turn extends ExtMethod 
 {
 	
-	public drive()
+	public turn()
 	{
-		id = "drive";
+		id = "turn";
 		type = Terminals.VOID;
 		paramTypes = new String[1];
 		paramTypes[0] = Terminals.STRING;
@@ -19,13 +19,13 @@ public class drive extends ExtMethod
 	{
 		for(RobotListener l : RobotInterpreter.getRobotListeners())
 		{
-			if(args[0].equals("f"))
+			if(args[0].equals("l"))
 			{
-				l.driveForward();
+				l.turnLeft();
 			}
-			else if(args[0].equals("b"))
+			else if(args[0].equals("r"))
 			{
-				l.driveBackwards();
+				l.turnRight();
 			}
 		}
 		return null;

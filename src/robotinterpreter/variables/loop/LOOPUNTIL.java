@@ -1,7 +1,7 @@
 package robotinterpreter.variables.loop;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
@@ -44,19 +44,19 @@ public class LOOPUNTIL extends Variable
 		//Ensure that the CONDITIONLIST is surrounded by parentheses
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must open with (");
+			Interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must open with (");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must close with )");
+			Interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must close with )");
 		}
 		
 		if(tokens.length > 3)
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 1));
 		}
-		else RobotInterpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must contain a condition list!");
+		else Interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must contain a condition list!");
 
 		//PARSING BODY
 		c.nextLine();
@@ -78,9 +78,9 @@ public class LOOPUNTIL extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "loopuntil (");
+		Interpreter.write("parse", "loopuntil (");
 		cl.print();
-		RobotInterpreter.writeln("parse", ")");
+		Interpreter.writeln("parse", ")");
 		codeBody.print();
 	}
 
@@ -92,7 +92,7 @@ public class LOOPUNTIL extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating LOOPUNTIL");
+		Interpreter.writeln("validate", "Validating LOOPUNTIL");
 		//VALIDATING CONDITIONLIST
 		cl.validate();
 		//VALIDATING BODY

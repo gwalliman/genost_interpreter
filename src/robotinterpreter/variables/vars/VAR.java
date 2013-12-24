@@ -1,7 +1,7 @@
 package robotinterpreter.variables.vars;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
@@ -50,9 +50,9 @@ public class VAR extends Variable
 	{
 		if(id != null)
 		{
-			RobotInterpreter.write("parse", "var " + id);
+			Interpreter.write("parse", "var " + id);
 		}
-		else RobotInterpreter.write("parse", "Empty VARCALL");
+		else Interpreter.write("parse", "Empty VARCALL");
 	}
 
 	/**
@@ -60,12 +60,12 @@ public class VAR extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating VAR");
+		Interpreter.writeln("validate", "Validating VAR");
 
-		var = RobotInterpreter.findVar(body, id);
+		var = Interpreter.findVar(body, id);
 		if(var == null)
 		{
-			RobotInterpreter.error("VAR", lineNum, code, "Var " + id + " is not defined.");
+			Interpreter.error("VAR", lineNum, code, "Var " + id + " is not defined.");
 		}
 	}
 
@@ -77,6 +77,6 @@ public class VAR extends Variable
 	 */
 	public Object execute(Object args[]) 
 	{
-		return RobotInterpreter.getVar(id);
+		return Interpreter.getVar(id);
 	}
 }

@@ -1,7 +1,7 @@
 package robotinterpreter.variables.wait;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.Variable;
@@ -41,12 +41,12 @@ public class WAITUNTIL extends Variable
 		//Ensure that we have a matching OPEN and CLOSE parentheses around the CONDITIONLIST
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			RobotInterpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must open with (");
+			Interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must open with (");
 		}
 		
 		if(tokens[tokens.length - 2] != Terminals.CLOSEPAREN)
 		{
-			RobotInterpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must close with )");
+			Interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must close with )");
 		}
 		
 		//We must have a CONDITIONLIST; we error out if there is not one present.
@@ -54,11 +54,11 @@ public class WAITUNTIL extends Variable
 		{
 			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 2));
 		}
-		else RobotInterpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must contain a condition list!");
+		else Interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must contain a condition list!");
 
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
 		{
-			RobotInterpreter.error("WAITUNTIL", lineNum, code, "Missing semicolon");
+			Interpreter.error("WAITUNTIL", lineNum, code, "Missing semicolon");
 		}		
 	}
 	
@@ -67,9 +67,9 @@ public class WAITUNTIL extends Variable
 	 */
 	public void print() 
 	{
-		RobotInterpreter.write("parse", "waituntil (");
+		Interpreter.write("parse", "waituntil (");
 		cl.print();
-		RobotInterpreter.writeln("parse", ")");
+		Interpreter.writeln("parse", ")");
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class WAITUNTIL extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate", "Validating WAITUNTIL");
+		Interpreter.writeln("validate", "Validating WAITUNTIL");
 
 		cl.validate();
 	}

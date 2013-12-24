@@ -1,7 +1,7 @@
 package robotinterpreter.variables;
 
 import robotinterpreter.Code;
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.literals.BOOLEAN;
 import robotinterpreter.variables.literals.INTEGER;
@@ -69,7 +69,7 @@ public class CALL extends Variable
 					break;
 			}
 		}
-		else RobotInterpreter.error("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
+		else Interpreter.error("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
 	}
 	
 	/**
@@ -82,9 +82,9 @@ public class CALL extends Variable
 		switch(callType)
 		{
 			case Terminals.VAR:
-				return RobotInterpreter.findVar(body, ((VAR)call).id()).type();
+				return Interpreter.findVar(body, ((VAR)call).id()).type();
 			case Terminals.METHOD:
-				return RobotInterpreter.findMethod(((METHOD)call).id()).type();
+				return Interpreter.findMethod(((METHOD)call).id()).type();
 			case Terminals.INT:
 				return Terminals.INT;
 			case Terminals.STRING:
@@ -92,7 +92,7 @@ public class CALL extends Variable
 			case Terminals.BOOL:
 				return Terminals.BOOL;
 		}
-		RobotInterpreter.error("CALL", lineNum, code, "Invalid call type");
+		Interpreter.error("CALL", lineNum, code, "Invalid call type");
 		return null;
 	}
 
@@ -127,7 +127,7 @@ public class CALL extends Variable
 	 */
 	public void validate() 
 	{
-		RobotInterpreter.writeln("validate",  "Validating CALL");
+		Interpreter.writeln("validate",  "Validating CALL");
 		switch(callType)
 		{
 			case Terminals.VAR:

@@ -23,7 +23,7 @@ public abstract class ExtMethod
 	protected String type;
 	protected String[] paramTypes;
 	
-	private static String[] extMethodsArray = { "print", "intToString", "add", "subtract", "multiply", "divide"  };
+	private static String[] extMethodsArray = { "print", "intToString", "add", "subtract", "multiply", "divide", "drive", "turn", "stop", "getSonars", "getBearing", "driveDistance", "driveTime", "turnAngle", "turnTime", "turnToBearing" };
 	
 	public static ArrayList<String> extMethods = new ArrayList<String>(Arrays.asList(extMethodsArray));
 

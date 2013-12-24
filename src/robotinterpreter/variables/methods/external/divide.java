@@ -1,6 +1,6 @@
 package robotinterpreter.variables.methods.external;
 
-import robotinterpreter.RobotInterpreter;
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class divide extends ExtMethod 
@@ -19,7 +19,7 @@ public class divide extends ExtMethod
 		int denom = ((int)args[1]);
 		if(denom == 0)
 		{
-			RobotInterpreter.error("DIVIDE", -1, "Externally defined", "Divide by 0 error");
+			Interpreter.error("DIVIDE", -1, "Externally defined", "Divide by 0 error");
 		}
 		return ((int)args[0]) / ((int)args[1]);
 	}
