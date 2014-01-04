@@ -61,7 +61,16 @@ public class LOOPFOR extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.writeln("parse", "loopfor " + iterations + " times");
+		Interpreter.write("parse", "loopfor ");
+		if(iterations < 0)
+		{
+			Interpreter.writeln("parse", "infinitely");
+		}
+		else
+		{
+			Interpreter.writeln("parse", iterations + " times");
+
+		}
 		codeBody.print();
 	}
 

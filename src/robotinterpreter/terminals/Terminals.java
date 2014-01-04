@@ -29,9 +29,10 @@ public class Terminals
 	public static final String GT = ">";
 	public static final String LTE = "<=";
 	public static final String GTE = ">=";
+	public static final String DASH = "-";
 	
 	//Symbol Arrays
-	private static final String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT,};
+	private static final String[] symbolTerminalsArray = { OPENPAREN, CLOSEPAREN, OPENBRACE, CLOSEBRACE, OPENBRACKET, CLOSEBRACKET, QUOTE, SEMICOLON, COMMA, EQ, NEQ,  LTE, GTE, EQUALS, LT, GT, DASH};
 	public static final ArrayList<String> symbolTerminals = new ArrayList<String>(Arrays.asList(symbolTerminalsArray));
 	//NOTE: Order matters in this array! We must ensure that symbols which are contained in other symbols come LAST.
 	public static final String[] comparatorArray = { EQ, NEQ, LT, GT, LTE, GTE };

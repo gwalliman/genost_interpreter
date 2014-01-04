@@ -1,10 +1,9 @@
 package robotinterpreter;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,12 +40,11 @@ public class Code
 	 * @param codeFile	a File object containing code
 	 * 
 	 */
-	public Code(File codeFile)
+	public Code(String c)
 	{
 		try 
 	    {
-			FileReader fr = new FileReader(codeFile);
-			BufferedReader br = new BufferedReader(fr);
+			BufferedReader br = new BufferedReader(new StringReader(c));
 			String line = "";
 			codeLines = new ArrayList<String>();
 		
@@ -60,7 +58,6 @@ public class Code
 			}
 			
 			br.close();
-			fr.close();
 		} 
 		catch (FileNotFoundException e1) 
 		{
@@ -196,6 +193,7 @@ public class Code
 	 * 			The separating spaces will not be enclosed in the token
 	 * 		3. A String (set of alphanumeric characters or symbols enclosed by two quote symbols) will be one token.
 	 * 			Note that the String token will include the enclosing quotes
+	 * 		4. A negative integer will be one token.
 	 * Example: assign x = method y(string "Tokenize Test");
 	 * This will be split up into the following tokens:
 	 * |assign|x|=|method|y|(|string|"Tokenize Test|)|;|
@@ -212,7 +210,7 @@ public class Code
 		
 		//Go over each individual item separated by spaces in the original string.
 		//This will get all tokens of type 2 without further processing,
-		//but if we find a symbol, it might be type 1 or 3, so more processing is required.
+		//but if we find a symbol, it might be type 1, 3 or 4, so more processing is required.
 		for(int x = 0; x < pass.length; x++)
 		{
 			//Trim the string and ensure it's not empty space. If it is, move on to the next one.
@@ -224,7 +222,7 @@ public class Code
 				{
 					tokens.add(token);
 				}
-				//If the string has a symbol, it could be of type 1 or 3
+				//If the string has a symbol, it could be of type 1, 3 or 4
 				else
 				{
 					//If this token has a quote as its first character, we will consider it, 
@@ -236,6 +234,40 @@ public class Code
 						r = exciseString(r, tokens);
 
 						//We now have the String as a token in the tokens array,
+						//and r is the code line that remains. We must tokenize r
+						//and add it to the tokens array.
+						String[] remainingTokens = tokenize(r);
+						for(String t : remainingTokens)
+						{
+							tokens.add(t);
+						}
+						
+						return tokens.toArray(new String[tokens.size()]);
+					}
+					//If this token has a dash as its first character, it might be a negative number.
+					//We treat the dash and all numbers following as part of one token, and continue on after the first non-numeric character.
+					else if(token.contains(Terminals.DASH) && token.substring(0, 1).equals(Terminals.DASH))
+					{
+						int start = 1;
+						int end = 2;
+						String negInt = Terminals.DASH;
+						//Loop until we encounter a character that is not a number.
+						while(end <= token.length() && token.substring(start, end).matches("\\d"))
+						{
+							negInt += token.substring(start, end);
+							start++;
+							end++;
+						}
+						//Add the negative integer
+						tokens.add(negInt);
+						
+						//Get the rest of the string (if there is one)
+						String remainder = token.substring(start, token.length());
+						
+						//Put the remaining tokens back together.
+						String r = remainder + implode(pass, " ", x + 1, pass.length - 1);
+
+						//We now have the negative integer as a token in the tokens array,
 						//and r is the code line that remains. We must tokenize r
 						//and add it to the tokens array.
 						String[] remainingTokens = tokenize(r);

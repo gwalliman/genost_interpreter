@@ -1,13 +1,9 @@
 package robotinterpreter;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
-
-import components.FileChooserDemo;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
 import robotinterpreter.variables.STMT;
@@ -53,6 +49,8 @@ public class Interpreter
 	//BODY b is the "head" data structure for the program tree. It is the main program body which contains everything else.
 	public static BODY b;
 	
+	public static boolean isReady = true;
+	
 	/**
 	 * This function is the "master" function, orchestrating virtually all interpretation functionality.
 	 * 
@@ -66,9 +64,9 @@ public class Interpreter
 	 * 3. Execution: the program is run. Steps 1 and 2 should take care of virtually all errors, so upon reaching execution, the program should run without errors.
 	 * 		Exceptions may occur in certain rare cases (for example, divide by zero errors, which must be handled at the execution stage)
 	 * 
-	 * @param codeFile the file which contains the program code
+	 * @param code the file which contains the program code
 	 */
-	public Interpreter(File codeFile)
+	public Interpreter(String code)
 	{
 		//Initialize the stacks / tables
 		varStack = new ArrayList<Map<String, Object>>();
@@ -96,14 +94,25 @@ public class Interpreter
 		}
 		
 		//Take the code file and get it ready for parsing.
-		Code c = new Code(codeFile);
+		Code c = new Code(code);
 		
 		//Step 1: Parse.
 		//Go over each line of code and populate with information immediately available
 		b = new BODY(null, c);
-		b.print();
-		Interpreter.writeln("parse", Code.newline + "=================");
-		Interpreter.writeln("parse", "Code fully parsed!" + Code.newline + "=================");
+	
+		if(isReady)
+		{
+			b.print();
+			Interpreter.writeln("parse", Code.newline + "=================");
+			Interpreter.writeln("parse", "Code fully parsed!" + Code.newline + "=================");
+		}
+		else
+		{
+			Interpreter.writeln("parse", Code.newline + "=================");
+			Interpreter.writeln("parse", "ERROR: Code failed to parse." + Code.newline + "=================");
+			halt();
+			return;
+		}
 		
 		//Step 2: Link and Validate
 		//Link up certain items: varcalls to variable array, method calls to actual method code, if/loop eventualities, etc.
@@ -117,7 +126,18 @@ public class Interpreter
 		}
 		
 		Interpreter.writeln("validate", "=================");
-		Interpreter.writeln("validate", "Code fully validated!" + Code.newline + "=================");
+		if(isReady)
+		{
+			Interpreter.writeln("validate", "Code fully validated!" + Code.newline + "=================");
+		}
+		else
+		{
+			Interpreter.writeln("validate", "ERROR: Code failed to validate." + Code.newline + "=================");
+			halt();
+			return;
+		}
+		
+		isReady = true;
 	}
 	
 	public void execute()
@@ -335,7 +355,7 @@ public class Interpreter
 		{
 			//Display Parser messages
 			case "parse":
-				return false;
+				return true;
 			//Display Validate messages
 			case "validate":
 				return false;
@@ -360,8 +380,10 @@ public class Interpreter
 	{
 		if(showMessage(type))
 		{
-			FileChooserDemo.writeLog(s);
-			System.out.print(s);
+			for(RobotListener l : RobotInterpreter.getRobotListeners())
+			{
+				l.print(s);
+			}
 		}
 	}
 	
@@ -377,8 +399,10 @@ public class Interpreter
 	{
 		if(showMessage(type))
 		{
-			FileChooserDemo.writeLog(s + Code.newline);
-			System.out.println(s);
+			for(RobotListener l : RobotInterpreter.getRobotListeners())
+			{
+				l.println(s);
+			}
 		}
 	}
 	
@@ -396,12 +420,22 @@ public class Interpreter
 	public static void error(String var, int lineNum, String c, String error)
 	{
 		String fu = var.toUpperCase() + " ERROR Near Line " + lineNum + ": " + c + Code.newline + error;
-		JOptionPane.showMessageDialog(null, fu, var + " ERROR", JOptionPane.ERROR_MESSAGE);
+		//JOptionPane.showMessageDialog(null, fu, var + " ERROR", JOptionPane.ERROR_MESSAGE);
+		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		{
+			l.error(var, fu);
+		}
+		isReady = false;
 	}
 	
 	public static void halt()
 	{
 		Thread.currentThread().interrupt();
 		return;
+	}
+
+	public boolean isReady() 
+	{
+		return isReady;
 	}
 }

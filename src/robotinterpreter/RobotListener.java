@@ -1,6 +1,11 @@
 package robotinterpreter;
 
-public interface RobotListener {
+public interface RobotListener 
+{
+	public void print(String s);
+	public void println(String s);
+	public void error(String var, String e);
+	
 	public void driveForward();
 	public void driveBackwards();
 	public void turnLeft();

@@ -31,13 +31,17 @@
 
 package components;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
-import robotinterpreter.Interpreter;
+import robotinterpreter.RobotInterpreter;
+import robotinterpreter.RobotListener;
 
 /*
  * FileChooserDemo.java uses these files:
@@ -46,13 +50,14 @@ import robotinterpreter.Interpreter;
  */
 @SuppressWarnings("serial")
 public class FileChooserDemo extends JPanel
-                             implements ActionListener {
+                             implements ActionListener, RobotListener {
+
     static public final String newline = "\n";
-    JButton openButton, saveButton, clearButton, executeButton, stopButton;
+    JButton openButton, /*saveButton,*/ clearButton, executeButton, stopButton;
     public static JTextArea log;
     JFileChooser fc;
     private File file;
-    private Interpreter r;
+    private RobotInterpreter r;
     SwingWorker<Void, Void> executor;
 
     public FileChooserDemo() {
@@ -63,6 +68,8 @@ public class FileChooserDemo extends JPanel
         log = new JTextArea(50,150);
         log.setMargin(new Insets(5,5,5,5));
         log.setEditable(false);
+        DefaultCaret caret = (DefaultCaret)log.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         JScrollPane logScrollPane = new JScrollPane(log);
 
         //Create a file chooser
@@ -86,9 +93,9 @@ public class FileChooserDemo extends JPanel
 
         //Create the save button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
-        saveButton = new JButton("Save a File...",
+        /*saveButton = new JButton("Save a File...",
                                  createImageIcon("images/Save16.gif"));
-        saveButton.addActionListener(this);
+        saveButton.addActionListener(this);*/
         
         clearButton = new JButton("Clear Log");
         clearButton.addActionListener(this);
@@ -104,7 +111,7 @@ public class FileChooserDemo extends JPanel
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
         buttonPanel.add(openButton);
-        buttonPanel.add(saveButton);
+        //buttonPanel.add(saveButton);
         buttonPanel.add(clearButton);
         buttonPanel.add(executeButton);
         buttonPanel.add(stopButton);
@@ -121,23 +128,33 @@ public class FileChooserDemo extends JPanel
 
     public void loadFile()
     {
-        SwingWorker<Void, Void> loader = new SwingWorker<Void, Void>()
-        {
-        	@Override
-        	public Void doInBackground()
-        	{
-        		r = new Interpreter(file);
-
-        		return null;
-        	}
-        	
-        	public void done()
-        	{
-                executeButton.setEnabled(true);
-        	}
-
-        };
-        loader.execute();
+		try 
+		{
+			FileReader fr = new FileReader(file);
+		    BufferedReader br = new BufferedReader(fr);
+		    String line = "";
+            String code = "";
+            
+            while((line = br.readLine()) != null)
+            {
+                 code += line + newline;
+            }
+             
+            br.close();
+            fr.close();
+             
+    		r = new RobotInterpreter();
+    		r.addRobotListener(this);
+    		r.load(code);
+    		if(r.isReady())
+    		{
+    			executeButton.setEnabled(true);
+    		}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
     }
     
     public void actionPerformed(ActionEvent e) 
@@ -161,7 +178,7 @@ public class FileChooserDemo extends JPanel
             log.setCaretPosition(log.getDocument().getLength());
         //Handle save button action.
         } 
-        else if (e.getSource() == saveButton) 
+        /*else if (e.getSource() == saveButton) 
         {
             int returnVal = fc.showSaveDialog(FileChooserDemo.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) 
@@ -175,7 +192,7 @@ public class FileChooserDemo extends JPanel
                 log.append("Save command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
-        }
+        }*/
         else if (e.getSource() == clearButton) 
         {
                 log.setText(null);
@@ -240,6 +257,87 @@ public class FileChooserDemo extends JPanel
         frame.pack();
         frame.setVisible(true);
     }
+
+	@Override
+	public void print(String s) 
+	{
+		writeLog(s);		
+	}
+
+	@Override
+	public void println(String s) 
+	{
+		writeLog(s + newline);
+	}
+
+	@Override
+	public void error(String var, String e) 
+	{
+		JOptionPane.showMessageDialog(null, e, var + " ERROR", JOptionPane.ERROR_MESSAGE);		
+	}
+
+	@Override
+	public void driveForward() 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+	
+	}
+
+	@Override
+	public void driveBackwards() 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+	}
+
+	@Override
+	public void turnLeft() 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+	}
+
+	@Override
+	public void turnRight() 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+	}
+
+	@Override
+	public void stop() 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);			
+	}
+
+	@Override
+	public int getSonarData(int num) 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+		return 0;
+	}
+
+	@Override
+	public int getBearing() 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+		return 0;
+	}
+
+	@Override
+	public void driveDistance(int dist) 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+	}
+
+	@Override
+	public void turnAngle(int angle) 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+	}
+
+	@Override
+	public void turnToBearing(int bearing) 
+	{
+		writeLog("HERP DERP CAN'T EXECUTE ROBOT COMMANDS IN THIS MODE." + newline);		
+	}
 }
 
 

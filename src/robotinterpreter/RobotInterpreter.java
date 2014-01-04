@@ -7,27 +7,38 @@ import javax.swing.UIManager;
 
 import robotinterpreter.terminals.Terminals;
 
-public class RobotInterpreter 
+public class RobotInterpreter
 {
 	
 	public static ArrayList<RobotListener> robotlisteners = new ArrayList<RobotListener>();
-
-	/**
-	 * Main function.
-	 * Initializes the terminals, sets up the GUI.
-	 * 
-	 * @param args
-	 */
-	public RobotInterpreter()
-	{
+	private Interpreter r;
+	
+	public RobotInterpreter() 
+	{ 
 		Terminals.init();
-		UIManager.put("swing.boldMetal", Boolean.FALSE);
-		SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-		    	components.FileChooserDemo.createAndShowGUI();;
-		    }
-		});   
+		robotlisteners.clear();
 	}
+
+	public void load(String c)
+	{
+		r = new Interpreter(c);
+	}
+
+	public void execute()
+    {
+    	if(r != null && r.isReady())
+    	{
+    		r.execute();
+    	}
+    }
+
+    public void stop()
+    {
+    	if(r != null)
+    	{
+    		Interpreter.halt();
+    	}    
+    }
 	
 	public static ArrayList<RobotListener> getRobotListeners()
 	{
@@ -41,7 +52,20 @@ public class RobotInterpreter
 	
 	public static void main(String args[])
 	{
-		@SuppressWarnings("unused")
-		RobotInterpreter r = new RobotInterpreter();
+		UIManager.put("swing.boldMetal", Boolean.FALSE);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				components.FileChooserDemo.createAndShowGUI();
+			}
+		});   
+	}
+
+	public boolean isReady() 
+	{
+		if(r != null)
+		{
+			return r.isReady();
+		}
+		else return false;
 	}
 }
