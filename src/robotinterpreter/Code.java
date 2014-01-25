@@ -58,6 +58,12 @@ public class Code
 			}
 			
 			br.close();
+			
+			if(codeLines.size() == 0)
+			{
+				code = "";
+				codeLines.add("");
+			}
 		} 
 		catch (FileNotFoundException e1) 
 		{
