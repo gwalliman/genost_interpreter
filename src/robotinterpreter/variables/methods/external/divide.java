@@ -16,11 +16,11 @@ public class divide extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		int denom = ((int)args[1]);
+		int denom = ((Integer)args[1]);
 		if(denom == 0)
 		{
 			Interpreter.error("DIVIDE", -1, "Externally defined", "Divide by 0 error");
 		}
-		return ((int)args[0]) / ((int)args[1]);
+		return ((Integer)args[0]) / ((Integer)args[1]);
 	}
 }

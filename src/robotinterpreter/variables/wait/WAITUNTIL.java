@@ -91,7 +91,7 @@ public class WAITUNTIL extends Variable
 	 */
 	public Object execute(Object[] args) 
 	{
-		boolean go = (boolean) cl.execute(null);
+		boolean go = (Boolean) cl.execute(null);
 		
 		while(!go)
 		{
@@ -105,7 +105,7 @@ public class WAITUNTIL extends Variable
 				e.printStackTrace();
 			}
 			
-			go = (boolean) cl.execute(null);
+			go = (Boolean) cl.execute(null);
 		}
 		
 		return null;

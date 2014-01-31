@@ -115,7 +115,7 @@ public class LOOPUNTIL extends Variable
 	public Object execute(Object[] args) 
 	{
 		//EXECUTING CONDITIONLIST (first run)
-		boolean go = (boolean) cl.execute(null);
+		boolean go = (Boolean) cl.execute(null);
 		
 		while(!go)
 		{
@@ -123,7 +123,7 @@ public class LOOPUNTIL extends Variable
 			codeBody.execute(null);
 
 			//EXECUTING CONDITIONLIST
-			go = (boolean) cl.execute(null);
+			go = (Boolean) cl.execute(null);
 		}
 		
 		return null;

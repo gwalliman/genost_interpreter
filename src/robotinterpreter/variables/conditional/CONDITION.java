@@ -119,50 +119,45 @@ public class CONDITION extends Variable
 		
 		boolean go = false;
 		
-		switch(comparator)
+		if (comparator.equals(Terminals.EQ))
 		{
-			case Terminals.EQ:
-				if(lhs.type().equals(Terminals.STRING))
-				{
-					go = ((String)l).equals((String)r);
-				}
-				else if(lhs.type().equals(Terminals.BOOL))
-				{
-					go = ((boolean)l) == ((boolean)r);
-				}
-				else if(lhs.type().equals(Terminals.INT))
-				{
-					go = ((int)l) == ((int)r);
-				}
-				break;
-			case Terminals.NEQ:
-				if(lhs.type().equals(Terminals.STRING))
-				{
-					go = !((String)l).equals((String)r);
-				}
-				else if(lhs.type().equals(Terminals.BOOL))
-				{
-					go = ((boolean)l) != ((boolean)r);
-				}
-				else if(lhs.type().equals(Terminals.INT))
-				{
-					go = ((int)l) != ((int)r);
-				}
-				break;
-			//After this point, we can only have ints
-			case Terminals.LT:
-				go = ((int)l) < ((int)r);
-				break;
-			case Terminals.GT:
-				go = ((int)l) > ((int)r);
-				break;
-			case Terminals.LTE:
-				go = ((int)l) <= ((int)r);
-				break;
-			case Terminals.GTE:
-				go = ((int)l) >= ((int)r);
-				break;
+			if(lhs.type().equals(Terminals.STRING))
+			{
+				go = ((String)l).equals((String)r);
+			}
+			else if(lhs.type().equals(Terminals.BOOL))
+			{
+				go = ((Boolean)l) == ((Boolean)r);
+			}
+			else if(lhs.type().equals(Terminals.INT))
+			{
+				go = ((Integer)l) == ((Integer)r);
+			}
 		}
+		else if (comparator.equals(Terminals.NEQ))
+		{
+			if(lhs.type().equals(Terminals.STRING))
+			{
+				go = !((String)l).equals((String)r);
+			}
+			else if(lhs.type().equals(Terminals.BOOL))
+			{
+				go = ((Boolean)l) != ((Boolean)r);
+			}
+			else if(lhs.type().equals(Terminals.INT))
+			{
+				go = ((Integer)l) != ((Integer)r);
+			}
+		}
+		//After this point, we can only have ints
+		else if (comparator.equals(Terminals.LT))
+				go = ((Integer)l) < ((Integer)r);
+		else if (comparator.equals(Terminals.GT))
+				go = ((Integer)l) > ((Integer)r);
+		else if (comparator.equals(Terminals.LTE))
+				go = ((Integer)l) <= ((Integer)r);
+		else if (comparator.equals(Terminals.GTE))
+				go = ((Integer)l) >= ((Integer)r);
 		
 		return go;
 	}

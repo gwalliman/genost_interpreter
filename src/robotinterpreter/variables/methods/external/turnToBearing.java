@@ -19,7 +19,7 @@ public class turnToBearing extends ExtMethod
 	{
 		for(RobotListener l : RobotInterpreter.getRobotListeners())
 		{
-			l.turnToBearing((int) args[0]);
+			l.turnToBearing((Integer) args[0]);
 		}
 		return null;
 	}

@@ -19,7 +19,7 @@ public class turnAngle extends ExtMethod
 	{
 		for(RobotListener l : RobotInterpreter.getRobotListeners())
 		{
-			l.turnAngle((int) args[0]);
+			l.turnAngle((Integer) args[0]);
 		}
 		return null;
 	}

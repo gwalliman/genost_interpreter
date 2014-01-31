@@ -49,25 +49,19 @@ public class CALL extends Variable
 		//If the call type is not found in the two included arrays, something has gone wrong.
 		if(Terminals.callTypes.contains(callType) || (Terminals.dataTypes.contains(callType) && !callType.equals(Terminals.VOID)))
 		{
-			switch(callType)
+			if (callType.equals(Terminals.VAR))
+				call = new VAR(body, c, Code.implode(tokens, " ", 1));
+			else if (callType.equals(Terminals.METHOD))
+				call = new METHOD(body, c, Code.implode(tokens, " ", 0));
+			else if (callType.equals(Terminals.INT))
+				call = new INTEGER(body, c, Code.implode(tokens, " ", 1));
+			else if (callType.equals(Terminals.STRING))
 			{
-				case Terminals.VAR:
-					call = new VAR(body, c, Code.implode(tokens, " ", 1));
-					break;
-				case Terminals.METHOD:
-					call = new METHOD(body, c, Code.implode(tokens, " ", 0));
-					break;
-				case Terminals.INT:
-					call = new INTEGER(body, c, Code.implode(tokens, " ", 1));
-					break;
-				case Terminals.STRING:
-					code = code.trim();
-					call = new STRING(body, c, code.substring(6, code.length()).trim());
-					break;
-				case Terminals.BOOL:
-					call = new BOOLEAN(body, c, Code.implode(tokens, " ", 1));
-					break;
+				code = code.trim();
+				call = new STRING(body, c, code.substring(6, code.length()).trim());
 			}
+			else if (callType.equals(Terminals.BOOL))
+				call = new BOOLEAN(body, c, Code.implode(tokens, " ", 1));
 		}
 		else Interpreter.error("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
 	}
@@ -79,21 +73,21 @@ public class CALL extends Variable
 	 */
 	public String type()
 	{
-		switch(callType)
+		if (callType.equals(Terminals.VAR))
+			return Interpreter.findVar(body, ((VAR)call).id()).type();
+		else if (callType.equals(Terminals.METHOD))
+			return Interpreter.findMethod(((METHOD)call).id()).type();
+		else if (callType.equals(Terminals.INT))
+			return Terminals.INT;
+		else if (callType.equals(Terminals.STRING))
+			return Terminals.STRING;
+		else if (callType.equals(Terminals.BOOL))
+			return Terminals.BOOL;
+		else
 		{
-			case Terminals.VAR:
-				return Interpreter.findVar(body, ((VAR)call).id()).type();
-			case Terminals.METHOD:
-				return Interpreter.findMethod(((METHOD)call).id()).type();
-			case Terminals.INT:
-				return Terminals.INT;
-			case Terminals.STRING:
-				return Terminals.STRING;
-			case Terminals.BOOL:
-				return Terminals.BOOL;
+			Interpreter.error("CALL", lineNum, code, "Invalid call type");
+			return null;
 		}
-		Interpreter.error("CALL", lineNum, code, "Invalid call type");
-		return null;
 	}
 
 	/**
@@ -102,24 +96,16 @@ public class CALL extends Variable
 	 */
 	public void print() 
 	{
-		switch(callType)
-		{
-			case Terminals.VAR:
-				((VAR)call).print();
-				break;
-			case Terminals.METHOD:
-				((METHOD)call).print();
-				break;
-			case Terminals.INT:
-				((INTEGER)call).print();
-				break;
-			case Terminals.STRING:
-				((STRING)call).print();
-				break;
-			case Terminals.BOOL:
-				((BOOLEAN)call).print();
-				break;
-		}
+		if (callType.equals(Terminals.VAR))
+			((VAR)call).print();
+		else if (callType.equals(Terminals.METHOD))
+			((METHOD)call).print();
+		else if (callType.equals(Terminals.INT))
+			((INTEGER)call).print();
+		else if (callType.equals(Terminals.STRING))
+			((STRING)call).print();
+		else if (callType.equals(Terminals.BOOL))
+			((BOOLEAN)call).print();
 	}
 
 	/**
@@ -128,24 +114,16 @@ public class CALL extends Variable
 	public void validate() 
 	{
 		Interpreter.writeln("validate",  "Validating CALL");
-		switch(callType)
-		{
-			case Terminals.VAR:
-				((VAR)call).validate();
-				break;
-			case Terminals.METHOD:
-				((METHOD)call).validate();
-				break;
-			case Terminals.INT:
-				((INTEGER)call).validate();
-				break;
-			case Terminals.STRING:
-				((STRING)call).validate();
-				break;
-			case Terminals.BOOL:
-				((BOOLEAN)call).validate();
-				break;
-		}
+		if (callType.equals(Terminals.VAR))
+			((VAR)call).validate();
+		else if (callType.equals(Terminals.METHOD))
+			((METHOD)call).validate();
+		else if (callType.equals(Terminals.INT))
+			((INTEGER)call).validate();
+		else if (callType.equals(Terminals.STRING))
+			((STRING)call).validate();
+		else if (callType.equals(Terminals.BOOL))
+			((BOOLEAN)call).validate();
 	}
 
 
@@ -157,21 +135,18 @@ public class CALL extends Variable
 	 */
 	public Object execute(Object args[]) 
 	{
-		switch(callType)
-		{
-			case Terminals.VAR:
-				return ((VAR)call).execute(null);
-			case Terminals.METHOD:
-				return ((METHOD)call).execute(null);
-			case Terminals.INT:
-				return ((INTEGER)call).execute(null);
-			case Terminals.STRING:
-				return ((STRING)call).execute(null);
-			case Terminals.BOOL:
-				return ((BOOLEAN)call).execute(null);
-			default:
-				return null;
-		}		
+		if (callType.equals(Terminals.VAR))
+			return ((VAR)call).execute(null);
+		else if (callType.equals(Terminals.METHOD))
+			return ((METHOD)call).execute(null);
+		else if (callType.equals(Terminals.INT))
+			return ((INTEGER)call).execute(null);
+		else if (callType.equals(Terminals.STRING))
+			return ((STRING)call).execute(null);
+		else if (callType.equals(Terminals.BOOL))
+			return ((BOOLEAN)call).execute(null);
+		else
+			return null;	
 	}
 	
 }

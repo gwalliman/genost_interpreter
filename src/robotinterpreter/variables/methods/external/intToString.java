@@ -14,6 +14,6 @@ public class intToString extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		return Integer.toString(((int)args[0]));
+		return Integer.toString(((Integer)args[0]));
 	}
 }

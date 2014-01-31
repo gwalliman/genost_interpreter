@@ -19,7 +19,7 @@ public class driveDistance extends ExtMethod
 	{
 		for(RobotListener l : RobotInterpreter.getRobotListeners())
 		{
-			l.driveDistance((int) args[0]);
+			l.driveDistance((Integer) args[0]);
 		}
 		return null;
 	}

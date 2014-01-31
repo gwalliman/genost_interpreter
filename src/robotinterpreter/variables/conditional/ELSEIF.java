@@ -136,7 +136,7 @@ public class ELSEIF extends Variable
 	 */
 	public Object execute(Object[] args) 
 	{
-		boolean go = (boolean) cl.execute(null); 
+		boolean go = (Boolean) cl.execute(null); 
 		
 		if(go)
 		{

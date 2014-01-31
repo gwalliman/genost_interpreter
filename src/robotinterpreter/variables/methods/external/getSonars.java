@@ -20,7 +20,7 @@ public class getSonars extends ExtMethod
 		int data = 0;
 		for(RobotListener l : RobotInterpreter.getRobotListeners())
 		{
-			data = l.getSonarData((int)args[0]);
+			data = l.getSonarData((Integer)args[0]);
 		}
 		return data;
 	}

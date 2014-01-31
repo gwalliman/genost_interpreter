@@ -40,7 +40,7 @@ public class turnTime extends ExtMethod
 			  public void run() {
 			    done = true;
 			  }
-			}, (int)args[1]*1000);
+			}, (Integer)args[1]*1000);
 		
 		while(!done) { }
 		
