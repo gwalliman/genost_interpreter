@@ -102,7 +102,10 @@ public class WAITUNTIL extends Variable
 			} 
 			catch (InterruptedException e) 
 			{
-				e.printStackTrace();
+				//TODO: figure out starting/stopping
+				//This line makes starting and stopping work AFAIK, but might lag
+				Thread.currentThread().interrupt();
+				//e.printStackTrace();
 			}
 			
 			go = (Boolean) cl.execute(null);
