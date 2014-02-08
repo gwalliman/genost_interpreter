@@ -24,6 +24,8 @@ import robotinterpreter.variables.Variable;
  */
 public class CONDITION extends Variable
 {
+	private Interpreter interpreter;
+	
 	//We have two CALLS that provide the values being compared.
 	private CALL lhs;
 	private CALL rhs;
@@ -38,8 +40,9 @@ public class CONDITION extends Variable
 	 * @param c	the Code object
 	 * @param s	a string of code containing a comparison. It should ONLY contain the comparison, and not any enclosing brackets. Format: "x > y", "a == b"
 	 */
-	public CONDITION(BODY b, Code c, String s)
+	public CONDITION(Interpreter in, BODY b, Code c, String s)
 	{
+		interpreter = in;
 		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
@@ -47,7 +50,7 @@ public class CONDITION extends Variable
 		//This holds the index of the tokenized string which corresponds to the comparator.
 		int symbolNum = -1;
 		
-		String[] tokens = Code.tokenize(s);
+		String[] tokens = c.tokenize(s);
 		for(int x = 0; x < tokens.length; x++)
 		{
 			//Once we find the comparator, split the string around the comparator and send the two halves to the CALL parser.
@@ -56,12 +59,12 @@ public class CONDITION extends Variable
 				symbolNum = x;
 				comparator = tokens[x];
 				
-				lhs = new CALL(body, c, Code.implode(tokens, " ", 0, symbolNum - 1));
-				rhs = new CALL(body, c, Code.implode(tokens, " ", symbolNum + 1, tokens.length - 1));
+				lhs = new CALL(interpreter, body, c, c.implode(tokens, " ", 0, symbolNum - 1));
+				rhs = new CALL(interpreter, body, c, c.implode(tokens, " ", symbolNum + 1, tokens.length - 1));
 			}
 		}
 		if(symbolNum == -1)
-			Interpreter.error("CONDITION", lineNum, code, "CONDITION must have a comparator (==, !=, >, <, >=, <=)");
+			interpreter.error("CONDITION", lineNum, code, "CONDITION must have a comparator (==, !=, >, <, >=, <=)");
 	}
 	
 	/**
@@ -69,11 +72,11 @@ public class CONDITION extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "[");
+		interpreter.write("parse", "[");
 		lhs.print();
-		Interpreter.write("parse", " " + comparator + " ");
+		interpreter.write("parse", " " + comparator + " ");
 		rhs.print();
-		Interpreter.write("parse", "]");
+		interpreter.write("parse", "]");
 	}
 
 	//lhs and rhs must be of same type
@@ -88,7 +91,7 @@ public class CONDITION extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating CONDITION");
+		interpreter.writeln("validate", "Validating CONDITION");
 
 		lhs.validate();
 		rhs.validate();
@@ -96,11 +99,11 @@ public class CONDITION extends Variable
 		String rhsType = rhs.type();
 		if(!lhsType.equals(rhsType))
 		{
-			Interpreter.error("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
+			interpreter.error("CONDITION", lineNum, code,"LHS and RHS must be of the same type in a condition");
 		}
 		if((lhsType.equals(Terminals.STRING) || lhsType.equals(Terminals.BOOL)) && (comparator != Terminals.EQ && comparator != Terminals.NEQ))
 		{
-			Interpreter.error("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
+			interpreter.error("CONDITION", lineNum, code,"A comparison between two " + lhsType + "s can only be compared by " + Terminals.EQ + " or " + Terminals.NEQ);
 		}
 	}
 

@@ -24,6 +24,8 @@ import robotinterpreter.terminals.Terminals;
  */
 public class Code 
 {
+	private Interpreter interpreter;
+	
 	//Used to hold the entire code file, after being read in.
 	private String code = "";
 	//Used to keep track of what line we are currently on.
@@ -40,8 +42,9 @@ public class Code
 	 * @param codeFile	a File object containing code
 	 * 
 	 */
-	public Code(String c)
+	public Code(Interpreter in, String c)
 	{
+		interpreter = in;
 		try 
 	    {
 			BufferedReader br = new BufferedReader(new StringReader(c));
@@ -187,7 +190,7 @@ public class Code
 	 * @param s	the String to be checked
 	 * @return	true if the string is alphanumeric, false otherwise
 	 */
-	public static boolean checkAlphaNumeric(String s)
+	public boolean checkAlphaNumeric(String s)
 	{
 		return s.matches("[A-Za-z0-9]+");
 	}
@@ -207,7 +210,7 @@ public class Code
 	 * @param s	the string being tokenized
 	 * @return an array of Strings, containing the tokens, in the order they appear in the provided string
 	 */
-	public static String[] tokenize(String s)
+	public String[] tokenize(String s)
 	{
 		ArrayList<String> tokens = new ArrayList<String>();
 		
@@ -323,7 +326,7 @@ public class Code
 	 * @param tokens an ArrayList for Strings
 	 * @return	the remaining text in the provided line of code after excising the string
 	 */
-	private static String exciseString(String s, ArrayList<String> tokens)
+	private String exciseString(String s, ArrayList<String> tokens)
 	{
 		//Get rid of the first quote (assumed to be there)
 		s = s.substring(1, s.length());
@@ -334,7 +337,7 @@ public class Code
 		//If there is no found quote, then the string is not enclosed.
 		if(h.length == 1)
 		{
-			Interpreter.error("STRING", -1, s, "Unenclosed string!");
+			interpreter.error("STRING", -1, s, "Unenclosed string!");
 		}
 		
 		//We add the left half of the split (the string) to the tokens array.
@@ -353,7 +356,7 @@ public class Code
 	 * @param sep a string which will be placed between each of the strings in s
 	 * @return the resultant string after implosion
 	 */
-	public static String implode(String[] s, String sep)
+	public String implode(String[] s, String sep)
 	{
 		StringBuilder sb = new StringBuilder();
 		for(int x = 0; x < s.length; x++)
@@ -377,7 +380,7 @@ public class Code
 	 * @param start the index at which we will begin imploding.
 	 * @return the resultant string after implosion
 	 */
-	public static String implode(String[] s, String sep, int start)
+	public String implode(String[] s, String sep, int start)
 	{
 		StringBuilder sb = new StringBuilder();
 		for(int x = start; x < s.length; x++)
@@ -402,7 +405,7 @@ public class Code
 	 * @param end the last index which will be imploded
 	 * @return the resultant string after implosion
 	 */
-	public static String implode(String[] s, String sep, int start, int end)
+	public String implode(String[] s, String sep, int start, int end)
 	{
 		StringBuilder sb = new StringBuilder();
 		for(int x = start; x <= end; x++)
@@ -414,15 +417,30 @@ public class Code
 		return sb.toString();
 	}
 	
+	public String validate(String s, Code c)
+	{
+		if(!checkAlphaNumeric(s))
+		{
+			interpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID must be alphanumeric.");
+		}
+		
+		if(Terminals.reservedWords.contains(s))
+		{
+			interpreter.error("ID", c.currentLineNum(), c.currentLine(), "ID cannot be resereved word " + s);
+		}
+		
+		return s;
+	}
+	
 	/**
 	 * A simple print function which will print out the tokens in the provided tokens array.
 	 * 
 	 * @param tokens a tokens array to print
 	 */
-	public static void printTokens(String[] tokens)
+	public void printTokens(String[] tokens)
 	{
 		for(int x = 0; x < tokens.length; x++)
-			Interpreter.writeln("debug", tokens[x]);
-		Interpreter.writeln("debug", "===");
+			interpreter.writeln("debug", tokens[x]);
+		interpreter.writeln("debug", "===");
 	}
 }

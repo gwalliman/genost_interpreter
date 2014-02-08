@@ -1,11 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class intToString extends ExtMethod 
 {
-	public intToString()
+	@SuppressWarnings("unused")
+	private Interpreter interpreter;
+	
+	public intToString(Interpreter in)
 	{
+		interpreter = in;
 		id = "intToString";
 		type = Terminals.STRING;
 		paramTypes = new String[1];

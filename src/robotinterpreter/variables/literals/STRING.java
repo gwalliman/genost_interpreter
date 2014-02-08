@@ -14,6 +14,8 @@ import robotinterpreter.variables.Variable;
  */
 public class STRING extends Variable
 {
+	private Interpreter interpreter;
+	
 	private String value;
 	
 	/**
@@ -24,8 +26,9 @@ public class STRING extends Variable
 	 * @param c	the Code file
 	 * @param s	a String containing just the literal value (which here should be wrapped in quotes). Format: ""String test"", ""ASDFf1234!@%""
 	 */
-	public STRING(BODY b, Code c, String s)
+	public STRING(Interpreter in, BODY b, Code c, String s)
 	{
+		interpreter = in;
 		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
@@ -35,7 +38,7 @@ public class STRING extends Variable
 		{
 			value = code.substring(1, code.length() - 1);
 		}
-		else Interpreter.error("STRING", lineNum, code, "String must be wrapped in quotes");
+		else interpreter.error("STRING", lineNum, code, "String must be wrapped in quotes");
 	}
 	
 	/**
@@ -43,7 +46,7 @@ public class STRING extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "string \"" + value + "\"");
+		interpreter.write("parse", "string \"" + value + "\"");
 	}
 
 	/**
@@ -51,7 +54,7 @@ public class STRING extends Variable
 	 */
 	public void validate() 
 	{ 
-		Interpreter.writeln("validate", "Validating STRING");
+		interpreter.writeln("validate", "Validating STRING");
 	}
 	
 	/**

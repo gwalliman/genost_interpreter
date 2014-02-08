@@ -8,7 +8,6 @@ import robotinterpreter.Code;
 import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
-import robotinterpreter.variables.ID;
 import robotinterpreter.variables.STMTLIST;
 import robotinterpreter.variables.Variable;
 import robotinterpreter.variables.methods.external.ExtMethod;
@@ -32,7 +31,9 @@ import robotinterpreter.variables.vars.VARDECL;
  * @author Garret Walliman (gwallima@asu.edu)
  *
  */
-public class METHODDEFINE extends Variable {
+public class METHODDEFINE extends Variable 
+{
+	private Interpreter interpreter;
 	
 	//TYPE is the datatype the method returns
 	private String type;
@@ -60,8 +61,9 @@ public class METHODDEFINE extends Variable {
 	 * @param b	the parent body
 	 * @param c	the Code file
 	 */
-	public METHODDEFINE(BODY b, Code c)
+	public METHODDEFINE(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
@@ -69,46 +71,46 @@ public class METHODDEFINE extends Variable {
 		//This is an internal method
 		methodType = INTERNAL;
 			
-		String[] tokens = Code.tokenize(c.currentLine());
+		String[] tokens = c.tokenize(c.currentLine());
 		
 		//Get the method's return type, which should always be the first token
 		type = tokens[1];
-		if(!Terminals.dataTypes.contains(type)) Interpreter.error("METHODDEFINE", lineNum, code, "Invalid METHODDEFINE data type. Must be void, int, string, or bool");
+		if(!Terminals.dataTypes.contains(type)) interpreter.error("METHODDEFINE", lineNum, code, "Invalid METHODDEFINE data type. Must be void, int, string, or bool");
 			
 		//Get the ID, which should always be the third token.
-		id = ID.validate(tokens[2], c);
-		if(ExtMethod.extMethods.contains(id))
+		id = c.validate(tokens[2], c);
+		if(interpreter.extMethods.contains(id))
 		{
-			Interpreter.error("METHODDEFINE", lineNum, code, "Cannot create method of the name " + id + ", this is a reserved method");
+			interpreter.error("METHODDEFINE", lineNum, code, "Cannot create method of the name " + id + ", this is a reserved method");
 		}
 		
 		//Fourth token should always be OPENPAREN
 		if(tokens[3] != Terminals.OPENPAREN)
 		{
-			Interpreter.error("METHODDEFINE", lineNum, code, "ID must be followed by (");
+			interpreter.error("METHODDEFINE", lineNum, code, "ID must be followed by (");
 		}
 		
 		//Last token should always be CLOSEPAREN
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			Interpreter.error("METHODDEFINE", lineNum, code, "METHODDEFINE header must end with )");
+			interpreter.error("METHODDEFINE", lineNum, code, "METHODDEFINE header must end with )");
 		}
 		
 		//Parsing DEFPARAMLIST
 		//If the fifth token is not a CLOSEPAREN, we have parameters, so we construct a DEFPARAMLIST
 		if(tokens[4] != Terminals.CLOSEPAREN)
 		{
-			params = new DEFPARAMLIST(body, c, Code.implode(tokens, " ", 4, tokens.length - 2), 0);
+			params = new DEFPARAMLIST(interpreter, body, c, c.implode(tokens, " ", 4, tokens.length - 2), 0);
 		}
 		//If the fifth token is a CLOSEPAREN, we must ensure that it is the last token.
 		else if(tokens.length != 5)
 		{
-			Interpreter.error("METHODDEFINE", lineNum, code, "Syntax error in METHODDEFINE: characters after CLOSEPAREN");
+			interpreter.error("METHODDEFINE", lineNum, code, "Syntax error in METHODDEFINE: characters after CLOSEPAREN");
 		}
 		
 		//Parsing BODY
 		c.nextLine();
-		codeBody = new BODY(body, c);
+		codeBody = new BODY(interpreter, body, c);
 		
 		//Link the codebody to this method
 		codeBody.method = this;
@@ -123,16 +125,16 @@ public class METHODDEFINE extends Variable {
 				{
 					if(v.id().equals(p.id()))
 					{
-						Interpreter.error("VARDECL", v.lineNum(), v.code(), "Cannot declare VARDECL with same name as method parameter!");
+						interpreter.error("VARDECL", v.lineNum(), v.code(), "Cannot declare VARDECL with same name as method parameter!");
 					}
 				}
-				VARDECL v = new VARDECL(p.id(), p.type());
+				VARDECL v = new VARDECL(interpreter, p.id(), p.type());
 				codeBody.varTable.add(v);
 			}
 		}
 		
 		//Add this method to the global method table.
-		Interpreter.methodTable.add(this);
+		interpreter.getMethodTable().add(this);
 	}
 	
 	/**
@@ -145,8 +147,10 @@ public class METHODDEFINE extends Variable {
 	 * 
 	 * @param s	the external method's ID. Format: "print", "add"
 	 */
-	public METHODDEFINE(String s)
+	public METHODDEFINE(Interpreter in, String s)
 	{
+		interpreter = in;
+		
 		//We put dummy data for the code parameters
 		lineNum = -1;
 		code = "Externally defined";
@@ -158,7 +162,7 @@ public class METHODDEFINE extends Variable {
 		//The extMethodTable is populated before we begin parsing the code.
 		//Additionally, we only call this constructor on the external method IDs.
 		//So, we will always find the method and don't have to worry about the id not appearing in the table.
-		for(Object ext : Interpreter.extMethodTable)
+		for(Object ext : interpreter.getExtMethodTable())
 		{
 			if(((ExtMethod)ext).id().equals(s))
 			{
@@ -168,7 +172,7 @@ public class METHODDEFINE extends Variable {
 				{
 					//Get the parameters and create a DEFPARAMLIST for them.
 					ArrayList<String> pt = new ArrayList<String>(Arrays.asList(((ExtMethod)ext).paramTypes()));
-					params = new DEFPARAMLIST(pt, 0);
+					params = new DEFPARAMLIST(interpreter, pt, 0);
 				}
 			}
 		}
@@ -240,10 +244,10 @@ public class METHODDEFINE extends Variable {
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "methoddefine " + type + " " + id + "(");
+		interpreter.write("parse", "methoddefine " + type + " " + id + "(");
 		if(params != null)
 			params.print();
-		Interpreter.writeln("parse", ")");
+		interpreter.writeln("parse", ")");
 		codeBody.print();
 	}
 
@@ -258,12 +262,12 @@ public class METHODDEFINE extends Variable {
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating METHODDEFINE");
+		interpreter.writeln("validate", "Validating METHODDEFINE");
 
 		//Ensure the method has not already been defined
-		if(Collections.frequency(Interpreter.methodTable, Interpreter.findMethod(id)) > 1)
+		if(Collections.frequency(interpreter.getMethodTable(), interpreter.findMethod(id)) > 1)
 		{
-			Interpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " cannot be defined more than once!");
+			interpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " cannot be defined more than once!");
 		}		
 		//If we have params, validate them.
 		if(params != null)
@@ -287,7 +291,7 @@ public class METHODDEFINE extends Variable {
 			//If this method has a non-void return type, but the body has no return statement, we have a problem.
 			if(!type.equals(Terminals.VOID) && !hasReturn())
 			{
-				Interpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
+				interpreter.error("METHODDEFINE", lineNum, code, "Method " + id + " does not have a return statement");
 			}
 		}
 	}
@@ -338,7 +342,7 @@ public class METHODDEFINE extends Variable {
 		else if(methodType.equals(EXTERNAL))
 		{
 			//Find the method in the table and run its execute function.
-			for(Object ext : Interpreter.extMethodTable)
+			for(Object ext : interpreter.getExtMethodTable())
 			{
 				if(((ExtMethod)ext).id().equals(id))
 				{

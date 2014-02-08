@@ -13,6 +13,8 @@ import robotinterpreter.variables.Variable;
  */
 public class INTEGER extends Variable
 {
+	private Interpreter interpreter;
+	
 	private int value;
 	
 	/**
@@ -23,13 +25,14 @@ public class INTEGER extends Variable
 	 * @param c	the Code file
 	 * @param s	a string containing only the integer value. Format: "-1", "7"
 	 */
-	public INTEGER(BODY b, Code c, String s)
+	public INTEGER(Interpreter in, BODY b, Code c, String s)
 	{
+		interpreter = in;
 		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(s);
+		String[] tokens = c.tokenize(s);
 		
 		//We should only have one token here, the literal itself
 		if(tokens.length == 1)
@@ -39,9 +42,9 @@ public class INTEGER extends Variable
 			{
 				value = Integer.parseInt(tokens[0]);
 			}
-			else Interpreter.error("INTEGER", lineNum, code, "Provided integer is of invalid format");
+			else interpreter.error("INTEGER", lineNum, code, "Provided integer is of invalid format");
 		}
-		else Interpreter.error("INTEGER", lineNum, code, "Syntax error in integer.");
+		else interpreter.error("INTEGER", lineNum, code, "Syntax error in integer.");
 	}
 	
 	/**
@@ -49,7 +52,7 @@ public class INTEGER extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "int " + value);
+		interpreter.write("parse", "int " + value);
 	}
 
 	/**
@@ -57,7 +60,7 @@ public class INTEGER extends Variable
 	 */
 	public void validate() 	
 	{ 
-		Interpreter.writeln("validate", "Validating INTEGER");
+		interpreter.writeln("validate", "Validating INTEGER");
 	}
 
 	/**

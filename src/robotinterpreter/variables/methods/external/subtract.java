@@ -1,11 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class subtract extends ExtMethod 
 {
-	public subtract()
+	@SuppressWarnings("unused")
+	private Interpreter interpreter;
+	
+	public subtract(Interpreter in)
 	{
+		interpreter = in;
 		id = "subtract";
 		type = Terminals.INT;
 		paramTypes = new String[2];

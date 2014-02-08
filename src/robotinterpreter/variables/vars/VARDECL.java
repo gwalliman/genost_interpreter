@@ -6,7 +6,6 @@ import robotinterpreter.Code;
 import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
-import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
 /**
@@ -20,6 +19,8 @@ import robotinterpreter.variables.Variable;
  */
 public class VARDECL extends Variable 
 {
+	private Interpreter interpreter;
+	
 	private String id;
 	private String type;
 	
@@ -30,26 +31,27 @@ public class VARDECL extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code object
 	 */
-	public VARDECL(BODY b, Code c)
+	public VARDECL(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 
 		type = tokens[1];
 		
 		//Ensure that the type is int, string or bool.
-		if(!Terminals.dataTypes.contains(type)) Interpreter.error("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");
-		if(type.equals(Terminals.VOID)) Interpreter.error("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");	
+		if(!Terminals.dataTypes.contains(type)) interpreter.error("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");
+		if(type.equals(Terminals.VOID)) interpreter.error("VARDECL", lineNum, code, "Invalid VARDECL data type. Must be int, string, or bool");	
 		
 		//Get the ID
-		id = ID.validate(tokens[2], c);
+		id = c.validate(tokens[2], c);
 		
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
 		{
-			Interpreter.error("VARDECL", lineNum, code, "Missing semicolon");
+			interpreter.error("VARDECL", lineNum, code, "Missing semicolon");
 		}
 		
 		//Add to the varTable of the parent body
@@ -65,8 +67,9 @@ public class VARDECL extends Variable
 	 * @param i	the id
 	 * @param t	the type
 	 */
-	public VARDECL(String i, String t) 
+	public VARDECL(Interpreter in, String i, String t) 
 	{
+		interpreter = in;
 		id = i;
 		type = t;
 	}
@@ -94,9 +97,9 @@ public class VARDECL extends Variable
 	{
 		if(id != null && type != null)
 		{
-			Interpreter.write("debug", type + " " + id);
+			interpreter.write("debug", type + " " + id);
 		}
-		else Interpreter.write("debug", "Empty VARDECL");		
+		else interpreter.write("debug", "Empty VARDECL");		
 	}
 
 	/**
@@ -106,9 +109,9 @@ public class VARDECL extends Variable
 	{
 		if(id != null && type != null)
 		{
-			Interpreter.write("parse", "vardecl " + type + " " + id);
+			interpreter.write("parse", "vardecl " + type + " " + id);
 		}
-		else Interpreter.write("parse", "Empty VARDECL");
+		else interpreter.write("parse", "Empty VARDECL");
 	}
 	
 	/**
@@ -116,11 +119,11 @@ public class VARDECL extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating VARDECL");
+		interpreter.writeln("validate", "Validating VARDECL");
 
-		if(Collections.frequency(body.varTable, Interpreter.findVar(body, id)) > 1)
+		if(Collections.frequency(body.varTable, interpreter.findVar(body, id)) > 1)
 		{
-			Interpreter.error("VARDECL", lineNum, code, "Var " + id + " cannot be declared more than once!");
+			interpreter.error("VARDECL", lineNum, code, "Var " + id + " cannot be declared more than once!");
 		}			
 	}
 

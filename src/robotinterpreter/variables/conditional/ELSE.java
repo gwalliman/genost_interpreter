@@ -15,6 +15,8 @@ import robotinterpreter.variables.Variable;
  */
 public class ELSE extends Variable
 {
+	private Interpreter interpreter;
+	
 	private BODY codeBody;
 	
 	/**
@@ -23,14 +25,15 @@ public class ELSE extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code object
 	 */
-	public ELSE(BODY b, Code c)
+	public ELSE(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 
 		c.nextLine();
-		codeBody = new BODY(body, c);
+		codeBody = new BODY(interpreter, body, c);
 	}
 	
 	/**
@@ -46,7 +49,7 @@ public class ELSE extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.writeln("parse", "else");
+		interpreter.writeln("parse", "else");
 		codeBody.print();
 	}
 
@@ -55,7 +58,7 @@ public class ELSE extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating ELSE");
+		interpreter.writeln("validate", "Validating ELSE");
 
 		codeBody.validate();
 	}

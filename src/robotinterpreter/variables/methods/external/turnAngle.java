@@ -1,14 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.RobotListener;
-import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class turnAngle extends ExtMethod 
 {
+	private Interpreter interpreter;
 	
-	public turnAngle()
+	public turnAngle(Interpreter in)
 	{
+		interpreter = in;
 		id = "turnAngle";
 		type = Terminals.VOID;
 		paramTypes = new String[1];
@@ -17,7 +19,7 @@ public class turnAngle extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : interpreter.getRobotInterpreter().getRobotListeners())
 		{
 			l.turnAngle((Integer) args[0]);
 		}

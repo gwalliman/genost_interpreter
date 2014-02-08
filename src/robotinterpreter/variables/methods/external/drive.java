@@ -1,14 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.RobotListener;
-import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class drive extends ExtMethod 
 {
+	private Interpreter interpreter;
 	
-	public drive()
+	public drive(Interpreter in)
 	{
+		interpreter = in;
 		id = "drive";
 		type = Terminals.VOID;
 		paramTypes = new String[1];
@@ -17,7 +19,7 @@ public class drive extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : interpreter.getRobotInterpreter().getRobotListeners())
 		{
 			if(args[0].equals("f"))
 			{

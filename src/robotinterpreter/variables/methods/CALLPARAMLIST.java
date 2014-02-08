@@ -17,6 +17,8 @@ import robotinterpreter.variables.Variable;
  */
 public class CALLPARAMLIST extends Variable
 {
+	private Interpreter interpreter;
+	
 	private CALL call;
 	private CALLPARAMLIST nextParam;
 	
@@ -35,15 +37,16 @@ public class CALLPARAMLIST extends Variable
 	 * @param m	a reference to the method this CALLPARAMLIST is linked to.
 	 * @param p	an integer indicating what number CALLPARAMLIST this is.
 	 */
-	public CALLPARAMLIST(BODY b, Code c, String s, METHOD m, int p) 
+	public CALLPARAMLIST(Interpreter in, BODY b, Code c, String s, METHOD m, int p) 
 	{
+		interpreter = in;
 		body = b;
 		method = m;
 		paramNum = p;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
 		
-		String tokens[] = Code.tokenize(s);
+		String tokens[] = c.tokenize(s);
 		
 		//We create two strings: "argument" is the current CALL code, and "remainder" is the remaining argument(s)
 		String argument = "";
@@ -62,7 +65,7 @@ public class CALLPARAMLIST extends Variable
 			//We do this by finding the close paren to this method's CALLPARAMLIST; the character immediately after this will be the comma, and hence the end of the CALL.
 			if(tokens[2] != Terminals.OPENPAREN)
 			{
-				Interpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument must have open paren following ID!");
+				interpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument must have open paren following ID!");
 			}
 			
 			//The closeparen index is at least 2 (0 is "method", 1 is open paren)
@@ -82,15 +85,15 @@ public class CALLPARAMLIST extends Variable
 			if(tokens.length > closeParen)
 			{
 				//The argument is everything from the beginning to the closeparen
-				argument = Code.implode(tokens, " ", 0, closeParen);
+				argument = c.implode(tokens, " ", 0, closeParen);
 
 				//The remainder is everything after the comma following the closeparen to the end of the string.
 				//We do codeParen + 2 to skip over the comma
-				remainder = Code.implode(tokens, " ", closeParen + 2, tokens.length - 1);
+				remainder = c.implode(tokens, " ", closeParen + 2, tokens.length - 1);
 			}
 			else
 			{
-				Interpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument does not have corresponding closeparen!");
+				interpreter.error("CALLPARAMLIST", lineNum, code, "METHOD argument does not have corresponding closeparen!");
 			}
 		}
 		//Case 2
@@ -99,7 +102,7 @@ public class CALLPARAMLIST extends Variable
 			//The argument is just the second token.
 			argument = tokens[0] + " " + tokens[1];
 			//The remainder is tokens 3 through end.
-			remainder = Code.implode(tokens, " ", 2, tokens.length - 1);
+			remainder = c.implode(tokens, " ", 2, tokens.length - 1);
 		}
 		//If Case 1 and 2 both fail, then we have either a var, an int or a boolean, which can be safely split by comma (once)
 		else
@@ -115,14 +118,14 @@ public class CALLPARAMLIST extends Variable
 		//Ensure that we actually have an argument; if so, parse the CALL
 		if(argument.trim().length() > 0)
 		{
-			call = new CALL(body, c, argument);
+			call = new CALL(interpreter, body, c, argument);
 		}
-		else Interpreter.error("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
+		else interpreter.error("CALLPARAMLIST", lineNum, code, "Syntax error in CALLPARAMLIST");
 
 		//If we have a remainder, recursively call CALLPARAMLIST
 		if(!remainder.isEmpty())
 		{
-			nextParam = new CALLPARAMLIST(body, c, remainder, m, ++p);
+			nextParam = new CALLPARAMLIST(interpreter, body, c, remainder, m, ++p);
 		}
 	}
 	
@@ -131,12 +134,12 @@ public class CALLPARAMLIST extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", paramNum + " ");
+		interpreter.write("parse", paramNum + " ");
 		call.print();
 			
 		if(nextParam != null)
 		{
-			Interpreter.write("parse", ", ");
+			interpreter.write("parse", ", ");
 			nextParam.print();
 		}
 	}
@@ -150,11 +153,11 @@ public class CALLPARAMLIST extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating CALLPARAMLIST");
+		interpreter.writeln("validate", "Validating CALLPARAMLIST");
 
 		//1: Validate CALL
 		call.validate();
-		METHODDEFINE methdef = Interpreter.findMethod(method.id());
+		METHODDEFINE methdef = interpreter.findMethod(method.id());
 		
 		//As the method should always be validated before the calllist, it should always be non-null, but just in case we check.
 		if(methdef != null)
@@ -163,7 +166,7 @@ public class CALLPARAMLIST extends Variable
 			DEFPARAMLIST paramdef = methdef.getParam(paramNum);
 			if(paramdef == null)
 			{
-				Interpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " does not exist for method " + methdef.id());
+				interpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " does not exist for method " + methdef.id());
 			}
 			else
 			{
@@ -172,7 +175,7 @@ public class CALLPARAMLIST extends Variable
 				String defType = paramdef.type();
 				if(!callType.equals(defType))
 				{
-					Interpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
+					interpreter.error("CALLPARAMLIST", lineNum, code, "Parameter " + paramNum + " is of wrong type. Method " + methdef.id() + " parameter " + paramNum + " requires " + defType + ", but was provided " + callType);
 				}
 			}
 		}

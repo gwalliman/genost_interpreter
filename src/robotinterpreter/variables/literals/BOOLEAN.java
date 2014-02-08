@@ -15,6 +15,8 @@ import robotinterpreter.variables.Variable;
  */
 public class BOOLEAN extends Variable
 {
+	private Interpreter interpreter;
+	
 	private boolean value;
 	
 	/**
@@ -24,13 +26,14 @@ public class BOOLEAN extends Variable
 	 * @param c	the Code file
 	 * @param s	a string containing just the literal. Format: "true", "false"
 	 */
-	public BOOLEAN(BODY b, Code c, String s)
+	public BOOLEAN(Interpreter in, BODY b, Code c, String s)
 	{
+		interpreter = in;
 		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(s);
+		String[] tokens = c.tokenize(s);
 
 		//We should only have one token here, the literal itself
 		if(tokens.length == 1)
@@ -39,9 +42,9 @@ public class BOOLEAN extends Variable
 			{
 				value = Boolean.parseBoolean(tokens[0]);
 			}
-			else Interpreter.error("BOOLEAN", lineNum, code, "Boolean value must be either true or false");
+			else interpreter.error("BOOLEAN", lineNum, code, "Boolean value must be either true or false");
 		}
-		else Interpreter.error("BOOLEAN", lineNum, code, "Syntax error in boolean.");
+		else interpreter.error("BOOLEAN", lineNum, code, "Syntax error in boolean.");
 	}
 
 	/**
@@ -49,7 +52,7 @@ public class BOOLEAN extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "bool " + value);
+		interpreter.write("parse", "bool " + value);
 	}
 
 	/**
@@ -57,7 +60,7 @@ public class BOOLEAN extends Variable
 	 */
 	public void validate() 
 	{ 
-		Interpreter.writeln("validate", "Validating BOOLEAN");
+		interpreter.writeln("validate", "Validating BOOLEAN");
 	}
 
 	/**

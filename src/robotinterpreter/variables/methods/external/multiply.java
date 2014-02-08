@@ -1,11 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class multiply extends ExtMethod 
 {
-	public multiply()
+	@SuppressWarnings("unused")
+	private Interpreter interpreter;
+	
+	public multiply(Interpreter in)
 	{
+		interpreter = in;
 		id = "multiply";
 		type = Terminals.INT;
 		paramTypes = new String[2];

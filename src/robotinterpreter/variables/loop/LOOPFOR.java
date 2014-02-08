@@ -17,6 +17,8 @@ import robotinterpreter.variables.Variable;
  */
 public class LOOPFOR extends Variable
 {
+	private Interpreter interpreter;
+	
 	private int iterations;
 	private BODY codeBody;
 	
@@ -27,13 +29,14 @@ public class LOOPFOR extends Variable
 	 * @param b
 	 * @param c
 	 */
-	public LOOPFOR(BODY b, Code c)
+	public LOOPFOR(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 		
 		//PARSING INTEGER
 		//Ensure that the second token is indeed an integer.
@@ -41,11 +44,11 @@ public class LOOPFOR extends Variable
 		{
 			iterations = Integer.parseInt(tokens[1]);
 		}
-		else Interpreter.error("LOOPFOR", lineNum, code, "LOOPFOR iterations integer is missing or of invalid format.");
+		else interpreter.error("LOOPFOR", lineNum, code, "LOOPFOR iterations integer is missing or of invalid format.");
 		
 		//PARSING BODY
 		c.nextLine();
-		codeBody = new BODY(body, c);
+		codeBody = new BODY(interpreter, body, c);
 	}
 	
 	/**
@@ -61,14 +64,14 @@ public class LOOPFOR extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "loopfor ");
+		interpreter.write("parse", "loopfor ");
 		if(iterations < 0)
 		{
-			Interpreter.writeln("parse", "infinitely");
+			interpreter.writeln("parse", "infinitely");
 		}
 		else
 		{
-			Interpreter.writeln("parse", iterations + " times");
+			interpreter.writeln("parse", iterations + " times");
 
 		}
 		codeBody.print();
@@ -80,11 +83,11 @@ public class LOOPFOR extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating LOOPFOR");
+		interpreter.writeln("validate", "Validating LOOPFOR");
 
 		if(iterations < -1)
 		{
-			Interpreter.error("LOOPFOR", lineNum, code, "LOOPFOR iterations integer cannot be less than -1");
+			interpreter.error("LOOPFOR", lineNum, code, "LOOPFOR iterations integer cannot be less than -1");
 		}
 		codeBody.validate();
 	}

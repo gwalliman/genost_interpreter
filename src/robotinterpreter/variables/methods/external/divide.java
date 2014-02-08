@@ -5,8 +5,11 @@ import robotinterpreter.terminals.Terminals;
 
 public class divide extends ExtMethod 
 {
-	public divide()
+	private Interpreter interpreter;
+	
+	public divide(Interpreter in)
 	{
+		interpreter = in;
 		id = "add";
 		type = Terminals.INT;
 		paramTypes = new String[2];
@@ -19,7 +22,7 @@ public class divide extends ExtMethod
 		int denom = ((Integer)args[1]);
 		if(denom == 0)
 		{
-			Interpreter.error("DIVIDE", -1, "Externally defined", "Divide by 0 error");
+			interpreter.error("DIVIDE", -1, "Externally defined", "Divide by 0 error");
 		}
 		return ((Integer)args[0]) / ((Integer)args[1]);
 	}

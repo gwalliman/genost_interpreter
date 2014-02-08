@@ -10,7 +10,7 @@ import robotinterpreter.terminals.Terminals;
 public class RobotInterpreter
 {
 	
-	public static ArrayList<RobotListener> robotlisteners = new ArrayList<RobotListener>();
+	public ArrayList<RobotListener> robotlisteners = new ArrayList<RobotListener>();
 	private Interpreter r;
 	
 	public RobotInterpreter() 
@@ -21,7 +21,7 @@ public class RobotInterpreter
 
 	public void load(String c)
 	{
-		r = new Interpreter(c);
+		r = new Interpreter(this, c);
 	}
 
 	public void execute()
@@ -40,7 +40,7 @@ public class RobotInterpreter
     	}    
     }
 	
-	public static ArrayList<RobotListener> getRobotListeners()
+	public ArrayList<RobotListener> getRobotListeners()
 	{
 		return robotlisteners;
 	}

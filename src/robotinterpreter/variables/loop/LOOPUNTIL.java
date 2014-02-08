@@ -20,6 +20,8 @@ import robotinterpreter.variables.conditional.CONDITIONLIST;
  */
 public class LOOPUNTIL extends Variable
 {
+	private Interpreter interpreter;
+	
 	private CONDITIONLIST cl;
 	private BODY codeBody;
 	
@@ -32,35 +34,36 @@ public class LOOPUNTIL extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code file
 	 */
-	public LOOPUNTIL(BODY b, Code c)
+	public LOOPUNTIL(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 		
 		//PARSING CONDITIONLIST
 		//Ensure that the CONDITIONLIST is surrounded by parentheses
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			Interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must open with (");
+			interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must open with (");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			Interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must close with )");
+			interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must close with )");
 		}
 		
 		if(tokens.length > 3)
 		{
-			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 1));
+			cl = new CONDITIONLIST(interpreter, body, c, code.substring(11, code.length() - 1));
 		}
-		else Interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must contain a condition list!");
+		else interpreter.error("LOOPUNTIL", lineNum, code, "LOOPUNTIL must contain a condition list!");
 
 		//PARSING BODY
 		c.nextLine();
-		codeBody = new BODY(body, c);
+		codeBody = new BODY(interpreter, body, c);
 	}
 	
 	/**
@@ -78,9 +81,9 @@ public class LOOPUNTIL extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "loopuntil (");
+		interpreter.write("parse", "loopuntil (");
 		cl.print();
-		Interpreter.writeln("parse", ")");
+		interpreter.writeln("parse", ")");
 		codeBody.print();
 	}
 
@@ -92,7 +95,7 @@ public class LOOPUNTIL extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating LOOPUNTIL");
+		interpreter.writeln("validate", "Validating LOOPUNTIL");
 		//VALIDATING CONDITIONLIST
 		cl.validate();
 		//VALIDATING BODY
