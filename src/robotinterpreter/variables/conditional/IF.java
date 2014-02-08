@@ -177,7 +177,7 @@ public class IF extends Variable
 	 */
 	public Object execute(Object[] args) 
 	{
-		boolean go = (boolean) cl.execute(null); 
+		boolean go = (Boolean) cl.execute(null); 
 		if(go)
 		{
 			codeBody.execute(null);
@@ -189,7 +189,7 @@ public class IF extends Variable
 			boolean elsEx = false;
 			if(elseif != null)
 			{
-				elsEx = (boolean) elseif.execute(null);
+				elsEx = (Boolean) elseif.execute(null);
 			}
 		
 			//If the ELSEIFs did not execute (or if there is no ELSEIFs) and we have an ELSE, execute the ELSE.

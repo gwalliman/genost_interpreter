@@ -195,18 +195,18 @@ public class CONDITIONLIST extends Variable
 		boolean go = false;
 		if(conType.equals(CONDITIONLIST))
 		{		
-			go = (boolean) ((CONDITIONLIST)con).execute(null);
+			go = (Boolean) ((CONDITIONLIST)con).execute(null);
 		}
 		else if(conType.equals(CONDITION))
 		{
-			go = (boolean) ((CONDITION)con).execute(null);
+			go = (Boolean) ((CONDITION)con).execute(null);
 		}
 		
 		if(nextCon != null)
 		{
 			//Not sure about this variable name, it may be harmful.
 			boolean go2 = false;
-			go2 = (boolean) ((CONDITIONLIST)nextCon).execute(null);
+			go2 = (Boolean) ((CONDITIONLIST)nextCon).execute(null);
 			
 			if(logOp.equals(Terminals.AND))
 				return go && go2;

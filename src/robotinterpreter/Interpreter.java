@@ -351,7 +351,7 @@ public class Interpreter
 	 */
 	private static boolean showMessage(String t)
 	{
-		switch(t)
+		/*switch(t)		--No switch(string) in 1.6 -- IP
 		{
 			//Display Parser messages
 			case "parse":
@@ -365,7 +365,17 @@ public class Interpreter
 			//Display all other messages
 			default:
 				return true;
-		}
+		}*/
+		
+		if (t.equals("parse"))
+			return true;
+		else if (t.equals("validate"))
+			return false;
+		else if (t.equals("debug"))
+			return true;
+		else
+			return true;
+		
 	}
 	
 	/**

@@ -15,6 +15,6 @@ public class subtract extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		return ((int)args[0]) - ((int)args[1]);
+		return ((Integer)args[0]) - ((Integer)args[1]);
 	}
 }

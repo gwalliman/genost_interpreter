@@ -91,7 +91,7 @@ public class WAITUNTIL extends Variable
 	 */
 	public Object execute(Object[] args) 
 	{
-		boolean go = (boolean) cl.execute(null);
+		boolean go = (Boolean) cl.execute(null);
 		
 		while(!go)
 		{
@@ -102,10 +102,13 @@ public class WAITUNTIL extends Variable
 			} 
 			catch (InterruptedException e) 
 			{
-				e.printStackTrace();
+				//TODO: figure out starting/stopping
+				//This line makes starting and stopping work AFAIK, but might lag
+				Thread.currentThread().interrupt();
+				//e.printStackTrace();
 			}
 			
-			go = (boolean) cl.execute(null);
+			go = (Boolean) cl.execute(null);
 		}
 		
 		return null;
