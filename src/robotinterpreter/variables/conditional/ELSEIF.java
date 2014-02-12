@@ -17,6 +17,8 @@ import robotinterpreter.variables.Variable;
  */
 public class ELSEIF extends Variable
 {
+	private Interpreter interpreter;
+	
 	private CONDITIONLIST cl;
 	private BODY codeBody;
 	//The next ELSEIF, if there is one
@@ -30,42 +32,43 @@ public class ELSEIF extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code object
 	 */
-	public ELSEIF(BODY b, Code c)
+	public ELSEIF(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 		
 		//An ELSEIF CONDITIONLIST must be surrounded by parentheses.
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			Interpreter.error("ELSEIF", lineNum, code, "ELSEIF must open with (");
+			interpreter.error("ELSEIF", lineNum, code, "ELSEIF must open with (");
 		}
 		
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			Interpreter.error("ELSEIF", lineNum, code, "ELSEIF must close with )");
+			interpreter.error("ELSEIF", lineNum, code, "ELSEIF must close with )");
 		}
 
 		//If we have more than 3 tokens, then we have at least something in the CONDITIONLIST.
 		if(tokens.length > 3)
 		{
-			cl = new CONDITIONLIST(body, c, code.substring(8, code.length() - 1));
+			cl = new CONDITIONLIST(interpreter, body, c, code.substring(8, code.length() - 1));
 		}
-		else Interpreter.error("ELSEIF", lineNum, code, "ELSEIF must contain a condition list!");
+		else interpreter.error("ELSEIF", lineNum, code, "ELSEIF must contain a condition list!");
 
 		//Move on to the next line and parse the BODY.
 		c.nextLine();
-		codeBody = new BODY(body, c);
+		codeBody = new BODY(interpreter, body, c);
 		
 		//Get the next line. If we find another ELSEIF, parse it.
 		c.nextLine();
-		String[] newTokens = Code.tokenize(c.currentLine());
+		String[] newTokens = c.tokenize(c.currentLine());
 		if(newTokens[0].equals(Terminals.ELSEIF))
 		{
-			elseif = new ELSEIF(body, c);
+			elseif = new ELSEIF(interpreter, body, c);
 		}
 		
 	}
@@ -92,14 +95,14 @@ public class ELSEIF extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "elseif (");
+		interpreter.write("parse", "elseif (");
 		cl.print();
-		Interpreter.writeln("parse", ")");
+		interpreter.writeln("parse", ")");
 		codeBody.print();
 		
 		if(elseif != null)
 		{
-			Interpreter.write("parse", Code.newline);
+			interpreter.write("parse", Code.newline);
 			elseif.print();
 		}
 	}
@@ -112,7 +115,7 @@ public class ELSEIF extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating ELSEIF");
+		interpreter.writeln("validate", "Validating ELSEIF");
 
 		cl.validate();
 		codeBody.validate();

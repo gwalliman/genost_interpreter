@@ -2,6 +2,7 @@ package robotinterpreter;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import robotinterpreter.terminals.Terminals;
@@ -14,7 +15,6 @@ import robotinterpreter.variables.conditional.IF;
 import robotinterpreter.variables.loop.LOOPFOR;
 import robotinterpreter.variables.loop.LOOPUNTIL;
 import robotinterpreter.variables.methods.METHODDEFINE;
-import robotinterpreter.variables.methods.external.ExtMethod;
 import robotinterpreter.variables.vars.VARDECL;
 
 /**
@@ -28,29 +28,34 @@ import robotinterpreter.variables.vars.VARDECL;
  */
 public class Interpreter 
 {
+	private RobotInterpreter robotInterpreter;
 	/*
 	 * The varStack is a stack containing lists of active variables.
 	 * Whenever we enter a body (either the main program body or a method body) a new layer is added to the stack
 	 * containing entries for each variable defined in that body. This stack layer is then removed after exiting the body.
 	 */
-	public static ArrayList<Map<String, Object>> varStack;
+	private ArrayList<Map<String, Object>> varStack;
 	
 	/*
 	 * The methodTable contains an entry for each method defined in the program.
 	 * It has entries for both methods defined within the code, as well as for a set of external methods, which are read in at program start.
 	 */
-	public static ArrayList<METHODDEFINE> methodTable;
+	private ArrayList<METHODDEFINE> methodTable;
 	
 	/*
 	 * The extMethodTable is used to hold all external methods, which are read in at program start.
 	 */
-	public static ArrayList<Object> extMethodTable;
+	private ArrayList<Object> extMethodTable;
 	
 	//BODY b is the "head" data structure for the program tree. It is the main program body which contains everything else.
-	public static BODY b;
+	public BODY b;
 	
-	public static boolean isReady = true;
+	public boolean isReady = true;
 	
+	private String[] extMethodsArray = { "print", "intToString", "add", "subtract", "multiply", "divide", "drive", "turn", "stop", "getSonars", "getBearing", "driveDistance", "driveTime", "turnAngle", "turnTime", "turnToBearing" };
+	
+	public ArrayList<String> extMethods = new ArrayList<String>(Arrays.asList(extMethodsArray));
+
 	/**
 	 * This function is the "master" function, orchestrating virtually all interpretation functionality.
 	 * 
@@ -66,15 +71,17 @@ public class Interpreter
 	 * 
 	 * @param code the file which contains the program code
 	 */
-	public Interpreter(String code)
+	public Interpreter(RobotInterpreter rob, String code)
 	{
+		robotInterpreter = rob;
+		
 		//Initialize the stacks / tables
 		varStack = new ArrayList<Map<String, Object>>();
 		methodTable = new ArrayList<METHODDEFINE>();
 		extMethodTable = new ArrayList<Object>();
 		
 		//Step 0: Load in external methods.
-		for(String id : ExtMethod.extMethods)
+		for(String id : extMethods)
 		{
 			//Every external method is stored in its own separate class in the robotinterpreter.variables.methods.external package.
 			//The names of these methods (which is the same as the class they are defined in) are stored in an array in the ExtMethod class.
@@ -82,10 +89,10 @@ public class Interpreter
 			try 
 			{
 				Class<?> extC = Class.forName("robotinterpreter.variables.methods.external." + id);
-				Constructor<?> extCtor = extC.getConstructor();
-				Object extInst = extCtor.newInstance();
+				Constructor<?> extCtor = extC.getConstructor(this.getClass());
+				Object extInst = extCtor.newInstance(this);
 				extMethodTable.add(extInst);
-				methodTable.add(new METHODDEFINE(id));
+				methodTable.add(new METHODDEFINE(this, id));
 			} 
 			catch (Exception e) 
 			{
@@ -94,22 +101,22 @@ public class Interpreter
 		}
 		
 		//Take the code file and get it ready for parsing.
-		Code c = new Code(code);
+		Code c = new Code(this, code);
 		
 		//Step 1: Parse.
 		//Go over each line of code and populate with information immediately available
-		b = new BODY(null, c);
+		b = new BODY(this, null, c);
 	
 		if(isReady)
 		{
 			b.print();
-			Interpreter.writeln("parse", Code.newline + "=================");
-			Interpreter.writeln("parse", "Code fully parsed!" + Code.newline + "=================");
+			writeln("parse", Code.newline + "=================");
+			writeln("parse", "Code fully parsed!" + Code.newline + "=================");
 		}
 		else
 		{
-			Interpreter.writeln("parse", Code.newline + "=================");
-			Interpreter.writeln("parse", "ERROR: Code failed to parse." + Code.newline + "=================");
+			writeln("parse", Code.newline + "=================");
+			writeln("parse", "ERROR: Code failed to parse." + Code.newline + "=================");
 			halt();
 			return;
 		}
@@ -120,19 +127,19 @@ public class Interpreter
 		b.validate();
 		
 		//Validate external methods
-		for(String id : ExtMethod.extMethods)
+		for(String id : extMethods)
 		{
 			findMethod(id).validate();
 		}
 		
-		Interpreter.writeln("validate", "=================");
+		writeln("validate", "=================");
 		if(isReady)
 		{
-			Interpreter.writeln("validate", "Code fully validated!" + Code.newline + "=================");
+			writeln("validate", "Code fully validated!" + Code.newline + "=================");
 		}
 		else
 		{
-			Interpreter.writeln("validate", "ERROR: Code failed to validate." + Code.newline + "=================");
+			writeln("validate", "ERROR: Code failed to validate." + Code.newline + "=================");
 			halt();
 			return;
 		}
@@ -143,11 +150,31 @@ public class Interpreter
 	public void execute()
 	{
 		//Step 3: Execute program
-		Interpreter.writeln("message", "=================");
-		Interpreter.writeln("message", "Execution output follows:" + Code.newline + "=================" + Code.newline);
+		writeln("message", "=================");
+		writeln("message", "Execution output follows:" + Code.newline + "=================" + Code.newline);
 		b.execute(null);
-		Interpreter.writeln("message", Code.newline + "=================");
-		Interpreter.writeln("message", "End of execution" + Code.newline + "=================");
+		writeln("message", Code.newline + "=================");
+		writeln("message", "End of execution" + Code.newline + "=================");
+	}
+	
+	public RobotInterpreter getRobotInterpreter() 
+	{
+		return robotInterpreter;
+	}
+	
+	public ArrayList<Object> getExtMethodTable()
+	{
+		return extMethodTable;
+	}
+	
+	public ArrayList<METHODDEFINE> getMethodTable()
+	{
+		return methodTable;
+	}
+	
+	public ArrayList<Map<String, Object>> getVarStack()
+	{
+		return varStack;
 	}
 	
 	/**
@@ -160,7 +187,7 @@ public class Interpreter
 	 * @param id the name of the variable we are trying to get.
 	 * @return the value of the variable as an Object.
 	 */
-	public static Object getVar(String id)
+	public Object getVar(String id)
 	{
 		for(int x = varStack.size() - 1; x >= 0; x--)
 		{
@@ -183,7 +210,7 @@ public class Interpreter
 	 * @param id the name of the variable we are trying to set.
 	 * @param val the value which we will set
 	 */
-	public static void setVar(String id, Object val)
+	public void setVar(String id, Object val)
 	{
 		for(int x = varStack.size() - 1; x >= 0; x--)
 		{
@@ -213,7 +240,7 @@ public class Interpreter
 	 * @param id	the id of the VARDECL we are looking for
 	 * @return	the found VARDECL
 	 */
-	public static VARDECL findVar(BODY b, String id)
+	public VARDECL findVar(BODY b, String id)
 	{
 		for(VARDECL var : b.varTable)
 		{
@@ -236,7 +263,7 @@ public class Interpreter
 	 * @param id	the method id
 	 * @return	the corresponding METHODDEFINE
 	 */
-	public static METHODDEFINE findMethod(String id)
+	public METHODDEFINE findMethod(String id)
 	{
 		for(METHODDEFINE method : methodTable)
 		{
@@ -252,7 +279,7 @@ public class Interpreter
 	 * and then prints the vars defined in each individual method's codebody.
 	 * 
 	 */
-	public static void printAllVars()
+	public void printAllVars()
 	{
 		printVars(b, "Global");
 		for(METHODDEFINE m : methodTable)
@@ -270,16 +297,16 @@ public class Interpreter
 	 * @param b	the body which we are printing variables for
 	 * @param s	the name of the scope in which we are printing. Is only printed in a debug statement, so can be whatever you want.
 	 */
-	public static void printVars(BODY b, String s)
+	public void printVars(BODY b, String s)
 	{
-		Interpreter.writeln("debug", "===================");
-		Interpreter.writeln("debug", "Printing Variable Table for " + s);
-		Interpreter.writeln("debug", "===================");
+		writeln("debug", "===================");
+		writeln("debug", "Printing Variable Table for " + s);
+		writeln("debug", "===================");
 
 		for(VARDECL var : b.varTable)
 		{
 			var.printVar();
-			Interpreter.write("debug", Code.newline);
+			write("debug", Code.newline);
 		}
 		
 		STMTLIST stmts = b.getStmtList();
@@ -317,27 +344,27 @@ public class Interpreter
 			stmts = stmts.getNextStmt();
 		}
 		
-		Interpreter.writeln("debug", "===================");
-		Interpreter.writeln("debug", "End Variable Table for " + s);
-		Interpreter.writeln("debug", "===================");
+		writeln("debug", "===================");
+		writeln("debug", "End Variable Table for " + s);
+		writeln("debug", "===================");
 
 	}
 	
 	/**
 	 * Prints all defined methods using the methods' print function.
 	 */
-	public static void printMethods()
+	public void printMethods()
 	{
-		Interpreter.writeln("debug", "===================");
-		Interpreter.writeln("debug", "Printing Method Table");
-		Interpreter.writeln("debug", "===================");
+		writeln("debug", "===================");
+		writeln("debug", "Printing Method Table");
+		writeln("debug", "===================");
 		
 		for(METHODDEFINE method : methodTable)
 		{
 			method.print();
-			Interpreter.write("debug", Code.newline);
+			write("debug", Code.newline);
 		}
-		Interpreter.writeln("debug", "===================");
+		writeln("debug", "===================");
 	}
 	
 	/**
@@ -349,7 +376,7 @@ public class Interpreter
 	 * @param t	the type of message we are querying about
 	 * @return	true if we can print this type of message, false otherwise
 	 */
-	private static boolean showMessage(String t)
+	private boolean showMessage(String t)
 	{
 		/*switch(t)		--No switch(string) in 1.6 -- IP
 		{
@@ -386,11 +413,11 @@ public class Interpreter
 	 * @param type	the type of message we are printing
 	 * @param s	the message itself
 	 */
-	public static void write(String type, String s)
+	public void write(String type, String s)
 	{
 		if(showMessage(type))
 		{
-			for(RobotListener l : RobotInterpreter.getRobotListeners())
+			for(RobotListener l : robotInterpreter.getRobotListeners())
 			{
 				l.print(s);
 			}
@@ -405,11 +432,11 @@ public class Interpreter
 	 * @param type	the type of message we are printing
 	 * @param s	the message itself
 	 */
-	public static void writeln(String type, String s)
+	public void writeln(String type, String s)
 	{
 		if(showMessage(type))
 		{
-			for(RobotListener l : RobotInterpreter.getRobotListeners())
+			for(RobotListener l : robotInterpreter.getRobotListeners())
 			{
 				l.println(s);
 			}
@@ -427,11 +454,11 @@ public class Interpreter
 	 * @param c	the code fragment which contains the error
 	 * @param error	a String describing the error
 	 */
-	public static void error(String var, int lineNum, String c, String error)
+	public void error(String var, int lineNum, String c, String error)
 	{
 		String fu = var.toUpperCase() + " ERROR Near Line " + lineNum + ": " + c + Code.newline + error;
 		//JOptionPane.showMessageDialog(null, fu, var + " ERROR", JOptionPane.ERROR_MESSAGE);
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : robotInterpreter.getRobotListeners())
 		{
 			l.error(var, fu);
 		}

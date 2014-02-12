@@ -3,7 +3,6 @@ package robotinterpreter.variables.vars;
 import robotinterpreter.Code;
 import robotinterpreter.Interpreter;
 import robotinterpreter.variables.BODY;
-import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
 /**
@@ -15,6 +14,8 @@ import robotinterpreter.variables.Variable;
  */
 public class VAR extends Variable 
 {
+	private Interpreter interpreter;
+	
 	private String id;
 	private VARDECL var;
 	
@@ -25,14 +26,15 @@ public class VAR extends Variable
 	 * @param c	the Code file
 	 * @param callCode	the code containing the actual variable, of the form "var x"
 	 */
-	public VAR(BODY b, Code c, String s)
+	public VAR(Interpreter in, BODY b, Code c, String s)
 	{
+		interpreter = in;
 		body = b;
 		code = s;
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
-		id = ID.validate(tokens[0], c);
+		String[] tokens = c.tokenize(code);
+		id = c.validate(tokens[0], c);
 	}
 	
 	/**
@@ -50,9 +52,9 @@ public class VAR extends Variable
 	{
 		if(id != null)
 		{
-			Interpreter.write("parse", "var " + id);
+			interpreter.write("parse", "var " + id);
 		}
-		else Interpreter.write("parse", "Empty VARCALL");
+		else interpreter.write("parse", "Empty VARCALL");
 	}
 
 	/**
@@ -60,12 +62,12 @@ public class VAR extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating VAR");
+		interpreter.writeln("validate", "Validating VAR");
 
-		var = Interpreter.findVar(body, id);
+		var = interpreter.findVar(body, id);
 		if(var == null)
 		{
-			Interpreter.error("VAR", lineNum, code, "Var " + id + " is not defined.");
+			interpreter.error("VAR", lineNum, code, "Var " + id + " is not defined.");
 		}
 	}
 
@@ -77,6 +79,6 @@ public class VAR extends Variable
 	 */
 	public Object execute(Object args[]) 
 	{
-		return Interpreter.getVar(id);
+		return interpreter.getVar(id);
 	}
 }

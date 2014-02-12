@@ -22,6 +22,8 @@ import robotinterpreter.variables.conditional.CONDITIONLIST;
  */
 public class WAITUNTIL extends Variable
 {
+	private Interpreter interpreter;
+	
 	private CONDITIONLIST cl;
 	
 	/**
@@ -30,35 +32,36 @@ public class WAITUNTIL extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code file
 	 */
-	public WAITUNTIL(BODY b, Code c)
+	public WAITUNTIL(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 		
 		//Ensure that we have a matching OPEN and CLOSE parentheses around the CONDITIONLIST
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			Interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must open with (");
+			interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must open with (");
 		}
 		
 		if(tokens[tokens.length - 2] != Terminals.CLOSEPAREN)
 		{
-			Interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must close with )");
+			interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must close with )");
 		}
 		
 		//We must have a CONDITIONLIST; we error out if there is not one present.
 		if(tokens.length > 3)
 		{
-			cl = new CONDITIONLIST(body, c, code.substring(11, code.length() - 2));
+			cl = new CONDITIONLIST(interpreter, body, c, code.substring(11, code.length() - 2));
 		}
-		else Interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must contain a condition list!");
+		else interpreter.error("WAITUNTIL", lineNum, code, "WAITUNTIL must contain a condition list!");
 
 		if(tokens[tokens.length - 1] != Terminals.SEMICOLON)
 		{
-			Interpreter.error("WAITUNTIL", lineNum, code, "Missing semicolon");
+			interpreter.error("WAITUNTIL", lineNum, code, "Missing semicolon");
 		}		
 	}
 	
@@ -67,9 +70,9 @@ public class WAITUNTIL extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "waituntil (");
+		interpreter.write("parse", "waituntil (");
 		cl.print();
-		Interpreter.writeln("parse", ")");
+		interpreter.writeln("parse", ")");
 	}
 
 	/**
@@ -77,7 +80,7 @@ public class WAITUNTIL extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating WAITUNTIL");
+		interpreter.writeln("validate", "Validating WAITUNTIL");
 
 		cl.validate();
 	}
@@ -102,7 +105,6 @@ public class WAITUNTIL extends Variable
 			} 
 			catch (InterruptedException e) 
 			{
-				//TODO: figure out starting/stopping
 				//This line makes starting and stopping work AFAIK, but might lag
 				Thread.currentThread().interrupt();
 				//e.printStackTrace();

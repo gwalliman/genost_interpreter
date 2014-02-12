@@ -16,6 +16,8 @@ import robotinterpreter.variables.Variable;
  */
 public class RETURN extends Variable
 {
+	private Interpreter interpreter;
+	
 	private String type;
 	private CALL call;
 	
@@ -25,19 +27,20 @@ public class RETURN extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code file
 	 */
-	public RETURN(BODY b, Code c)
+	public RETURN(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
 		//Parsing CALL
-		call = new CALL(body, c, code.substring(7, code.length() - 1));
+		call = new CALL(interpreter, body, c, code.substring(7, code.length() - 1));
 		
 		//Check to ensure that the semicolon is present.
 		if(!code.substring(code.length() - 1, code.length()).equals(Terminals.SEMICOLON))
 		{
-			Interpreter.error("RETURN", lineNum, code, "Missing semicolon!");
+			interpreter.error("RETURN", lineNum, code, "Missing semicolon!");
 		}
 	}
 
@@ -46,7 +49,7 @@ public class RETURN extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "return ");
+		interpreter.write("parse", "return ");
 		call.print();
 	}
 	
@@ -56,7 +59,7 @@ public class RETURN extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.write("validate", "Validating RETURN");
+		interpreter.write("validate", "Validating RETURN");
 		
 		//Get the type
 		//We must wait until validation to determine type, since, if the call is a variable, the vartables may not have been fully populated in parsing.
@@ -66,10 +69,10 @@ public class RETURN extends Variable
 		call.validate();
 		
 		//Ensure that the RETURN stmt appears in a method body.
-		if(body.method == null) Interpreter.error("RETURN", lineNum, code, "RETURN statement may only appear in a method!");
+		if(body.method == null) interpreter.error("RETURN", lineNum, code, "RETURN statement may only appear in a method!");
 		
 		//Ensure that the RETURN type is proper.
-		if(!body.method.type().equals(type)) Interpreter.error("RETURN", lineNum, code, "Method " + body.method.id() + " returns type " + body.method.type() + ", but RETURN statement is of type " + type);
+		if(!body.method.type().equals(type)) interpreter.error("RETURN", lineNum, code, "Method " + body.method.id() + " returns type " + body.method.type() + ", but RETURN statement is of type " + type);
 	}
 
 	/**

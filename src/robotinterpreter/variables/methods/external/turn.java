@@ -1,14 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.RobotListener;
-import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class turn extends ExtMethod 
 {
+	private Interpreter interpreter;
 	
-	public turn()
+	public turn(Interpreter in)
 	{
+		interpreter = in;
 		id = "turn";
 		type = Terminals.VOID;
 		paramTypes = new String[1];
@@ -17,7 +19,7 @@ public class turn extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : interpreter.getRobotInterpreter().getRobotListeners())
 		{
 			if(args[0].equals("l"))
 			{

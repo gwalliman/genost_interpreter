@@ -33,6 +33,8 @@ import robotinterpreter.variables.wait.WAITUNTIL;
  */
 public class STMT extends Variable 
 {
+	private Interpreter interpreter;
+	
 	//The STMT itself.
 	private Object stmt;
 	//The type of statement
@@ -44,8 +46,9 @@ public class STMT extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code object
 	 */
-	public STMT(BODY b, Code c)
+	public STMT(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
@@ -56,11 +59,11 @@ public class STMT extends Variable
 		{
 			stmtType = type[0];
 			if (stmtType.equals(Terminals.VARDECL))
-				stmt = new VARDECL(body, c);
+				stmt = new VARDECL(interpreter, body, c);
 			else if (stmtType.equals(Terminals.ASSIGN))
-				stmt = new ASSIGNMENT(body, c);
+				stmt = new ASSIGNMENT(interpreter, body, c);
 			else if (stmtType.equals(Terminals.METHODDEFINE))
-				stmt = new METHODDEFINE(body, c);
+				stmt = new METHODDEFINE(interpreter, body, c);
 			//A METHOD is the only STMT which can be both a standalone STMT and a CALL.
 			//Therefore the METHOD code expects there to be no ending semicolon, and so we process that semicolon here.
 			else if (stmtType.equals(Terminals.METHOD))
@@ -68,29 +71,29 @@ public class STMT extends Variable
 				//Ensure that the semicolon exists. If it does, remove it and call the METHOD parser.
 				String lastchar = c.currentLine().substring(c.currentLine().length() - 1);
 				if(!lastchar.equals(Terminals.SEMICOLON))
-					Interpreter.error("METHOD", lineNum, code, "Missing Semicolon");
-				stmt = new METHOD(body, c, c.currentLine().substring(0, c.currentLine().length() - 1));
+					interpreter.error("METHOD", lineNum, code, "Missing Semicolon");
+				stmt = new METHOD(interpreter, body, c, c.currentLine().substring(0, c.currentLine().length() - 1));
 			}
 			else if (stmtType.equals(Terminals.RETURN))
-				stmt = new RETURN(body, c);
+				stmt = new RETURN(interpreter, body, c);
 			else if (stmtType.equals(Terminals.IF))
-				stmt = new IF(body, c);
+				stmt = new IF(interpreter, body, c);
 			//ELSEIFs and ELSEs should be handled in the IF code.
 			//If we find a separate statement beginning with ELSEIF or ELSE, we must halt.
 			else if (stmtType.equals(Terminals.ELSEIF))
-				Interpreter.error("STMT", lineNum, code, "ELSEIF must follow IF");
+				interpreter.error("STMT", lineNum, code, "ELSEIF must follow IF");
 			else if (stmtType.equals(Terminals.ELSE))
-				Interpreter.error("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
+				interpreter.error("STMT", lineNum, code, "ELSE must follow IF or ELSEIF");
 			else if (stmtType.equals(Terminals.LOOPUNTIL))
-				stmt = new LOOPUNTIL(body, c);
+				stmt = new LOOPUNTIL(interpreter, body, c);
 			else if (stmtType.equals(Terminals.LOOPFOR))
-				stmt = new LOOPFOR(body, c);
+				stmt = new LOOPFOR(interpreter, body, c);
 			else if (stmtType.equals(Terminals.WAITUNTIL))
-				stmt = new WAITUNTIL(body, c);
+				stmt = new WAITUNTIL(interpreter, body, c);
 			else if (stmtType.equals(Terminals.WAITFOR))
-				stmt = new WAITFOR(body, c);
+				stmt = new WAITFOR(interpreter, body, c);
 		}
-		else Interpreter.error("STMT", lineNum, code, "STMT type is not valid.");
+		else interpreter.error("STMT", lineNum, code, "STMT type is not valid.");
 	}
 	
 	/**
@@ -143,7 +146,7 @@ public class STMT extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating STMT");
+		interpreter.writeln("validate", "Validating STMT");
 		if (stmtType.equals(Terminals.VARDECL))
 			((VARDECL)stmt).validate();
 		else if (stmtType.equals(Terminals.ASSIGN))

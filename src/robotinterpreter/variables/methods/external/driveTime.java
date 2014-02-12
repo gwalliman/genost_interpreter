@@ -3,16 +3,19 @@ package robotinterpreter.variables.methods.external;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.RobotListener;
-import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class driveTime extends ExtMethod 
 {
+	private Interpreter interpreter;
+	
 	boolean done = false;
 	
-	public driveTime()
+	public driveTime(Interpreter in)
 	{
+		interpreter = in;
 		id = "driveTime";
 		type = Terminals.VOID;
 		paramTypes = new String[2];
@@ -24,7 +27,7 @@ public class driveTime extends ExtMethod
 	{
 		Timer timer = new Timer();
 
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : interpreter.getRobotInterpreter().getRobotListeners())
 		{
 			if(args[0].equals("f"))
 			{
@@ -44,7 +47,7 @@ public class driveTime extends ExtMethod
 		
 		while(!done) { }
 		
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : interpreter.getRobotInterpreter().getRobotListeners())
 		{
 			l.stop();
 		}

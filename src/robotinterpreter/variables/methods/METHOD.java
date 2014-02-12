@@ -4,7 +4,6 @@ import robotinterpreter.Code;
 import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
-import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
 /**
@@ -18,6 +17,8 @@ import robotinterpreter.variables.Variable;
  */
 public class METHOD extends Variable 
 {
+	private Interpreter interpreter;
+	
 	private String id;
 	private CALLPARAMLIST params;
 	private METHODDEFINE method;
@@ -29,28 +30,29 @@ public class METHOD extends Variable
 	 * @param c	the Code file
 	 * @param s	the code string containing the method code, of form "method ID OPENPAREN CALLPARAMLLIST CLOSEPAREN". We use a string instead of just reading the line from the Code file, because a METHOD can be called as either a STMT or a CALL.
 	 */
-	public METHOD(BODY b, Code c, String s)
+	public METHOD(Interpreter in, BODY b, Code c, String s)
 	{
+		interpreter = in;
 		body = b;
 		
 		//Expects method ID OPENPAREN CALLPARAMLLIST CLOSEPAREN
 		code = s;
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 		
-		id = ID.validate(tokens[1], c);
+		id = c.validate(tokens[1], c);
 		
 		//The third token should always be an OPENPAREN
 		if(tokens[2] != Terminals.OPENPAREN)
 		{
-			Interpreter.error("METHOD", lineNum, code, "ID must be followed by (");
+			interpreter.error("METHOD", lineNum, code, "ID must be followed by (");
 		}
 		
 		//The last token should always be a CLOSEPAREN
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			Interpreter.error("METHOD", lineNum, code, "METHOD header must end with )");
+			interpreter.error("METHOD", lineNum, code, "METHOD header must end with )");
 		}
 		
 		//If the CLOSEPAREN is not the fourth token, then we must have parameters.
@@ -60,11 +62,11 @@ public class METHOD extends Variable
 			String[] callCode = code.split("\\(", 2);
 	
 			//We send the right half of the split above minus the last character, which is the CLOSEPAREN
-			params = new CALLPARAMLIST(body, c, callCode[1].substring(0, callCode[1].length() - 1), this, 0);
+			params = new CALLPARAMLIST(interpreter, body, c, callCode[1].substring(0, callCode[1].length() - 1), this, 0);
 		}
 		else if(tokens.length != 4)
 		{
-			Interpreter.error("METHOD", lineNum, code, "Syntax error in METHOD: invalid characters after CLOSEPAREN");
+			interpreter.error("METHOD", lineNum, code, "Syntax error in METHOD: invalid characters after CLOSEPAREN");
 		}
 	}
 	
@@ -89,10 +91,10 @@ public class METHOD extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "method " + id + "(");
+		interpreter.write("parse", "method " + id + "(");
 		if(params != null)
 			params.print();
-		Interpreter.write("parse", ")");
+		interpreter.write("parse", ")");
 	}
 
 	/**
@@ -101,13 +103,13 @@ public class METHOD extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating METHOD");
+		interpreter.writeln("validate", "Validating METHOD");
 
 		//Look the method up in the method table. If it does not exist, we have a problem.
-		method = Interpreter.findMethod(id);
+		method = interpreter.findMethod(id);
 		if(method == null)
 		{
-			Interpreter.error("METHOD", lineNum, code, "Method " + id + " is not defined.");
+			interpreter.error("METHOD", lineNum, code, "Method " + id + " is not defined.");
 		}
 		
 		//Validate the CALLPARAMLIST if we have one.

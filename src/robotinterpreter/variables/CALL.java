@@ -23,6 +23,7 @@ import robotinterpreter.variables.vars.VAR;
  */
 public class CALL extends Variable 
 {
+	private Interpreter interpreter;
 	//The call itself. Can be a METHOD, VAR, INTEGER, STRING or BOOL
 	private Object call;
 	//The type of call
@@ -35,13 +36,14 @@ public class CALL extends Variable
 	 * @param c	the Code object
 	 * @param callCode	a string containing the call itself. This code should not contain any other tokens or characters except those involved in the call. Format: "int 0", "var x", "method foo(int 0, var y)"
 	 */
-	public CALL(BODY b, Code c, String s)
+	public CALL(Interpreter in, BODY b, Code c, String s)
 	{
+		interpreter = in;
 		body = b;
 		lineNum = c.currentLineNum();
 		code = s;
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 		
 		callType = tokens[0];
 		
@@ -50,20 +52,20 @@ public class CALL extends Variable
 		if(Terminals.callTypes.contains(callType) || (Terminals.dataTypes.contains(callType) && !callType.equals(Terminals.VOID)))
 		{
 			if (callType.equals(Terminals.VAR))
-				call = new VAR(body, c, Code.implode(tokens, " ", 1));
+				call = new VAR(interpreter, body, c, c.implode(tokens, " ", 1));
 			else if (callType.equals(Terminals.METHOD))
-				call = new METHOD(body, c, Code.implode(tokens, " ", 0));
+				call = new METHOD(interpreter, body, c, c.implode(tokens, " ", 0));
 			else if (callType.equals(Terminals.INT))
-				call = new INTEGER(body, c, Code.implode(tokens, " ", 1));
+				call = new INTEGER(interpreter, body, c, c.implode(tokens, " ", 1));
 			else if (callType.equals(Terminals.STRING))
 			{
 				code = code.trim();
-				call = new STRING(body, c, code.substring(6, code.length()).trim());
+				call = new STRING(interpreter, body, c, code.substring(6, code.length()).trim());
 			}
 			else if (callType.equals(Terminals.BOOL))
-				call = new BOOLEAN(body, c, Code.implode(tokens, " ", 1));
+				call = new BOOLEAN(interpreter, body, c, c.implode(tokens, " ", 1));
 		}
-		else Interpreter.error("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
+		else interpreter.error("CALL", lineNum, code, "Invalid type for variable / method / data literal call");
 	}
 	
 	/**
@@ -74,9 +76,9 @@ public class CALL extends Variable
 	public String type()
 	{
 		if (callType.equals(Terminals.VAR))
-			return Interpreter.findVar(body, ((VAR)call).id()).type();
+			return interpreter.findVar(body, ((VAR)call).id()).type();
 		else if (callType.equals(Terminals.METHOD))
-			return Interpreter.findMethod(((METHOD)call).id()).type();
+			return interpreter.findMethod(((METHOD)call).id()).type();
 		else if (callType.equals(Terminals.INT))
 			return Terminals.INT;
 		else if (callType.equals(Terminals.STRING))
@@ -85,7 +87,7 @@ public class CALL extends Variable
 			return Terminals.BOOL;
 		else
 		{
-			Interpreter.error("CALL", lineNum, code, "Invalid call type");
+			interpreter.error("CALL", lineNum, code, "Invalid call type");
 			return null;
 		}
 	}
@@ -113,7 +115,7 @@ public class CALL extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate",  "Validating CALL");
+		interpreter.writeln("validate",  "Validating CALL");
 		if (callType.equals(Terminals.VAR))
 			((VAR)call).validate();
 		else if (callType.equals(Terminals.METHOD))

@@ -5,8 +5,11 @@ import robotinterpreter.terminals.Terminals;
 
 public class print extends ExtMethod 
 {
-	public print()
+	private Interpreter interpreter;
+	
+	public print(Interpreter in)
 	{
+		interpreter = in;
 		id = "print";
 		type = Terminals.VOID;
 		paramTypes = new String[1];
@@ -15,7 +18,7 @@ public class print extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		Interpreter.writeln("message", (String)args[0]);
+		interpreter.writeln("message", (String)args[0]);
 		return null;
 	}
 }

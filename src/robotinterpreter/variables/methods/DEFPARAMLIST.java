@@ -6,7 +6,6 @@ import robotinterpreter.Code;
 import robotinterpreter.Interpreter;
 import robotinterpreter.terminals.Terminals;
 import robotinterpreter.variables.BODY;
-import robotinterpreter.variables.ID;
 import robotinterpreter.variables.Variable;
 
 /**
@@ -24,6 +23,8 @@ import robotinterpreter.variables.Variable;
  */
 public class DEFPARAMLIST extends Variable
 {
+	private Interpreter interpreter;
+	
 	private String paramType;
 	private String id;
 	private int paramNum;
@@ -38,13 +39,14 @@ public class DEFPARAMLIST extends Variable
 	 * @param s	a string consisting solely of the parameters, separated by commas. Format: "int x", "int x, string z, bool a"
 	 * @param p	the param number. The first time the constructor is called, this should be 0.
 	 */
-	public DEFPARAMLIST(BODY b, Code c, String s, int p) 
+	public DEFPARAMLIST(Interpreter in, BODY b, Code c, String s, int p) 
 	{
+		interpreter = in;
 		body = b;
 		paramNum = p;
 		lineNum = c.currentLineNum();
 		code = c.currentLine();
-		String tokens[] = Code.tokenize(s);
+		String tokens[] = c.tokenize(s);
 
 		//We should always have at least two tokens (a type and an id)
 		if(tokens.length > 1)
@@ -53,11 +55,11 @@ public class DEFPARAMLIST extends Variable
 			//Parsing TYPE
 			//Get the datatype, ensure that it is valid and not void.
 			paramType = tokens[0];
-			if(!Terminals.dataTypes.contains(paramType) || paramType.equals(Terminals.VOID)) Interpreter.error("DEFPARAMLIST", lineNum, code, "Invalid DEFPARAMLIST data type. Must be int, string, or bool");
+			if(!Terminals.dataTypes.contains(paramType) || paramType.equals(Terminals.VOID)) interpreter.error("DEFPARAMLIST", lineNum, code, "Invalid DEFPARAMLIST data type. Must be int, string, or bool");
 			
 			//Parsing ID
 			//Get the id
-			id = ID.validate(tokens[1], c);
+			id = c.validate(tokens[1], c);
 	
 			//If we have at least four tokens, then we know we have another parameter
 			if(tokens.length > 3)
@@ -66,12 +68,12 @@ public class DEFPARAMLIST extends Variable
 				if(tokens[2].equals(Terminals.COMMA))
 				{
 					//We recursively call this constructor after removing the string containing the parameter we have just defined from the code.
-					nextParam = new DEFPARAMLIST(body, c, Code.implode(tokens, " ", 3, tokens.length - 1), ++p);
+					nextParam = new DEFPARAMLIST(interpreter, body, c, c.implode(tokens, " ", 3, tokens.length - 1), ++p);
 				}
-				else Interpreter.error("DEFPARAMLIST", lineNum, code, "There must be a comma between each parameter in a DEFPARAMLIST");
+				else interpreter.error("DEFPARAMLIST", lineNum, code, "There must be a comma between each parameter in a DEFPARAMLIST");
 			}
 		}
-		else Interpreter.error("DEFPARAMLIST", lineNum, code, "Syntax error in DEFPARAMLIST");
+		else interpreter.error("DEFPARAMLIST", lineNum, code, "Syntax error in DEFPARAMLIST");
 	}
 	
 	/**
@@ -84,8 +86,10 @@ public class DEFPARAMLIST extends Variable
 	 * @param params	an ArrayList of type String containing, in order, entries for the parameter types. This is retrieved from the ExtMethod's class.
 	 * @param p	the param number. The first time the constructor is called, this should be 0.
 	 */
-	public DEFPARAMLIST(ArrayList<String> params, int p)
+	public DEFPARAMLIST(Interpreter in, ArrayList<String> params, int p)
 	{
+		interpreter = in;
+		
 		//Create some dummy id; it will never actually be used due to how we call the external method's id.
 		id = "param" + p;
 		paramNum = p;
@@ -96,7 +100,7 @@ public class DEFPARAMLIST extends Variable
 		//If we still have params, go on to the next one.
 		if(params.size() > 0)
 		{
-			nextParam = new DEFPARAMLIST(params, ++p);
+			nextParam = new DEFPARAMLIST(interpreter, params, ++p);
 		}
 	}
 	
@@ -140,11 +144,11 @@ public class DEFPARAMLIST extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", paramNum + " " + paramType + " " + id);
+		interpreter.write("parse", paramNum + " " + paramType + " " + id);
 			
 		if(nextParam != null)
 		{
-			Interpreter.write("parse", ", ");
+			interpreter.write("parse", ", ");
 			nextParam.print();
 		}
 	}
@@ -155,7 +159,7 @@ public class DEFPARAMLIST extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating DEFPARAMLIST");
+		interpreter.writeln("validate", "Validating DEFPARAMLIST");
 
 		if(nextParam != null)
 		{

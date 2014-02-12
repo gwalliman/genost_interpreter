@@ -12,6 +12,8 @@ import robotinterpreter.Interpreter;
  */
 public class STMTLIST extends Variable
 {
+	private Interpreter interpreter;
+	
 	private STMT stmt;
 	//This is null at the end of the list
 	private STMTLIST nextStmt;
@@ -22,8 +24,9 @@ public class STMTLIST extends Variable
 	 * @param b	the parent body
 	 * @param c	the code object
 	 */
-	public STMTLIST(BODY b, Code c) 
+	public STMTLIST(Interpreter in, BODY b, Code c) 
 	{
+		interpreter = in;
 		body = b;
 		//Skip over any empty lines (i.e. whitespace only)
 		while(c.currentLine().trim().length() == 0) 
@@ -33,14 +36,14 @@ public class STMTLIST extends Variable
 		
 		//If we are not at the end of the parent body, make a new STMT
 		if(c.currentLineNum() != body.getFinishLine())
-			stmt = new STMT(body, c);
+			stmt = new STMT(interpreter, body, c);
 		
 		c.nextLine();
 		
 		//If we are not at the end of the parent body or the end of the code, itself, add a new STMTLIST to the linked list
 		if(c.currentLine() != null && c.currentLineNum() != body.getFinishLine())
 		{
-			nextStmt = new STMTLIST(body, c);
+			nextStmt = new STMTLIST(interpreter, body, c);
 		}
 		else nextStmt = null;
 	}
@@ -69,12 +72,12 @@ public class STMTLIST extends Variable
 		if(stmt != null)
 		{
 			stmt.print();
-			Interpreter.write("parse", Code.newline);
+			interpreter.write("parse", Code.newline);
 			
 			if(nextStmt != null)
 				nextStmt.print();
 		}
-		else Interpreter.writeln("parse", "EMPTY STMTLIST");
+		else interpreter.writeln("parse", "EMPTY STMTLIST");
 	}
 
 	/**
@@ -83,7 +86,7 @@ public class STMTLIST extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating STMTLIST");
+		interpreter.writeln("validate", "Validating STMTLIST");
 		stmt.validate();
 		if(nextStmt != null)
 		{

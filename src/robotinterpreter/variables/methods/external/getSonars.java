@@ -1,14 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.RobotListener;
-import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class getSonars extends ExtMethod 
 {
+	private Interpreter interpreter;
 	
-	public getSonars()
+	public getSonars(Interpreter in)
 	{
+		interpreter = in;
 		id = "getSonars";
 		type = Terminals.INT;
 		paramTypes = new String[1];
@@ -18,7 +20,7 @@ public class getSonars extends ExtMethod
 	public Object execute(Object[] args) 
 	{
 		int data = 0;
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : interpreter.getRobotInterpreter().getRobotListeners())
 		{
 			data = l.getSonarData((Integer)args[0]);
 		}

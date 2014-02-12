@@ -16,6 +16,8 @@ import robotinterpreter.variables.Variable;
  */
 public class IF extends Variable
 {
+	private Interpreter interpreter;
+	
 	private CONDITIONLIST cl;
 	private BODY codeBody;
 	//ELSEIF and ELSE may be null.
@@ -31,52 +33,53 @@ public class IF extends Variable
 	 * @param b	the parent body
 	 * @param c	the Code object
 	 */
-	public IF(BODY b, Code c)
+	public IF(Interpreter in, BODY b, Code c)
 	{
+		interpreter = in;
 		body = b;
 		code = c.currentLine();
 		lineNum = c.currentLineNum();
 		
-		String[] tokens = Code.tokenize(code);
+		String[] tokens = c.tokenize(code);
 		
 		//token[0] is "if", so token[1] should be the open paren to the CONDITIONLIST
 		if(tokens[1] != Terminals.OPENPAREN)
 		{
-			Interpreter.error("IF", lineNum, code, "IF must open with (");
+			interpreter.error("IF", lineNum, code, "IF must open with (");
 		}
 		
 		//The last token should always be a closeparen.
 		if(tokens[tokens.length - 1] != Terminals.CLOSEPAREN)
 		{
-			Interpreter.error("IF", lineNum, code, "IF must close with )");
+			interpreter.error("IF", lineNum, code, "IF must close with )");
 		}
 		
 		//PARSE CONDITIONLIST
 		//If we have more than 3 tokens, then we have at least something in the CONDITIONLIST.
 		if(tokens.length > 3)
 		{
-			cl = new CONDITIONLIST(body, c, code.substring(4, code.length() - 1));
+			cl = new CONDITIONLIST(interpreter, body, c, code.substring(4, code.length() - 1));
 		}
-		else Interpreter.error("IF", lineNum, code, "IF must contain a condition list!");
+		else interpreter.error("IF", lineNum, code, "IF must contain a condition list!");
 
 		//PARSE BODY
 		//Move on to the next line and parse the BODY.
 		c.nextLine();
-		codeBody = new BODY(body, c);
+		codeBody = new BODY(interpreter, body, c);
 		
 		c.nextLine();
 		
 		//PARSE ELSEIF
 		//Get the next line. If we find an ELSEIF, parse it.
-		String[] newTokens = Code.tokenize(c.currentLine());
+		String[] newTokens = c.tokenize(c.currentLine());
 		if(newTokens[0].equals(Terminals.ELSEIF))
 		{
-			elseif = new ELSEIF(body, c);
+			elseif = new ELSEIF(interpreter, body, c);
 		}
 		
 		//We have either parsed the ELSEIF, in which case we are on a new line, or we have not parsed an ELSEIF, and so are on the same line.
 		//To handle both cases, we get the tokens of the current line again.
-		newTokens = Code.tokenize(c.currentLine());
+		newTokens = c.tokenize(c.currentLine());
 		
 		//PARSE ELSE
 		//If we find an ELSE on this line, we parse it.
@@ -87,9 +90,9 @@ public class IF extends Variable
 		{
 			if(newTokens.length == 1)
 			{
-				els = new ELSE(body, c);
+				els = new ELSE(interpreter, body, c);
 			}
-			else Interpreter.error("IF", lineNum, code, "Syntax error related to ELSE");
+			else interpreter.error("IF", lineNum, code, "Syntax error related to ELSE");
 		}
 		else c.prevLine();
 	}
@@ -123,20 +126,20 @@ public class IF extends Variable
 	 */
 	public void print() 
 	{
-		Interpreter.write("parse", "if (");
+		interpreter.write("parse", "if (");
 		cl.print();
-		Interpreter.writeln("parse", ")");
+		interpreter.writeln("parse", ")");
 		codeBody.print();
 		
 		if(elseif != null)
 		{
-			Interpreter.write("parse", Code.newline);
+			interpreter.write("parse", Code.newline);
 			elseif.print();
 		}
 		
 		if(els != null)
 		{
-			Interpreter.write("parse", Code.newline);
+			interpreter.write("parse", Code.newline);
 			els.print();
 		}
 	}
@@ -149,7 +152,7 @@ public class IF extends Variable
 	 */
 	public void validate() 
 	{
-		Interpreter.writeln("validate", "Validating IF");
+		interpreter.writeln("validate", "Validating IF");
 
 		cl.validate();
 		codeBody.validate();

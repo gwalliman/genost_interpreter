@@ -1,14 +1,16 @@
 package robotinterpreter.variables.methods.external;
 
+import robotinterpreter.Interpreter;
 import robotinterpreter.RobotListener;
-import robotinterpreter.RobotInterpreter;
 import robotinterpreter.terminals.Terminals;
 
 public class stop extends ExtMethod 
 {
+	private Interpreter interpreter;
 	
-	public stop()
+	public stop(Interpreter in)
 	{
+		interpreter = in;
 		id = "stop";
 		type = Terminals.VOID;
 		paramTypes = null;
@@ -16,7 +18,7 @@ public class stop extends ExtMethod
 	
 	public Object execute(Object[] args) 
 	{
-		for(RobotListener l : RobotInterpreter.getRobotListeners())
+		for(RobotListener l : interpreter.getRobotInterpreter().getRobotListeners())
 		{
 			l.stop();
 		}
