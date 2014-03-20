@@ -50,6 +50,11 @@ public class RobotInterpreter
 		robotlisteners.add(toAdd);
 	}
 	
+	public void removeRobotListener(RobotListener toRemove)
+	{
+		robotlisteners.remove(toRemove);
+	}
+	
 	public static void main(String args[])
 	{
 		UIManager.put("swing.boldMetal", Boolean.FALSE);
