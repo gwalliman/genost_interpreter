@@ -13,7 +13,7 @@ import robotinterpreter.variables.conditional.CONDITIONLIST;
  * However, we do not enforce this, and any condition may be entered.
  * 
  * For obvious reasons, it is entirely possible to get caught in an infinite loop here.
- * TODO: Find some way of breaking out of infinite loop without crashing program.
+ * Garret's todo: Find some way of breaking out of infinite loop without crashing program.
  * 
  * Current polling frequency is 1/4 of a second (250 ms)
  * 

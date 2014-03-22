@@ -94,7 +94,7 @@ public class LOOPFOR extends Variable
 
 	/**
 	 * If iterations is equal to -1, we create an infinite loop and run it.
-	 * TODO: create a way of breaking out of this loop.
+	 * garret's todo: create a way of breaking out of this loop.
 	 * 
 	 * If iterations is 0 or greater, run a for loop to execute the code body that exact number of times.
 	 * 

@@ -371,7 +371,7 @@ public class Interpreter
 	 * This function is used to control which printed messages should be printed to the screen.
 	 * Modify the values in here to turn on or off different message printings.
 	 * 
-	 * TODO: hook this method into the UI so these can be turned on / off dynamically.
+	 * Garret's todo: hook this method into the UI so these can be turned on / off dynamically.
 	 * 
 	 * @param t	the type of message we are querying about
 	 * @return	true if we can print this type of message, false otherwise
@@ -447,7 +447,7 @@ public class Interpreter
 	 * This method should be called anytime the parser / validator / execution encounters an error in the code.
 	 * The method will print an error message to the screen and stop the program.
 	 * 
-	 * TODO: Allow us to scan for multiple errors instead of halting at the very first error.
+	 * Garret's todo: Allow us to scan for multiple errors instead of halting at the very first error.
 	 * 
 	 * @param var	the Variable structure (i.e. BODY, IF, ASSIGN) where the error occurred
 	 * @param lineNum	the line number where the error occurred
