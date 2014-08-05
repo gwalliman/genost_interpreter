@@ -52,7 +52,7 @@ public class WAITFOR extends Variable
 	 */
 	public void print() 
 	{
-		interpreter.writeln("parse", "waitfor " + iterations + " seconds");
+		interpreter.writeln("parse", "waitfor " + iterations + " ms");
 	}
 
 
@@ -71,7 +71,7 @@ public class WAITFOR extends Variable
 	}
 
 	/**
-	 * When we execute, we simply sleep the thread for one second for each iteration.
+	 * When we execute, we simply sleep the thread for one millisecond for each iteration.
 	 * 
 	 * @param args	should always be null
 	 * @return	always returns null
@@ -82,7 +82,7 @@ public class WAITFOR extends Variable
 		{
 			try 
 			{
-				Thread.sleep(1000);
+				Thread.sleep(1);
 			} 
 			catch (InterruptedException e) 
 			{
